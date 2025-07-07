@@ -480,4 +480,202 @@ Como posso ajudar com uma análise mais direcionada?`
             sendMessage();
         }
 
-        </script>
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // Adicionar mensagem do usuário
+            addUserMessage(message);
+            messageInput.value = '';
+
+            // Mostrar indicador de digitação
+            showTypingIndicator();
+
+            // Simular processamento e responder
+            setTimeout(() => {
+                removeTypingIndicator();
+                generateIAResponse(message);
+            }, 1500);
+        }
+
+        function addUserMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex gap-3 mb-6 justify-end fade-in';
+            messageDiv.innerHTML = `
+                <div class="max-w-2xl">
+                    <div class="bg-indigo-600 text-white rounded-2xl rounded-tr-none p-4">
+                        <p>${message}</p>
+                    </div>
+                    <span class="text-xs text-gray-400 mt-1 inline-block text-right">${getCurrentTime()}</span>
+                </div>
+            `;
+            messagesContainer.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typingIndicator';
+            typingDiv.className = 'flex gap-3 mb-6 fade-in';
+            typingDiv.innerHTML = `
+                <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <div class="bg-white rounded-2xl rounded-tl-none p-4 shadow-sm border border-gray-100">
+                    <div class="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            `;
+            messagesContainer.appendChild(typingDiv);
+            scrollToBottom();
+        }
+
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        function generateIAResponse(userMessage) {
+            const lowerMessage = userMessage.toLowerCase();
+            let responseData = iaResponses.default;
+
+            // Determinar resposta baseada em palavras-chave
+            if (lowerMessage.includes('faturamento') || lowerMessage.includes('receita') || lowerMessage.includes('vendas')) {
+                responseData = iaResponses.faturamento;
+            } else if (lowerMessage.includes('conta') || lowerMessage.includes('venc') || lowerMessage.includes('pagar') || lowerMessage.includes('receber')) {
+                responseData = iaResponses.contas;
+            } else if (lowerMessage.includes('rentab') || lowerMessage.includes('lucr') || lowerMessage.includes('projeto')) {
+                responseData = iaResponses.rentabilidade;
+            } else if (lowerMessage.includes('fluxo') || lowerMessage.includes('caixa') || lowerMessage.includes('saldo')) {
+                responseData = iaResponses.fluxo;
+            }
+
+            // Adicionar resposta da IA
+            const responseDiv = document.createElement('div');
+            responseDiv.className = 'flex gap-3 mb-6 fade-in';
+            responseDiv.innerHTML = `
+                <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <div class="flex-1 max-w-2xl">
+                    <div class="bg-white rounded-2xl rounded-tl-none p-4 shadow-sm border border-gray-100">
+                        <div class="prose prose-sm max-w-none">
+                            ${formatResponse(responseData.response)}
+                        </div>
+                        ${responseData.chart ? generateChart() : ''}
+                        ${responseData.urgent ? generateUrgentActions() : ''}
+                    </div>
+                    <span class="text-xs text-gray-400 mt-1 inline-block">${getCurrentTime()}</span>
+                </div>
+            `;
+            messagesContainer.appendChild(responseDiv);
+            scrollToBottom();
+
+            // Adicionar sugestões de follow-up
+            addFollowUpSuggestions();
+        }
+
+        function formatResponse(text) {
+            return text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/•/g, '&bull;')
+                .replace(/\n/g, '<br>');
+        }
+
+        function generateChart() {
+            return `
+                <div class="mt-4 bg-gray-50 rounded-xl p-4">
+                    <div class="h-48 flex items-end justify-between gap-2">
+                        <div class="flex-1 bg-indigo-500 rounded-t" style="height: 66%"></div>
+                        <div class="flex-1 bg-purple-500 rounded-t" style="height: 20%"></div>
+                        <div class="flex-1 bg-pink-500 rounded-t" style="height: 14%"></div>
+                    </div>
+                    <div class="flex justify-between mt-2 text-xs text-gray-600">
+                        <span>Desenvolvimento</span>
+                        <span>Consultoria</span>
+                        <span>Manutenção</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateUrgentActions() {
+            return `
+                <div class="mt-4 flex gap-2">
+                    <button class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all text-sm">
+                        Contatar Cliente Inadimplente
+                    </button>
+                    <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all text-sm">
+                        Pagar Contas Urgentes
+                    </button>
+                </div>
+            `;
+        }
+
+        function addFollowUpSuggestions() {
+            const suggestionsDiv = document.createElement('div');
+            suggestionsDiv.className = 'flex gap-2 mb-6 ml-13 fade-in';
+            suggestionsDiv.innerHTML = `
+                <button onclick="askQuestion('Me mostre mais detalhes')" class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all text-sm">
+                    Mais detalhes
+                </button>
+                <button onclick="askQuestion('Gere um relatório completo')" class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all text-sm">
+                    Gerar relatório
+                </button>
+                <button onclick="askQuestion('Quais ações você recomenda?')" class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all text-sm">
+                    Recomendações
+                </button>
+            `;
+            messagesContainer.appendChild(suggestionsDiv);
+        }
+
+        function getCurrentTime() {
+            return new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function scrollToBottom() {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Limpar chat
+        document.querySelector('.bg-gray-100.text-gray-700').addEventListener('click', function() {
+            messagesContainer.innerHTML = `
+                <div class="flex gap-3 mb-6 fade-in">
+                    <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1 max-w-2xl">
+                        <div class="bg-white rounded-2xl rounded-tl-none p-4 shadow-sm border border-gray-100">
+                            <p class="text-gray-800">
+                                Chat limpo! Como posso ajudar você com as análises financeiras?
+                            </p>
+                        </div>
+                        <span class="text-xs text-gray-400 mt-1 inline-block">${getCurrentTime()}</span>
+                    </div>
+                </div>
+            `;
+        });
+
+        // Simulação de análise em tempo real
+        setInterval(() => {
+            // Atualizar métricas aleatoriamente
+            const healthScore = document.querySelector('.text-green-800');
+            if (healthScore && Math.random() > 0.8) {
+                const newScore = 80 + Math.floor(Math.random() * 15);
+                healthScore.textContent = newScore + '%';
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
