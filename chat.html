@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Interno - LabStart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .chat-list::-webkit-scrollbar,
+        .messages-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .chat-list::-webkit-scrollbar-track,
+        .messages-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        
+        .chat-list::-webkit-scrollbar-thumb,
+        .messages-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        
+        .chat-list::-webkit-scrollbar-thumb:hover,
+        .messages-container::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        .online-indicator {
+            width: 10px;
+            height: 10px;
+            background: #10b981;
+            border-radius: 50%;
+            border: 2px solid white;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+        
+        .typing-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #6b7280;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 h-screen overflow-hidden">
+    <div class="flex h-full">
+        <!-- Sidebar de Conversas -->
+        <div class="w-80 bg-white border-r border-gray-200 flex flex-col">
+            <!-- Header do Chat -->
+            <div class="p-4 border-b border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h1 className="text-xl font-semibold text-gray-900">Mensagens</h1>
+                    <button class="p-2 hover:bg-gray-100 rounded-lg transition-all">
+                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Busca -->
+                <div class="relative">
+                    <svg class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <input
+                        type="text"
+                        placeholder="Buscar conversas..."
+                        class="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                </div>
+            </div>
+
+            <!-- Abas -->
+            <div class="flex border-b border-gray-200">
+                <button class="flex-1 px-4 py-2 text-sm font-medium text-indigo-600 border-b-2 border-indigo-600">
+                    Diretas
+                </button>
+                <button class="flex-1 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900">
+                    Canais
+                </button>
+                <button class="flex-1 px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900">
+                    Grupos
+                </button>
+            </div>
+
+            <!-- Lista de Chats -->
+            <div class="flex-1 overflow-y-auto chat-list">
+                <!-- Chat Item 1 - Selecionado -->
+                <div class="p-3 hover:bg-gray-50 cursor-pointer bg-indigo-50 border-l-3 border-indigo-600">
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold">
+                                AS
+                            </div>
+                            <div class="online-indicator"></div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Ana Silva</h3>
+                                <span class="text-xs text-gray-500">10:32</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm text-gray-600 truncate">Perfeito! Vou revisar o código agora</p>
+                                <span class="bg-indigo-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Item 2 -->
+                <div class="p-3 hover:bg-gray-50 cursor-pointer">
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-semibold">
+                                CS
+                            </div>
+                            <div class="online-indicator"></div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Carlos Santos</h3>
+                                <span class="text-xs text-gray-500">09:15</span>
+                            </div>
+                            <p class="text-sm text-gray-600 truncate">
+                                <span class="text-gray-400">Você:</span> Beleza, te aviso quando terminar
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Item 3 - Grupo -->
+                <div class="p-3 hover:bg-gray-50 cursor-pointer">
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center text-white">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Equipe Frontend</h3>
+                                <span class="text-xs text-gray-500">Ontem</span>
+                            </div>
+                            <p class="text-sm text-gray-600 truncate">
+                                <span class="font-medium">Maria:</span> Alguém pode revisar meu PR?
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Item 4 -->
+                <div class="p-3 hover:bg-gray-50 cursor-pointer">
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white font-semibold">
+                                PL
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate">Pedro Lima</h3>
+                                <span class="text-xs text-gray-500">Ter</span>
+                            </div>
+                            <p class="text-sm text-gray-600 truncate">Conseguiu resolver o bug?</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Canal -->
+                <div class="p-3 hover:bg-gray-50 cursor-pointer">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center text-gray-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-semibold text-gray-900 truncate"># geral</h3>
+                                <span class="text-xs text-gray-500">11:45</span>
+                            </div>
+                            <p class="text-sm text-gray-600 truncate">
+                                <span class="font-medium">Admin:</span> Reunião às 14h hoje!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Área de Conversa -->
+        <div class="flex-1 flex flex-col">
+            <!-- Header da Conversa -->
+            <div class="bg-white border-b border-gray-200 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="relative">
+                            <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold">
+                                AS
+                            </div>
+                            <div class="online-indicator"></div>
+                        </div>
+                        <div>
+                            <h2 class="font-semibold text-gray-900">Ana Silva</h2>
+                            <p class="text-sm text-green-600">Online</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-2">
+                        <button class="p-2 hover:bg-gray-100 rounded-lg transition-all">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                        </button>
+                        <button class="p-2 hover:bg-gray-100 rounded-lg transition-all">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                            </svg>
+                        </button>
+                        <button class="p-2 hover:bg-gray-100 rounded-lg transition-all">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mensagens -->
+            <div class="flex-1 overflow-y-auto messages-container bg-gray-50 p-6">
+                <!-- Separador de Data -->
+                <div class="flex items-center justify-center mb-6">
+                    <div class="bg-white px-4 py-1 rounded-full text-sm text-gray-500 shadow-sm">
+                        Hoje
+                    </div>
+                </div>
+
+                <!-- Mensagem Recebida -->
+                <div class="flex gap-3 mb-4">
+                    <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
+                        AS
+                    </div>
+                    <div class="flex flex-col max-w-md">
+                        <div class="bg-white rounded-2xl rounded-tl-none px-4 py-3 shadow-sm">
+                            <p class="text-gray-800">Oi! Você já viu o novo design do dashboard?</p>
+                        </div>
+                        <span class="text-xs text-gray-500 mt-1">10:15</span>
+                    </div>
+                </div>
+
+                <!-- Mensagem Enviada -->
+                <div class="flex gap-3 mb-4 justify-end">
+                    <div class="flex flex-col max-w-md">
+                        <div class="bg-indigo-600 text-white rounded-2xl rounded-tr-none px-4 py-3">
+                            <p>Ainda não! Ficou pronto?</p>
+                        </div>
+                        <span class="text-xs text-gray-500 mt-1 text-right">10:20</span>
+                    </div>
+                </div>
+
+                <!-- Mensagem com Imagem -->
+                <div class="flex gap-3 mb-4">
+                    <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
+                        AS
+                    </div>
+                    <div class="flex flex-col max-w-md">
+                        <div class="bg-white rounded-2xl rounded-tl-none shadow-sm overflow-hidden">
+                            <img src="https://via.placeholder.com/300x200/4F46E5/FFFFFF?text=Dashboard+Preview" alt="Dashboard preview" class="w-full">
+                            <p class="text-gray-800 px-4 py-3">Sim! Olha como ficou 🎨</p>
+                        </div>
+                        <span class="text-xs text-gray-500 mt-1">10:25</span>
+                    </div>
+                </div>
+
+                <!-- Mensagem Enviada -->
+                <div class="flex gap-3 mb-4 justify-end">
+                    <div class="flex flex-col max-w-md">
+                        <div class="bg-indigo-600 text-white rounded-2xl rounded-tr-none px-4 py-3">
+                            <p>Wow! Ficou incrível! 😍</p>
+                            <p class="mt-2">Adorei as cores e o layout limpo</p>
+                        </div>
+                        <span class="text-xs text-gray-500 mt-1 text-right flex items-center justify-end gap-1">
+                            10:30
+                            <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <svg class="w-4 h-4 text-blue-500 -ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Mensagem com Arquivo -->
+                <div class="flex gap-3 mb-4">
+                    <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
+                        AS
+                    </div>
+                    <div class="flex flex-col max-w-md">
+                        <div class="bg-white rounded-2xl rounded-tl-none px-4 py-3 shadow-sm">
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg mb-2">
+                                <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-900">dashboard-v2.fig</p>
+                                    <p class="text-xs text-gray-500">2.4 MB</p>
+                                </div>
+                                <button class="p-2 hover:bg-gray-200 rounded-lg transition-all">
+                                    <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <p class="text-gray-800">Aqui está o arquivo do Figma com todos os componentes</p>
+                        </div>
+                        <span class="text-xs text-gray-500 mt-1">10:32</span>
+                    </div>
+                </div>
+
+                <!-- Mensagem Enviada -->
+                <div class="flex gap-3 mb-4 justify-end">
+                    <div class="flex flex-col max-w-md">
+                        <div class="bg-indigo-600 text-white rounded-2xl rounded-tr-none px-4 py-3">
+                            <p>Perfeito! Vou revisar o código agora</p>
+                        </div>
+                        <span class="text-xs text-gray-500 mt-1 text-right flex items-center justify-end gap-1">
+                            10:32
+                            <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <svg class="w-4 h-4 text-blue-500 -ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Indicador de Digitação -->
+                <div class="flex gap-3 mb-4">
+                    <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
+                        AS
+                    </div>
+                    <div class="bg-white rounded-2xl rounded-tl-none px-4 py-3 shadow-sm">
+                        <div class="typing-indicator">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input de Mensagem -->
+            <div class="bg-white border-t border-gray-200 px-6 py-4">
+                <div class="flex items-end gap-3">
+                    <button class="p-2 hover:bg-gray-100 rounded-lg transition-all">
+                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
+                        </svg>
+                    </button>
+                    
+                    <div class="flex-1">
+                        <input
+                            type="text"
+                            placeholder="Digite uma mensagem..."
+                            class="w-full px-4 py-3 bg-gray-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            value=""
+                        />
+                    </div>
+                    
+                    <button class="p-2 hover:bg-gray-100 rounded-lg transition-all">
+                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </button>
+                    
+                    <button class="p-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar de Informações (Opcional) -->
+        <div class="w-80 bg-white border-l border-gray-200 hidden lg:block">
+            <div class="p-6 border-b border-gray-200">
+                <div class="text-center">
+                    <div class="w-24 h-24 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-3xl font-semibold mx-auto mb-4">
+                        AS
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900">Ana Silva</h3>
+                    <p class="text-sm text-gray-500">Frontend Developer</p>
+                    <p class="text-sm text-green-600 mt-1">Online</p>
+                </div>
+            </div>
+
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-900 mb-2">Informações de Contato</h4>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-3 text-sm">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                                <span class="text-gray-600">ana.silva@labstart.com</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                </svg>
+                                <span class="text-gray-600">(11) 98765-4321</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-900 mb-2">Arquivos Compartilhados</h4>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+                                <div class="w-8 h-8 bg-indigo-100 rounded flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 truncate">dashboard-v2.fig</p>
+                                    <p class="text-xs text-gray-500">2.4 MB • Hoje</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+                                <div class="w-8 h-8 bg-blue-100 rounded flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 truncate">screenshot.png</p>
+                                    <p class="text-xs text-gray-500">1.2 MB • Ontem</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="text-sm text-indigo-600 hover:text-indigo-700 mt-2">
+                            Ver todos os arquivos →
+                        </button>
+                    </div>
+
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-900 mb-2">Grupos em Comum</h4>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-sm text-gray-700">Equipe Frontend</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-sm text-gray-700">Projeto LabStart</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulação de envio de mensagem
+        const messageInput = document.querySelector('input[type="text"]');
+        const sendButton = document.querySelector('.bg-indigo-600');
+        const messagesContainer = document.querySelector('.messages-container');
+
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message) {
+                // Remover indicador de digitação se existir
+                const typingIndicator = document.querySelector('.typing-indicator')?.parentElement?.parentElement;
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+
+                // Criar nova mensagem
+                const newMessage = document.createElement('div');
+                newMessage.className = 'flex gap-3 mb-4 justify-end';
+                newMessage.innerHTML = `
+                    <div class="flex flex-col max-w-md">
+                        <div class="bg-indigo-600 text-white rounded-2xl rounded-tr-none px-4 py-3">
+                            <p>${message}</p>
+                        </div>
+                        <span class="text-xs text-gray-500 mt-1 text-right flex items-center justify-end gap-1">
+                            ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </span>
+                    </div>
+                `;
+
+                messagesContainer.appendChild(newMessage);
+                messageInput.value = '';
+                
+                // Scroll para o final
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+                // Simular resposta após 2 segundos
+                setTimeout(() => {
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        sendReply();
+                    }, 2000);
+                }, 1000);
+
+                // Mudar check para duplo check azul após 1 segundo
+                setTimeout(() => {
+                    const checks = newMessage.querySelectorAll('svg');
+                    checks.forEach(check => {
+                        check.classList.remove('text-gray-400');
+                        check.classList.add('text-blue-500');
+                    });
+                    
+                    // Adicionar segundo check
+                    const secondCheck = checks[0].cloneNode(true);
+                    secondCheck.classList.add('-ml-2');
+                    checks[0].parentElement.appendChild(secondCheck);
+                }, 1000);
+            }
+        }
+
+        function showTypingIndicator() {
+            const typingMessage = document.createElement('div');
+            typingMessage.className = 'flex gap-3 mb-4';
+            typingMessage.innerHTML = `
+                <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
+                    AS
+                </div>
+                <div class="bg-white rounded-2xl rounded-tl-none px-4 py-3 shadow-sm">
+                    <div class="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            `;
+            messagesContainer.appendChild(typingMessage);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function sendReply() {
+            // Remover indicador de digitação
+            const typingIndicator = document.querySelector('.typing-indicator')?.parentElement?.parentElement;
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+
+            // Respostas automáticas variadas
+            const replies = [
+                "Que bom que gostou! 😊",
+                "Vou fazer os ajustes finais então",
+                "Perfeito! Te aviso quando terminar",
+                "Show! Qualquer dúvida me avisa",
+                "Beleza! Vamos fazer isso funcionar 🚀"
+            ];
+
+            const randomReply = replies[Math.floor(Math.random() * replies.length)];
+
+            const replyMessage = document.createElement('div');
+            replyMessage.className = 'flex gap-3 mb-4';
+            replyMessage.innerHTML = `
+                <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
+                    AS
+                </div>
+                <div class="flex flex-col max-w-md">
+                    <div class="bg-white rounded-2xl rounded-tl-none px-4 py-3 shadow-sm">
+                        <p class="text-gray-800">${randomReply}</p>
+                    </div>
+                    <span class="text-xs text-gray-500 mt-1">${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span>
+                </div>
+            `;
+
+            messagesContainer.appendChild(replyMessage);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // Atualizar preview na lista de chats
+            updateChatPreview(randomReply);
+        }
+
+        function updateChatPreview(message) {
+            const selectedChat = document.querySelector('.bg-indigo-50');
+            if (selectedChat) {
+                const preview = selectedChat.querySelector('.text-gray-600');
+                preview.textContent = message;
+                
+                const time = selectedChat.querySelector('.text-xs.text-gray-500');
+                time.textContent = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                
+                // Remover badge de notificação se existir
+                const badge = selectedChat.querySelector('.bg-indigo-600.rounded-full');
+                if (badge) {
+                    badge.remove();
+                }
+            }
+        }
+
+        // Event listeners
+        sendButton.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Trocar de conversa
+        document.querySelectorAll('.chat-list > div').forEach(chat => {
+            chat.addEventListener('click', function() {
+                // Remover seleção anterior
+                document.querySelector('.bg-indigo-50')?.classList.remove('bg-indigo-50', 'border-l-3', 'border-indigo-600');
+                
+                // Adicionar seleção ao chat clicado
+                this.classList.add('bg-indigo-50', 'border-l-3', 'border-indigo-600');
+                
+                // Limpar mensagens (simulação)
+                const messagesArea = document.querySelector('.messages-container');
+                messagesArea.innerHTML = `
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="bg-white px-4 py-1 rounded-full text-sm text-gray-500 shadow-sm">
+                            Hoje
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center py-8">
+                        <p class="text-gray-500">Início da conversa</p>
+                    </div>
+                `;
+            });
+        });
+    </script>
+</body>
+</html>
