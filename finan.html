@@ -390,205 +390,205 @@
 
     <script>
         // Gráfico de Receitas vs Despesas
-        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-        new Chart(revenueCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
-                datasets: [
-                    {
-                        label: 'Receitas',
-                        data: [95000, 102000, 98000, 115000, 103580, 127850],
-                        backgroundColor: 'rgba(16, 185, 129, 0.8)',
-                        borderRadius: 8
-                    },
-                    {
-                        label: 'Despesas',
-                        data: [55000, 58000, 52000, 62000, 63235, 68420],
-                        backgroundColor: 'rgba(239, 68, 68, 0.8)',
-                        borderRadius: 8
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            usePointStyle: true,
-                            font: {
-                                size: 12
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return 'R$ ' + value.toLocaleString('pt-BR');
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        // const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        // new Chart(revenueCtx, {
+        //     type: 'bar',
+        //     data: {
+        //         labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+        //         datasets: [
+        //             {
+        //                 label: 'Receitas',
+        //                 data: [95000, 102000, 98000, 115000, 103580, 127850],
+        //                 backgroundColor: 'rgba(16, 185, 129, 0.8)',
+        //                 borderRadius: 8
+        //             },
+        //             {
+        //                 label: 'Despesas',
+        //                 data: [55000, 58000, 52000, 62000, 63235, 68420],
+        //                 backgroundColor: 'rgba(239, 68, 68, 0.8)',
+        //                 borderRadius: 8
+        //             }
+        //         ]
+        //     },
+        //     options: {
+        //         responsive: true,
+        //         maintainAspectRatio: false,
+        //         plugins: {
+        //             legend: {
+        //                 position: 'bottom',
+        //                 labels: {
+        //                     padding: 20,
+        //                     usePointStyle: true,
+        //                     font: {
+        //                         size: 12
+        //                     }
+        //                 }
+        //             }
+        //         },
+        //         scales: {
+        //             y: {
+        //                 beginAtZero: true,
+        //                 ticks: {
+        //                     callback: function(value) {
+        //                         return 'R$ ' + value.toLocaleString('pt-BR');
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // });
 
-        // Gráfico de Fluxo de Caixa
-        const cashFlowCtx = document.getElementById('cashFlowChart').getContext('2d');
-        new Chart(cashFlowCtx, {
-            type: 'line',
-            data: {
-                labels: ['01', '05', '10', '15', '20', '25', '30'],
-                datasets: [{
-                    label: 'Saldo',
-                    data: [180000, 195000, 178000, 205000, 220000, 235000, 245780],
-                    borderColor: 'rgb(99, 102, 241)',
-                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                    tension: 0.4,
-                    fill: true,
-                    pointRadius: 4,
-                    pointBackgroundColor: 'rgb(99, 102, 241)',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        ticks: {
-                            callback: function(value) {
-                                return 'R$ ' + (value/1000).toFixed(0) + 'k';
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        // // Gráfico de Fluxo de Caixa
+        // const cashFlowCtx = document.getElementById('cashFlowChart').getContext('2d');
+        // new Chart(cashFlowCtx, {
+        //     type: 'line',
+        //     data: {
+        //         labels: ['01', '05', '10', '15', '20', '25', '30'],
+        //         datasets: [{
+        //             label: 'Saldo',
+        //             data: [180000, 195000, 178000, 205000, 220000, 235000, 245780],
+        //             borderColor: 'rgb(99, 102, 241)',
+        //             backgroundColor: 'rgba(99, 102, 241, 0.1)',
+        //             tension: 0.4,
+        //             fill: true,
+        //             pointRadius: 4,
+        //             pointBackgroundColor: 'rgb(99, 102, 241)',
+        //             pointBorderColor: '#fff',
+        //             pointBorderWidth: 2
+        //         }]
+        //     },
+        //     options: {
+        //         responsive: true,
+        //         maintainAspectRatio: false,
+        //         plugins: {
+        //             legend: {
+        //                 display: false
+        //             }
+        //         },
+        //         scales: {
+        //             y: {
+        //                 beginAtZero: false,
+        //                 ticks: {
+        //                     callback: function(value) {
+        //                         return 'R$ ' + (value/1000).toFixed(0) + 'k';
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // });
 
         // Gráfico de Pizza - Despesas por Categoria
-        const expensesPieCtx = document.getElementById('expensesPieChart').getContext('2d');
-        new Chart(expensesPieCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Salários', 'Aluguel', 'Marketing', 'Infraestrutura', 'Outros'],
-                datasets: [{
-                    data: [35000, 3500, 12000, 8500, 9420],
-                    backgroundColor: [
-                        'rgba(99, 102, 241, 0.8)',
-                        'rgba(239, 68, 68, 0.8)',
-                        'rgba(16, 185, 129, 0.8)',
-                        'rgba(251, 191, 36, 0.8)',
-                        'rgba(156, 163, 175, 0.8)'
-                    ],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                cutout: '70%',
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 15,
-                            usePointStyle: true,
-                            font: {
-                                size: 11
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        // const expensesPieCtx = document.getElementById('expensesPieChart').getContext('2d');
+        // new Chart(expensesPieCtx, {
+        //     type: 'doughnut',
+        //     data: {
+        //         labels: ['Salários', 'Aluguel', 'Marketing', 'Infraestrutura', 'Outros'],
+        //         datasets: [{
+        //             data: [35000, 3500, 12000, 8500, 9420],
+        //             backgroundColor: [
+        //                 'rgba(99, 102, 241, 0.8)',
+        //                 'rgba(239, 68, 68, 0.8)',
+        //                 'rgba(16, 185, 129, 0.8)',
+        //                 'rgba(251, 191, 36, 0.8)',
+        //                 'rgba(156, 163, 175, 0.8)'
+        //             ],
+        //             borderWidth: 0
+        //         }]
+        //     },
+        //     options: {
+        //         responsive: true,
+        //         maintainAspectRatio: false,
+        //         cutout: '70%',
+        //         plugins: {
+        //             legend: {
+        //                 position: 'bottom',
+        //                 labels: {
+        //                     padding: 15,
+        //                     usePointStyle: true,
+        //                     font: {
+        //                         size: 11
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // });
 
-        // Adicionar total no centro do gráfico de pizza
-        const centerText = {
-            id: 'centerText',
-            afterDatasetsDraw(chart) {
-                const { ctx, chartArea: { width, height } } = chart;
-                ctx.save();
+        // // Adicionar total no centro do gráfico de pizza
+        // const centerText = {
+        //     id: 'centerText',
+        //     afterDatasetsDraw(chart) {
+        //         const { ctx, chartArea: { width, height } } = chart;
+        //         ctx.save();
                 
-                const text = 'R$ 68.420';
-                const subtext = 'Total';
+        //         const text = 'R$ 68.420';
+        //         const subtext = 'Total';
                 
-                ctx.font = 'bold 20px sans-serif';
-                ctx.fillStyle = '#1f2937';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(text, width / 2, height / 2 - 10);
+        //         ctx.font = 'bold 20px sans-serif';
+        //         ctx.fillStyle = '#1f2937';
+        //         ctx.textAlign = 'center';
+        //         ctx.textBaseline = 'middle';
+        //         ctx.fillText(text, width / 2, height / 2 - 10);
                 
-                ctx.font = '12px sans-serif';
-                ctx.fillStyle = '#6b7280';
-                ctx.fillText(subtext, width / 2, height / 2 + 15);
+        //         ctx.font = '12px sans-serif';
+        //         ctx.fillStyle = '#6b7280';
+        //         ctx.fillText(subtext, width / 2, height / 2 + 15);
                 
-                ctx.restore();
-            }
-        };
+        //         ctx.restore();
+        //     }
+        // };
         
-        Chart.register(centerText);
+        // Chart.register(centerText);
 
-        // Animação de números
-        function animateValue(element, start, end, duration) {
-            let startTimestamp = null;
-            const step = (timestamp) => {
-                if (!startTimestamp) startTimestamp = timestamp;
-                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                const value = Math.floor(progress * (end - start) + start);
-                element.textContent = `R$ ${value.toLocaleString('pt-BR')}`;
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                }
-            };
-            window.requestAnimationFrame(step);
-        }
+        // // Animação de números
+        // function animateValue(element, start, end, duration) {
+        //     let startTimestamp = null;
+        //     const step = (timestamp) => {
+        //         if (!startTimestamp) startTimestamp = timestamp;
+        //         const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        //         const value = Math.floor(progress * (end - start) + start);
+        //         element.textContent = `R$ ${value.toLocaleString('pt-BR')}`;
+        //         if (progress < 1) {
+        //             window.requestAnimationFrame(step);
+        //         }
+        //     };
+        //     window.requestAnimationFrame(step);
+        // }
 
-        // Animar valores ao carregar a página
-        document.addEventListener('DOMContentLoaded', () => {
-            const valueElements = document.querySelectorAll('.text-2xl.font-bold');
-            valueElements.forEach((el, index) => {
-                const finalValue = parseInt(el.textContent.replace(/\D/g, ''));
-                setTimeout(() => {
-                    animateValue(el, 0, finalValue, 1000);
-                }, index * 100);
-            });
-        });
+        // // Animar valores ao carregar a página
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     const valueElements = document.querySelectorAll('.text-2xl.font-bold');
+        //     valueElements.forEach((el, index) => {
+        //         const finalValue = parseInt(el.textContent.replace(/\D/g, ''));
+        //         setTimeout(() => {
+        //             animateValue(el, 0, finalValue, 1000);
+        //         }, index * 100);
+        //     });
+        // });
 
-        // Adicionar interatividade aos cards
-        document.querySelectorAll('.stat-card').forEach(card => {
-            card.addEventListener('click', function() {
-                this.style.transform = 'scale(0.98)';
-                setTimeout(() => {
-                    this.style.transform = '';
-                }, 100);
-            });
-        });
+        // // Adicionar interatividade aos cards
+        // document.querySelectorAll('.stat-card').forEach(card => {
+        //     card.addEventListener('click', function() {
+        //         this.style.transform = 'scale(0.98)';
+        //         setTimeout(() => {
+        //             this.style.transform = '';
+        //         }, 100);
+        //     });
+        // });
 
         // Simular atualização em tempo real
-        setInterval(() => {
-            const updateIndicator = document.querySelector('header p.text-sm');
-            const now = new Date();
-            updateIndicator.textContent = `Última atualização: Hoje, ${now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+        // setInterval(() => {
+        //     const updateIndicator = document.querySelector('header p.text-sm');
+        //     const now = new Date();
+        //     updateIndicator.textContent = `Última atualização: Hoje, ${now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
             
-            // Adicionar pequena animação
-            updateIndicator.style.opacity = '0.5';
-            setTimeout(() => {
-                updateIndicator.style.opacity = '1';
-            }, 300);
-        }, 60000); // Atualizar a cada minuto
+        //     // Adicionar pequena animação
+        //     updateIndicator.style.opacity = '0.5';
+        //     setTimeout(() => {
+        //         updateIndicator.style.opacity = '1';
+        //     }, 300);
+        // }, 60000); // Atualizar a cada minuto
     </script>
 </body>
 </html>
