@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Financeira - Projeto L</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-indigo-600">Projeto L</h1>
+                    <span class="ml-3 text-sm text-gray-500">Dashboard Financeira</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <div class="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                        JD
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Saldo Atual -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600">Saldo Atual</p>
+                        <p class="text-2xl font-bold text-gray-900">R$ 45.750,00</p>
+                        <p class="text-sm text-green-600 mt-1">
+                            <i class="fas fa-arrow-up"></i> 12% este mês
+                        </p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-wallet text-blue-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Receitas -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600">Receitas (Mês)</p>
+                        <p class="text-2xl font-bold text-gray-900">R$ 128.400,00</p>
+                        <p class="text-sm text-green-600 mt-1">
+                            <i class="fas fa-arrow-up"></i> 8% vs mês anterior
+                        </p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-chart-line text-green-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Despesas -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600">Despesas (Mês)</p>
+                        <p class="text-2xl font-bold text-gray-900">R$ 82.650,00</p>
+                        <p class="text-sm text-red-600 mt-1">
+                            <i class="fas fa-arrow-up"></i> 3% vs mês anterior
+                        </p>
+                    </div>
+                    <div class="bg-red-100 p-3 rounded-full">
+                        <i class="fas fa-chart-bar text-red-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lucro -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600">Lucro Líquido</p>
+                        <p class="text-2xl font-bold text-gray-900">R$ 45.750,00</p>
+                        <p class="text-sm text-green-600 mt-1">
+                            <i class="fas fa-arrow-up"></i> 15% margem
+                        </p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-dollar-sign text-purple-600"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts and Tables -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Fluxo de Caixa -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-900">Fluxo de Caixa</h2>
+                    <button class="text-sm text-indigo-600 hover:text-indigo-800">Ver detalhes</button>
+                </div>
+                <div class="h-64 bg-gray-100 rounded flex items-center justify-center">
+                    <p class="text-gray-500">Gráfico de Fluxo de Caixa</p>
+                </div>
+            </div>
+
+            <!-- Top Clientes -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-900">Top Clientes por Faturamento</h2>
+                    <button class="text-sm text-indigo-600 hover:text-indigo-800">Ver todos</button>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded">
+                        <div>
+                            <p class="font-medium text-gray-900">Tech Solutions Ltd</p>
+                            <p class="text-sm text-gray-500">12 projetos ativos</p>
+                        </div>
+                        <p class="font-semibold text-gray-900">R$ 45.000</p>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded">
+                        <div>
+                            <p class="font-medium text-gray-900">Digital Agency Co</p>
+                            <p class="text-sm text-gray-500">8 projetos ativos</p>
+                        </div>
+                        <p class="font-semibold text-gray-900">R$ 32.400</p>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded">
+                        <div>
+                            <p class="font-medium text-gray-900">StartUp Innovations</p>
+                            <p class="text-sm text-gray-500">5 projetos ativos</p>
+                        </div>
+                        <p class="font-semibold text-gray-900">R$ 28.000</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contas a Pagar/Receber -->
+        <div class="mt-6 bg-white rounded-lg shadow">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-900">Próximos Vencimentos</h2>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 text-sm bg-indigo-100 text-indigo-700 rounded-md">A Receber</button>
+                        <button class="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded-md">A Pagar</button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr class="border-b border-gray-200">
+                                <th class="text-left py-3 px-4 text-sm font-medium text-gray-700">Cliente</th>
+                                <th class="text-left py-3 px-4 text-sm font-medium text-gray-700">Descrição</th>
+                                <th class="text-left py-3 px-4 text-sm font-medium text-gray-700">Vencimento</th>
+                                <th class="text-right py-3 px-4 text-sm font-medium text-gray-700">Valor</th>
+                                <th class="text-center py-3 px-4 text-sm font-medium text-gray-700">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 px-4 text-sm text-gray-900">Tech Solutions Ltd</td>
+                                <td class="py-3 px-4 text-sm text-gray-600">Desenvolvimento App Mobile</td>
+                                <td class="py-3 px-4 text-sm text-gray-600">15/03/2024</td>
+                                <td class="py-3 px-4 text-sm text-gray-900 text-right">R$ 15.000,00</td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full">Pendente</span>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 px-4 text-sm text-gray-900">Digital Agency Co</td>
+                                <td class="py-3 px-4 text-sm text-gray-600">Consultoria UX/UI</td>
+                                <td class="py-3 px-4 text-sm text-gray-600">18/03/2024</td>
+                                <td class="py-3 px-4 text-sm text-gray-900 text-right">R$ 8.500,00</td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">Confirmado</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Assistant Button -->
+        <button class="fixed bottom-6 right-6 bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition-colors">
+            <i class="fas fa-robot text-xl"></i>
+        </button>
+    </main>
+</body>
+</html>
