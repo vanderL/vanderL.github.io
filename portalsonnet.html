@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal do Cliente - Tech Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#6366f1',
+                        'primary-dark': '#4f46e5',
+                        'secondary': '#f59e0b',
+                        'success': '#10b981',
+                        'danger': '#ef4444',
+                        'warning': '#f59e0b',
+                        'info': '#3b82f6',
+                        'dark': '#1f2937',
+                        'light': '#f9fafb'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .timeline-line {
+            position: relative;
+        }
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e5e7eb;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 50px;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: 12px;
+            top: 8px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header Portal Cliente -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-lg">L</span>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-semibold text-gray-900">Portal do Cliente</h1>
+                            <p class="text-sm text-gray-600">Tech Solutions Ltda</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <!-- Chatbot IA -->
+                    <button onclick="toggleChat()" class="flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                        Chat Suporte
+                    </button>
+                    
+                    <!-- User Info -->
+                    <div class="flex items-center space-x-3">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-900">Carlos Silva</p>
+                            <p class="text-xs text-gray-500">Gerente de TI</p>
+                        </div>
+                        <img class="w-10 h-10 rounded-full border-2 border-gray-200" src="https://via.placeholder.com/40" alt="Carlos">
+                        <button class="text-gray-400 hover:text-gray-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6">
+            <nav class="flex space-x-8">
+                <button onclick="showTab('overview')" id="tab-overview" class="py-4 px-1 border-b-2 border-primary text-primary font-medium">
+                    Visão Geral
+                </button>
+                <button onclick="showTab('projects')" id="tab-projects" class="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700">
+                    Meus Projetos
+                </button>
+                <button onclick="showTab('files')" id="tab-files" class="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700">
+                    Arquivos
+                </button>
+                <button onclick="showTab('invoices')" id="tab-invoices" class="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700">
+                    Faturas
+                </button>
+                <button onclick="showTab('support')" id="tab-support" class="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700">
+                    Suporte
+                </button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Tab: Visão Geral -->
+        <div id="content-overview" class="tab-content">
+            <!-- Welcome Section -->
+            <div class="mb-8 p-6 gradient-bg rounded-xl text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-2">Bem-vindo, Carlos! 👋</h2>
+                        <p class="text-white/90 mb-4">Aqui está o resumo dos seus projetos conosco</p>
+                        <div class="grid grid-cols-3 gap-6">
+                            <div>
+                                <p class="text-white/80 text-sm">Projetos Ativos</p>
+                                <p class="text-2xl font-bold">2</p>
+                            </div>
+                            <div>
+                                <p class="text-white/80 text-sm">Horas Trabalhadas</p>
+                                <p class="text-2xl font-bold">148h</p>
+                            </div>
+                            <div>
+                                <p class="text-white/80 text-sm">Próxima Entrega</p>
+                                <p class="text-2xl font-bold">5 dias</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-white/80 text-sm">Cliente desde</p>
+                        <p class="text-xl font-bold">Janeiro 2023</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Status Cards -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Sistema ERP - Módulo Financeiro</h3>
+                        <span class="px-3 py-1 bg-warning/10 text-warning text-sm font-medium rounded-full">
+                            Em Desenvolvimento
+                        </span>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="flex justify-between text-sm text-gray-600 mb-2">
+                            <span>Progresso Geral</span>
+                            <span>65%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-warning h-2 rounded-full progress-bar" style="width: 65%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Prazo:</span>
+                            <span class="font-medium">30/08/2025</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Responsável:</span>
+                            <span class="font-medium">João Santos</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Última atualização:</span>
+                            <span class="font-medium">Hoje, 14:30</span>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full py-2 px-4 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                        Ver Detalhes
+                    </button>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">App Mobile - iOS/Android</h3>
+                        <span class="px-3 py-1 bg-info/10 text-info text-sm font-medium rounded-full">
+                            Planejamento
+                        </span>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="flex justify-between text-sm text-gray-600 mb-2">
+                            <span>Progresso Geral</span>
+                            <span>15%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-info h-2 rounded-full progress-bar" style="width: 15%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Prazo:</span>
+                            <span class="font-medium">15/10/2025</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Responsável:</span>
+                            <span class="font-medium">Maria Silva</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Última atualização:</span>
+                            <span class="font-medium">Ontem, 16:45</span>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full py-2 px-4 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                        Ver Detalhes
+                    </button>
+                </div>
+            </div>
+
+            <!-- Timeline Recente -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900 mb-6">Atualizações Recentes</h3>
+                
+                <div class="timeline-line">
+                    <div class="timeline-item mb-6">
+                        <div class="timeline-dot bg-success"></div>
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-medium text-gray-900">Módulo de Relatórios Finalizado</h4>
+                                <span class="text-sm text-gray-500">Hoje, 14:30</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-2">
+                                O módulo de relatórios financeiros foi concluído e está pronto para testes. 
+                                Você pode acessar via menu lateral no sistema.
+                            </p>
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2 py-1 bg-success/10 text-success text-xs rounded-full">Concluído</span>
+                                <span class="text-xs text-gray-500">por João Santos</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item mb-6">
+                        <div class="timeline-dot bg-info"></div>
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-medium text-gray-900">Reunião de Alinhamento Agendada</h4>
+                                <span class="text-sm text-gray-500">Ontem, 16:45</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-2">
+                                Reunião marcada para 12/07 às 15:00 para apresentação do protótipo 
+                                do app mobile e validação dos requisitos.
+                            </p>
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2 py-1 bg-info/10 text-info text-xs rounded-full">Agendado</span>
+                                <span class="text-xs text-gray-500">por Maria Silva</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item mb-6">
+                        <div class="timeline-dot bg-warning"></div>
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-medium text-gray-900">Aprovação Necessária - Layouts</h4>
+                                <span class="text-sm text-gray-500">2 dias atrás</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-2">
+                                Os layouts das telas principais estão prontos para sua aprovação. 
+                                Clique no botão abaixo para revisar.
+                            </p>
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2 py-1 bg-warning/10 text-warning text-xs rounded-full">Aguardando</span>
+                                <button class="text-xs text-primary hover:text-primary-dark">Revisar agora</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Meus Projetos -->
+        <div id="content-projects" class="tab-content hidden">
+            <div class="mb-6">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-2">Meus Projetos</h2>
+                <p class="text-gray-600">Acompanhe o progresso de todos os seus projetos</p>
+            </div>
+
+            <!-- Projeto 1 - Detalhado -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-6">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">Sistema ERP - Módulo Financeiro</h3>
+                            <p class="text-gray-600">Desenvolvimento de sistema completo de gestão financeira</p>
+                        </div>
+                        <span class="px-3 py-1 bg-warning/10 text-warning font-medium rounded-full">
+                            Em Desenvolvimento
+                        </span>
+                    </div>
+                </div>
+
+                <div class="p-6">
+                    <!-- Progress Overview -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-gray-900">65%</div>
+                            <div class="text-sm text-gray-600">Progresso</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-gray-900">23</div>
+                            <div class="text-sm text-gray-600">Dias restantes</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-gray-900">148h</div>
+                            <div class="text-sm text-gray-600">Horas trabalhadas</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-success">3</div>
+                            <div class="text-sm text-gray-600">Módulos concluídos</div>
+                        </div>
+                    </div>
+
+                    <!-- Gantt Simplificado -->
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-900 mb-4">Cronograma do Projeto</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <div class="w-48 text-sm text-gray-600">1. Análise e Planejamento</div>
+                                <div class="flex-1 ml-4">
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-success h-2 rounded-full" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="w-20 text-sm text-gray-500 text-right">Concluído</div>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <div class="w-48 text-sm text-gray-600">2. Design e Prototipação</div>
+                                <div class="flex-1 ml-4">
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-success h-2 rounded-full" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="w-20 text-sm text-gray-500 text-right">Concluído</div>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <div class="w-48 text-sm text-gray-600">3. Desenvolvimento Backend</div>
+                                <div class="flex-1 ml-4">
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-warning h-2 rounded-full" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                                <div class="w-20 text-sm text-gray-500 text-right">75%</div>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <div class="w-48 text-sm text-gray-600">4. Desenvolvimento Frontend</div>
+                                <div class="flex-1 ml-4">
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-info h-2 rounded-full" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                                <div class="w-20 text-sm text-gray-500 text-right">45%</div>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <div class="w-48 text-sm text-gray-600">5. Testes e Implementação</div>
+                                <div class="flex-1 ml-4">
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-gray-300 h-2 rounded-full" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <div class="w-20 text-sm text-gray-500 text-right">Aguardando</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ações -->
+                    <div class="flex space-x-3">
+                        <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                            Ver Demonstração
+                        </button>
+                        <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                            Download Relatório
+                        </button>
+                        <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                            Agendar Reunião
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projeto 2 - Resumido -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900">App Mobile - iOS/Android</h3>
+                            <p class="text-gray-600">Aplicativo mobile para gestão de pedidos</p>
+                        </div>
+                        <span class="px-3 py-1 bg-info/10 text-info font-medium rounded-full">
+                            Planejamento
+                        </span>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <div class="text-xl font-bold text-gray-900">15%</div>
+                            <div class="text-sm text-gray-600">Progresso</div>
+                        </div>
+                        <div>
+                            <div class="text-xl font-bold text-gray-900">68</div>
+                            <div class="text-sm text-gray-600">Dias restantes</div>
+                        </div>
+                        <div>
+                            <div class="text-xl font-bold text-gray-900">24h</div>
+                            <div class="text-sm text-gray-600">Horas trabalhadas</div>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full py-2 px-4 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                        Ver Detalhes do Projeto
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Arquivos -->
+        <div id="content-files" class="tab-content hidden">
+            <div class="mb-6">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-2">Meus Arquivos</h2>
+                <p class="text-gray-600">Documentos, entregas e recursos dos seus projetos</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">Documentos do Projeto</h3>
+                        <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                            Upload Arquivo
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-danger/10 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-danger" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">Especificação Técnica - ERP.pdf</p>
+                                    <p class="text-sm text-gray-500">2.4 MB • Atualizado há 3 horas</p>
+                                </div>
+                            </div>
+                            <button class="text-primary hover:text-primary-dark">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-info/10 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-info" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">Protótipos de Tela - Figma.zip</p>
+                                    <p class="text-sm text-gray-500">15.2 MB • Atualizado ontem</p>
+                                </div>
+                            </div>
+                            <button class="text-primary hover:text-primary-dark">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">Manual de Usuário - v1.2.docx</p>
+                                    <p class="text-sm text-gray-500">856 KB • Atualizado há 2 dias</p>
+                                </div>
+                            </div>
+                            <button class="text-primary hover:text-primary-dark">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Faturas -->
+        <div id="content-invoices" class="tab-content hidden">
+            <div class="mb-6">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-2">Minhas Faturas</h2>
+                <p class="text-gray-600">Histórico de pagamentos e faturas em aberto</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">Faturas e Pagamentos</h3>
+                        <div class="flex space-x-2">
+                            <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                                <option>Todos os status</option>
+                                <option>Pagas</option>
+                                <option>Pendentes</option>
+                                <option>Atrasadas</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">Fatura #2025-001</p>
+                                    <p class="text-sm text-gray-500">ERP - Primeira Parcela • Vencimento: 15/06/2025</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-lg font-semibold text-gray-900">R$ 25.000</p>
+                                <span class="inline-flex px-3 py-1 text-sm font-medium bg-success/10 text-success rounded-full">
+                                    Paga
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-warning/10 rounded-lg flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">Fatura #2025-002</p>
+                                    <p class="text-sm text-gray-500">ERP - Segunda Parcela • Vencimento: 15/07/2025</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-lg font-semibold text-gray-900">R$ 25.000</p>
+                                <span class="inline-flex px-3 py-1 text-sm font-medium bg-warning/10 text-warning rounded-full">
+                                    Vence em 7 dias
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-info/10 rounded-lg flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-info" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">Fatura #2025-003</p>
+                                    <p class="text-sm text-gray-500">App Mobile - Primeira Parcela • Vencimento: 15/08/2025</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-lg font-semibold text-gray-900">R$ 15.000</p>
+                                <span class="inline-flex px-3 py-1 text-sm font-medium bg-info/10 text-info rounded-full">
+                                    Agendada
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resumo Financeiro -->
+                    <div class="mt-8 p-4 bg-gray-50 rounded-lg">
+                        <h4 class="font-medium text-gray-900 mb-4">Resumo Financeiro</h4>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="text-center">
+                                <p class="text-2xl font-bold text-success">R$ 25.000</p>
+                                <p class="text-sm text-gray-600">Total Pago</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-2xl font-bold text-warning">R$ 25.000</p>
+                                <p class="text-sm text-gray-600">Pendente</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-2xl font-bold text-gray-900">R$ 65.000</p>
+                                <p class="text-sm text-gray-600">Total Contratado</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Suporte -->
+        <div id="content-support" class="tab-content hidden">
+            <div class="mb-6">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-2">Central de Suporte</h2>
+                <p class="text-gray-600">Tire suas dúvidas e solicite ajuda da nossa equipe</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- FAQ -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                    <div class="p-6 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900">Perguntas Frequentes</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div class="border border-gray-200 rounded-lg">
+                                <button class="w-full text-left p-4 hover:bg-gray-50" onclick="toggleFaq('faq1')">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-medium text-gray-900">Como acompanhar o progresso do meu projeto?</span>
+                                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+                                </button>
+                                <div id="faq1" class="hidden p-4 pt-0 text-sm text-gray-600">
+                                    Você pode acompanhar o progresso na aba "Meus Projetos" onde temos um cronograma detalhado com todas as etapas e percentual de conclusão em tempo real.
+                                </div>
+                            </div>
+
+                            <div class="border border-gray-200 rounded-lg">
+                                <button class="w-full text-left p-4 hover:bg-gray-50" onclick="toggleFaq('faq2')">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-medium text-gray-900">Como baixar os arquivos do projeto?</span>
+                                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+                                </button>
+                                <div id="faq2" class="hidden p-4 pt-0 text-sm text-gray-600">
+                                    Na aba "Arquivos" você encontra todos os documentos, códigos e entregas. Clique no ícone de download ao lado de cada arquivo.
+                                </div>
+                            </div>
+
+                            <div class="border border-gray-200 rounded-lg">
+                                <button class="w-full text-left p-4 hover:bg-gray-50" onclick="toggleFaq('faq3')">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-medium text-gray-900">Como solicitar alterações no projeto?</span>
+                                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+                                </button>
+                                <div id="faq3" class="hidden p-4 pt-0 text-sm text-gray-600">
+                                    Use o chat de suporte ou envie um ticket descrevendo as alterações desejadas. Nossa equipe analisará e retornará com prazo e orçamento se necessário.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nova Solicitação -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                    <div class="p-6 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900">Abrir Chamado</h3>
+                    </div>
+                    <div class="p-6">
+                        <form class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Solicitação</label>
+                                <select class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                    <option>Dúvida Técnica</option>
+                                    <option>Solicitação de Alteração</option>
+                                    <option>Reportar Bug</option>
+                                    <option>Feedback</option>
+                                    <option>Outro</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Projeto Relacionado</label>
+                                <select class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                    <option>Sistema ERP - Módulo Financeiro</option>
+                                    <option>App Mobile - iOS/Android</option>
+                                    <option>Geral</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Prioridade</label>
+                                <select class="w-full border border-gray-300 rounded-lg px-3 py-2">
+                                    <option>Baixa</option>
+                                    <option>Média</option>
+                                    <option>Alta</option>
+                                    <option>Urgente</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Descrição</label>
+                                <textarea rows="4" class="w-full border border-gray-300 rounded-lg px-3 py-2" placeholder="Descreva sua solicitação ou dúvida..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="w-full py-2 px-4 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                                Enviar Solicitação
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tickets Abertos -->
+            <div class="mt-6 bg-white rounded-xl shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">Meus Chamados</h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 bg-warning/10 rounded-lg flex items-center justify-center">
+                                    <span class="text-warning font-bold text-sm">#001</span>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">Dúvida sobre relatórios personalizados</p>
+                                    <p class="text-sm text-gray-500">Aberto há 2 dias • Sistema ERP</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="inline-flex px-3 py-1 text-sm font-medium bg-warning/10 text-warning rounded-full">
+                                    Em Andamento
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center">
+                                    <span class="text-success font-bold text-sm">#002</span>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">Solicitação de nova funcionalidade</p>
+                                    <p class="text-sm text-gray-500">Resolvido há 1 semana • App Mobile</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="inline-flex px-3 py-1 text-sm font-medium bg-success/10 text-success rounded-full">
+                                    Resolvido
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Chat Widget -->
+    <div id="chat-widget" class="fixed bottom-4 right-4 w-80 bg-white rounded-lg shadow-lg border border-gray-200 hidden">
+        <div class="p-4 bg-primary text-white rounded-t-lg">
+            <div class="flex justify-between items-center">
+                <h4 class="font-medium">Assistente IA - Tech Solutions</h4>
+                <button onclick="toggleChat()" class="text-white hover:text-gray-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <div class="p-4 h-64 overflow-y-auto bg-gray-50">
+            <div class="space-y-3">
+                <div class="bg-white p-3 rounded-lg max-w-xs">
+                    <p class="text-sm text-gray-900">Olá Carlos! 👋 Como posso ajudá-lo hoje?</p>
+                </div>
+                <div class="bg-primary/10 p-3 rounded-lg max-w-xs ml-auto">
+                    <p class="text-sm text-gray-900">Qual o status do módulo de relatórios?</p>
+                </div>
+                <div class="bg-white p-3 rounded-lg max-w-xs">
+                    <p class="text-sm text-gray-900">O módulo de relatórios foi finalizado hoje! Você pode testá-lo no ambiente de homologação. Gostaria que eu agende uma demonstração?</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4 border-t border-gray-200">
+            <div class="flex space-x-2">
+                <input type="text" placeholder="Digite sua mensagem..." class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                <button class="px-3 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab Navigation
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            
+            // Show selected tab content
+            document.getElementById(`content-${tabName}`).classList.remove('hidden');
+            
+            // Update tab buttons
+            document.querySelectorAll('[id^="tab-"]').forEach(el => {
+                el.className = el.className.replace('border-primary text-primary', 'border-transparent text-gray-500 hover:text-gray-700');
+            });
+            
+            document.getElementById(`tab-${tabName}`).className = 'py-4 px-1 border-b-2 border-primary text-primary font-medium';
+        }
+
+        // Chat Toggle
+        function toggleChat() {
+            const chatWidget = document.getElementById('chat-widget');
+            chatWidget.classList.toggle('hidden');
+        }
+
+        // FAQ Toggle
+        function toggleFaq(faqId) {
+            const faqContent = document.getElementById(faqId);
+            faqContent.classList.toggle('hidden');
+        }
+
+        // Simular notificações do projeto
+        function showProjectNotification() {
+            const notifications = [
+                '🎉 Módulo de relatórios finalizado!',
+                '📅 Lembrete: Reunião amanhã às 15h',
+                '📁 Novos arquivos disponíveis para download',
+                '💰 Fatura #2025-002 vence em 7 dias'
+            ];
+            
+            const randomNotification = notifications[Math.floor(Math.random() * notifications.length)];
+            
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-4 right-4 bg-primary text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-transform transform translate-x-full max-w-sm';
+            toast.textContent = randomNotification;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.classList.remove('translate-x-full'), 100);
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 5000);
+        }
+
+        // Mostrar notificação após 4 segundos
+        setTimeout(showProjectNotification, 4000);
+
+        // Simular progresso em tempo real
+        function updateProgress() {
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars.forEach(bar => {
+                const currentWidth = parseInt(bar.style.width);
+                if (currentWidth < 100 && Math.random() > 0.95) { // 5% chance de atualizar
+                    bar.style.width = (currentWidth + 1) + '%';
+                }
+            });
+        }
+
+        // Atualizar progresso a cada 3 segundos
+        setInterval(updateProgress, 3000);
+    </script>
+</body>
+</html>

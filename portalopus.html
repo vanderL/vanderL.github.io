@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal do Cliente - Tech Solutions Ltd</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-indigo-600">Projeto L</h1>
+                    <span class="ml-3 text-sm text-gray-500">Portal do Cliente</span>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-900 font-medium border-b-2 border-indigo-600 pb-1">Dashboard</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors">Projetos</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors">Faturas</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors">Suporte</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors">Arquivos</a>
+                </nav>
+
+                <!-- User Menu -->
+                <div class="flex items-center space-x-4">
+                    <button class="relative text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-bell text-xl"></i>
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">2</span>
+                    </button>
+                    <div class="flex items-center space-x-3">
+                        <img src="https://ui-avatars.com/api/?name=Tech+Solutions&background=6366f1&color=fff" alt="Logo" class="w-10 h-10 rounded-full">
+                        <div class="hidden md:block">
+                            <p class="text-sm font-medium text-gray-900">Tech Solutions Ltd</p>
+                            <p class="text-xs text-gray-500">João Silva</p>
+                        </div>
+                        <button class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-chevron-down text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <div class="md:hidden bg-white border-b border-gray-200">
+        <nav class="flex overflow-x-auto px-4 py-2 space-x-6">
+            <a href="#" class="text-indigo-600 font-medium whitespace-nowrap pb-2 border-b-2 border-indigo-600">Dashboard</a>
+            <a href="#" class="text-gray-600 whitespace-nowrap pb-2">Projetos</a>
+            <a href="#" class="text-gray-600 whitespace-nowrap pb-2">Faturas</a>
+            <a href="#" class="text-gray-600 whitespace-nowrap pb-2">Suporte</a>
+            <a href="#" class="text-gray-600 whitespace-nowrap pb-2">Arquivos</a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Welcome Section -->
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow-sm p-8 mb-8 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-3xl font-bold mb-2">Olá, Tech Solutions! 👋</h2>
+                    <p class="text-indigo-100">Bem-vindo ao seu portal. Acompanhe seus projetos, faturas e muito mais.</p>
+                </div>
+                <div class="hidden lg:block">
+                    <div class="bg-white bg-opacity-20 rounded-lg p-6">
+                        <p class="text-sm text-indigo-100 mb-1">Saldo em aberto</p>
+                        <p class="text-2xl font-bold">R$ 23.500,00</p>
+                        <a href="#" class="text-sm text-white underline mt-2 inline-block hover:text-indigo-100">Ver faturas →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600">Projetos Ativos</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-1">4</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-project-diagram text-blue-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600">Tarefas Pendentes</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-1">12</p>
+                    </div>
+                    <div class="bg-orange-100 p-3 rounded-full">
+                        <i class="fas fa-tasks text-orange-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600">Faturas em Aberto</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-1">2</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-file-invoice-dollar text-yellow-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600">Tickets Suporte</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-1">1</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-headset text-green-600"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Active Projects -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="p-6 border-b border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-900">Seus Projetos</h3>
+                            <button class="text-sm text-indigo-600 hover:text-indigo-800">Ver todos</button>
+                        </div>
+                    </div>
+                    <div class="divide-y divide-gray-200">
+                        <!-- Project 1 -->
+                        <div class="p-6 hover:bg-gray-50 transition-colors">
+                            <div class="flex items-start justify-between mb-4">
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-1">Sistema de Gestão Integrado</h4>
+                                    <p class="text-sm text-gray-600">Desenvolvimento de ERP customizado para sua empresa</p>
+                                </div>
+                                <span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">Em progresso</span>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4 mb-4 text-sm">
+                                <div>
+                                    <p class="text-gray-500">Início</p>
+                                    <p class="font-medium text-gray-900">15/01/2024</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500">Previsão</p>
+                                    <p class="font-medium text-gray-900">15/04/2024</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500">Progresso</p>
+                                    <p class="font-medium text-gray-900">65%</p>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <div class="flex items-center justify-between text-sm mb-1">
+                                    <span class="text-gray-600">Progresso do Projeto</span>
+                                    <span class="font-medium text-gray-900">65%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-indigo-600 h-2 rounded-full" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4 text-sm">
+                                    <button class="text-indigo-600 hover:text-indigo-800">
+                                        <i class="fas fa-eye mr-1"></i>
+                                        Ver detalhes
+                                    </button>
+                                    <button class="text-gray-600 hover:text-gray-800">
+                                        <i class="fas fa-comments mr-1"></i>
+                                        3 mensagens
+                                    </button>
+                                </div>
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white text-xs font-medium border-2 border-white">PC</div>
+                                    <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs font-medium border-2 border-white">MA</div>
+                                    <div class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white text-xs font-medium border-2 border-white">+2</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project 2 -->
+                        <div class="p-6 hover:bg-gray-50 transition-colors">
+                            <div class="flex items-start justify-between mb-4">
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-1">App Mobile iOS/Android</h4>
+                                    <p class="text-sm text-gray-600">Aplicativo nativo para seus clientes</p>
+                                </div>
+                                <span class="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full">Em revisão</span>
+                            </div>
+                            <div class="grid grid-cols-3 gap-4 mb-4 text-sm">
+                                <div>
+                                    <p class="text-gray-500">Início</p>
+                                    <p class="font-medium text-gray-900">01/02/2024</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500">Previsão</p>
+                                    <p class="font-medium text-gray-900">30/03/2024</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-500">Progresso</p>
+                                    <p class="font-medium text-gray-900">85%</p>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <div class="flex items-center justify-between text-sm mb-1">
+                                    <span class="text-gray-600">Progresso do Projeto</span>
+                                    <span class="font-medium text-gray-900">85%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
+                                <p class="text-sm text-yellow-800">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>
+                                    Aguardando sua aprovação no protótipo
+                                </p>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4 text-sm">
+                                    <button class="text-indigo-600 hover:text-indigo-800">
+                                        <i class="fas fa-eye mr-1"></i>
+                                        Ver detalhes
+                                    </button>
+                                    <button class="bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700">
+                                        <i class="fas fa-check mr-1"></i>
+                                        Aprovar
+                                    </button>
+                                </div>
+                                <div class="flex -space-x-2">
+                                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-medium border-2 border-white">JS</div>
+                                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-medium border-2 border-white">RF</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="space-y-6">
+                <!-- Recent Activity -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Atividade Recente</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 p-2 rounded-full mr-3">
+                                <i class="fas fa-code text-blue-600 text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-900">Nova versão do app disponível</p>
+                                <p class="text-xs text-gray-500">Há 2 horas</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-green-100 p-2 rounded-full mr-3">
+                                <i class="fas fa-check text-green-600 text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-900">Módulo de pagamentos concluído</p>
+                                <p class="text-xs text-gray-500">Há 5 horas</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-purple-100 p-2 rounded-full mr-3">
+                                <i class="fas fa-comment text-purple-600 text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-900">Pedro comentou no projeto ERP</p>
+                                <p class="text-xs text-gray-500">Ontem às 18:30</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-yellow-100 p-2 rounded-full mr-3">
+                                <i class="fas fa-file-invoice text-yellow-600 text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-900">Nova fatura emitida #1245</p>
+                                <p class="text-xs text-gray-500">Ontem às 14:00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Ações Rápidas</h3>
+                    <div class="space-y-3">
+                        <button class="w-full text-left px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex items-center">
+                            <i class="fas fa-download text-gray-600 mr-3"></i>
+                            <span class="text-sm font-medium text-gray-900">Baixar Contrato</span>
+                        </button>
+                        <button class="w-full text-left px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex items-center">
+                            <i class="fas fa-calendar text-gray-600 mr-3"></i>
+                            <span class="text-sm font-medium text-gray-900">Agendar Reunião</span>
+                        </button>
+                        <button class="w-full text-left px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex items-center">
+                            <i class="fas fa-headset text-gray-600 mr-3"></i>
+                            <span class="text-sm font-medium text-gray-900">Abrir Ticket</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Support -->
+                <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg border border-indigo-200 p-6">
+                    <div class="text-center">
+                        <div class="bg-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+                            <i class="fas fa-headset text-indigo-600 text-2xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Precisa de ajuda?</h4>
+                        <p class="text-sm text-gray-600 mb-4">Nossa equipe está pronta para ajudar</p>
+                        <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors">
+                            Falar com Suporte
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Deadlines -->
+        <div class="mt-8 bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">Próximas Entregas e Marcos</h3>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="bg-orange-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-flag text-orange-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900">Entrega: Módulo de Relatórios</p>
+                                <p class="text-sm text-gray-600">Sistema de Gestão Integrado</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-orange-600">Em 3 dias</p>
+                            <p class="text-xs text-gray-500">18/03/2024</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-mobile-alt text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900">Aprovação: Protótipo do App</p>
+                                <p class="text-sm text-gray-600">App Mobile iOS/Android</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-blue-600">Em 5 dias</p>
+                            <p class="text-xs text-gray-500">20/03/2024</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Chat Widget -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <button class="bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition-colors group">
+            <i class="fas fa-comment-dots text-xl"></i>
+            <span class="absolute bottom-full right-0 mb-2 bg-gray-900 text-white text-sm px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                Chat com a equipe
+            </span>
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm">&copy; 2024 Projeto L. Todos os direitos reservados.</p>
+                </div>
+                <div class="flex items-center space-x-6 text-sm">
+                    <a href="#" class="hover:text-white transition-colors">Central de Ajuda</a>
+                    <a href="#" class="hover:text-white transition-colors">Termos de Uso</a>
+                    <a href="#" class="hover:text-white transition-colors">Privacidade</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
