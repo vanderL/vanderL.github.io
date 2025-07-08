@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM & Vendas - Projeto L</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .kanban-column {
+            min-height: 600px;
+        }
+        .dragging {
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-900 text-white flex-shrink-0">
+            <!-- Logo -->
+            <div class="p-6 border-b border-gray-800">
+                <h1 class="text-2xl font-bold text-white">Projeto L</h1>
+                <p class="text-sm text-gray-400 mt-1">Plano Business</p>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="mt-6">
+                <!-- Dashboard -->
+                <a href="#" class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                    <i class="fas fa-chart-line w-5"></i>
+                    <span class="ml-3">Dashboard</span>
+                </a>
+
+                <!-- Módulos Disponíveis -->
+                <div class="mt-4">
+                    <p class="px-6 text-xs uppercase text-gray-400 tracking-wider">Seus Módulos</p>
+                    
+                    <!-- Financeiro -->
+                    <a href="#" class="flex items-center px-6 py-3 mt-2 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                        <i class="fas fa-dollar-sign w-5"></i>
+                        <span class="ml-3">Financeiro</span>
+                    </a>
+
+                    <!-- CRM/Comercial (Ativo) -->
+                    <a href="#" class="flex items-center px-6 py-3 bg-indigo-600 text-white">
+                        <i class="fas fa-handshake w-5"></i>
+                        <span class="ml-3">CRM & Vendas</span>
+                        <i class="fas fa-chevron-down ml-auto text-xs"></i>
+                    </a>
+                    
+                    <!-- Submenu CRM -->
+                    <div class="bg-gray-800 py-2">
+                        <a href="#" class="flex items-center px-12 py-2 text-sm text-gray-300 hover:text-white">
+                            <i class="fas fa-chart-line w-4 mr-3"></i>
+                            Pipeline
+                        </a>
+                        <a href="#" class="flex items-center px-12 py-2 text-sm text-gray-300 hover:text-white">
+                            <i class="fas fa-users w-4 mr-3"></i>
+                            Clientes
+                        </a>
+                        <a href="#" class="flex items-center px-12 py-2 text-sm text-gray-300 hover:text-white">
+                            <i class="fas fa-file-alt w-4 mr-3"></i>
+                            Propostas
+                        </a>
+                    </div>
+
+                    <!-- Projetos -->
+                    <a href="#" class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                        <i class="fas fa-project-diagram w-5"></i>
+                        <span class="ml-3">Projetos</span>
+                    </a>
+
+                    <!-- Equipe -->
+                    <a href="#" class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors">
+                        <i class="fas fa-user-friends w-5"></i>
+                        <span class="ml-3">Equipe</span>
+                    </a>
+                </div>
+
+                <!-- Módulos Bloqueados -->
+                <div class="mt-6">
+                    <p class="px-6 text-xs uppercase text-gray-400 tracking-wider">Disponível no Upgrade</p>
+                    
+                    <!-- Portal do Cliente (Bloqueado) -->
+                    <a href="#" class="flex items-center px-6 py-3 mt-2 text-gray-500 cursor-not-allowed opacity-50">
+                        <i class="fas fa-users w-5"></i>
+                        <span class="ml-3">Portal do Cliente</span>
+                        <i class="fas fa-lock ml-auto text-xs"></i>
+                    </a>
+
+                    <!-- BI (Bloqueado) -->
+                    <a href="#" class="flex items-center px-6 py-3 text-gray-500 cursor-not-allowed opacity-50">
+                        <i class="fas fa-chart-bar w-5"></i>
+                        <span class="ml-3">Business Intelligence</span>
+                        <i class="fas fa-lock ml-auto text-xs"></i>
+                    </a>
+                </div>
+
+                <!-- Upgrade Button -->
+                <div class="px-6 mt-4">
+                    <button class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:from-purple-700 hover:to-indigo-700 transition-colors">
+                        <i class="fas fa-rocket mr-2"></i>
+                        Fazer Upgrade
+                    </button>
+                </div>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="absolute bottom-0 w-64 p-4 border-t border-gray-800">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center">
+                        JD
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium">João Silva</p>
+                        <p class="text-xs text-gray-400">Admin</p>
+                    </div>
+                    <button class="ml-auto text-gray-400 hover:text-white">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col">
+            <!-- Top Bar -->
+            <header class="bg-white shadow-sm border-b border-gray-200">
+                <div class="flex items-center justify-between px-6 py-4">
+                    <!-- Breadcrumb -->
+                    <div class="flex items-center">
+                        <button class="text-gray-500 hover:text-gray-700 lg:hidden">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <nav class="ml-4 flex items-center text-sm">
+                            <a href="#" class="text-gray-500 hover:text-gray-700">Home</a>
+                            <i class="fas fa-chevron-right mx-2 text-gray-400 text-xs"></i>
+                            <a href="#" class="text-gray-500 hover:text-gray-700">CRM & Vendas</a>
+                            <i class="fas fa-chevron-right mx-2 text-gray-400 text-xs"></i>
+                            <span class="text-gray-900 font-medium">Pipeline</span>
+                        </nav>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Quick Actions -->
+                        <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors">
+                            <i class="fas fa-plus mr-2"></i>
+                            Nova Oportunidade
+                        </button>
+
+                        <!-- Filters -->
+                        <button class="text-gray-600 hover:text-gray-800 border border-gray-300 px-3 py-2 rounded-lg text-sm">
+                            <i class="fas fa-filter mr-2"></i>
+                            Filtros
+                        </button>
+
+                        <!-- View Toggle -->
+                        <div class="flex bg-gray-100 rounded-lg p-1">
+                            <button class="bg-white text-gray-700 px-3 py-1 rounded text-sm font-medium">
+                                <i class="fas fa-columns"></i>
+                            </button>
+                            <button class="text-gray-500 px-3 py-1 rounded text-sm">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main class="flex-1 overflow-hidden">
+                <!-- KPIs Bar -->
+                <div class="bg-white border-b border-gray-200 px-6 py-4">
+                    <div class="grid grid-cols-5 gap-6">
+                        <div>
+                            <p class="text-sm text-gray-600">Total em Negociação</p>
+                            <p class="text-xl font-bold text-gray-900">R$ 485.750</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Oportunidades</p>
+                            <p class="text-xl font-bold text-gray-900">24</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Taxa de Conversão</p>
+                            <p class="text-xl font-bold text-green-600">32%</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Tempo Médio</p>
+                            <p class="text-xl font-bold text-gray-900">18 dias</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Meta do Mês</p>
+                            <div class="flex items-center">
+                                <p class="text-xl font-bold text-gray-900">68%</p>
+                                <div class="ml-3 flex-1 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-indigo-600 h-2 rounded-full" style="width: 68%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pipeline Kanban -->
+                <div class="flex-1 overflow-x-auto overflow-y-hidden p-6">
+                    <div class="flex space-x-4" style="min-width: 1200px;">
+                        <!-- Prospecção -->
+                        <div class="flex-1 bg-gray-100 rounded-lg">
+                            <div class="p-4 border-b border-gray-200">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="font-semibold text-gray-900">Prospecção</h3>
+                                    <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-sm">5</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">R$ 125.000</p>
+                            </div>
+                            <div class="p-4 space-y-3 kanban-column">
+                                <!-- Card 1 -->
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 cursor-move hover:shadow-md transition-shadow">
+                                    <div class="flex items-start justify-between mb-2">
+                                        <h4 class="font-medium text-gray-900">Tech Solutions Ltd</h4>
+                                        <span class="text-sm text-gray-500">#1245</span>
+                                    </div>
+                                    <p class="text-lg font-semibold text-gray-900 mb-2">R$ 45.000</p>
+                                    <p class="text-sm text-gray-600 mb-3">Sistema de gestão integrado</p>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <div class="w-6 h-6 bg-indigo-500 rounded-full text-white text-xs flex items-center justify-center">JS</div>
+                                            <span class="ml-2 text-xs text-gray-500">João Silva</span>
+                                        </div>
+                                        <span class="text-xs text-gray-500">há 2 dias</span>
+                                    </div>
+                                </div>
+
+                                <!-- Card 2 -->
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 cursor-move hover:shadow-md transition-shadow">
+                                    <div class="flex items-start justify-between mb-2">
+                                        <h4 class="font-medium text-gray-900">StartUp X</h4>
+                                        <span class="text-sm text-gray-500">#1246</span>
+                                    </div>
+                                    <p class="text-lg font-semibold text-gray-900 mb-2">R$ 28.000</p>
+                                    <p class="text-sm text-gray-600 mb-3">App mobile + backend</p>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <div class="w-6 h-6 bg-purple-500 rounded-full text-white text-xs flex items-center justify-center">MA</div>
+                                            <span class="ml-2 text-xs text-gray-500">Maria Alves</span>
+                                        </div>
+                                        <span class="text-xs text-gray-500">há 5 dias</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Qualificação -->
+                        <div class="flex-1 bg-gray-100 rounded-lg">
+                            <div class="p-4 border-b border-gray-200">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="font-semibold text-gray-900">Qualificação</h3>
+                                    <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-sm">8</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">R$ 186.500</p>
+                            </div>
+                            <div class="p-4 space-y-3 kanban-column">
+                                <!-- Card 3 -->
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 cursor-move hover:shadow-md transition-shadow">
+                                    <div class="flex items-start justify-between mb-2">
+                                        <h4 class="font-medium text-gray-900">Digital Agency Co</h4>
+                                        <span class="text-sm text-gray-500">#1243</span>
+                                    </div>
+                                    <p class="text-lg font-semibold text-gray-900 mb-2">R$ 62.000</p>
+                                    <p class="text-sm text-gray-600 mb-3">E-commerce completo</p>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <div class="w-6 h-6 bg-green-500 rounded-full text-white text-xs flex items-center justify-center">PC</div>
+                                            <span class="ml-2 text-xs text-gray-500">Pedro Costa</span>
+                                        </div>
+                                        <span class="text-xs text-orange-600">
+                                            <i class="fas fa-fire mr-1"></i>
+                                            Quente
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Proposta -->
+                        <div class="flex-1 bg-gray-100 rounded-lg">
+                            <div class="p-4 border-b border-gray-200">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="font-semibold text-gray-900">Proposta</h3>
+                                    <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-sm">6</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">R$ 124.250</p>
+                            </div>
+                            <div class="p-4 space-y-3 kanban-column">
+                                <!-- Card 4 -->
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-yellow-300 cursor-move hover:shadow-md transition-shadow">
+                                    <div class="flex items-start justify-between mb-2">
+                                        <h4 class="font-medium text-gray-900">Empresa ABC</h4>
+                                        <span class="text-sm text-gray-500">#1240</span>
+                                    </div>
+                                    <p class="text-lg font-semibold text-gray-900 mb-2">R$ 35.000</p>
+                                    <p class="text-sm text-gray-600 mb-3">Consultoria UX/UI</p>
+                                    <div class="bg-yellow-50 border border-yellow-200 rounded p-2 mb-3">
+                                        <p class="text-xs text-yellow-800">
+                                            <i class="fas fa-clock mr-1"></i>
+                                            Proposta expira em 3 dias
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <div class="w-6 h-6 bg-indigo-500 rounded-full text-white text-xs flex items-center justify-center">JS</div>
+                                            <span class="ml-2 text-xs text-gray-500">João Silva</span>
+                                        </div>
+                                        <button class="text-xs text-indigo-600 hover:text-indigo-800">
+                                            <i class="fas fa-paper-plane mr-1"></i>
+                                            Reenviar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Negociação -->
+                        <div class="flex-1 bg-gray-100 rounded-lg">
+                            <div class="p-4 border-b border-gray-200">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="font-semibold text-gray-900">Negociação</h3>
+                                    <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-sm">3</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">R$ 50.000</p>
+                            </div>
+                            <div class="p-4 space-y-3 kanban-column">
+                                <!-- Empty state -->
+                                <div class="text-center py-8">
+                                    <i class="fas fa-comments text-4xl text-gray-300 mb-3"></i>
+                                    <p class="text-sm text-gray-500">Nenhuma oportunidade em negociação</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fechado/Ganho -->
+                        <div class="flex-1 bg-gray-100 rounded-lg">
+                            <div class="p-4 border-b border-green-200 bg-green-50">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="font-semibold text-green-900">Fechado/Ganho</h3>
+                                    <span class="bg-green-200 text-green-800 px-2 py-1 rounded text-sm">2</span>
+                                </div>
+                                <p class="text-sm text-green-700 mt-1">R$ 85.000</p>
+                            </div>
+                            <div class="p-4 space-y-3 kanban-column">
+                                <!-- Card Ganho -->
+                                <div class="bg-white p-4 rounded-lg shadow-sm border border-green-300 cursor-move hover:shadow-md transition-shadow">
+                                    <div class="flex items-start justify-between mb-2">
+                                        <h4 class="font-medium text-gray-900">Consultoria XYZ</h4>
+                                        <span class="text-green-600">
+                                            <i class="fas fa-check-circle"></i>
+                                        </span>
+                                    </div>
+                                    <p class="text-lg font-semibold text-green-600 mb-2">R$ 55.000</p>
+                                    <p class="text-sm text-gray-600 mb-3">Sistema ERP customizado</p>
+                                    <div class="bg-green-50 border border-green-200 rounded p-2 mb-3">
+                                        <p class="text-xs text-green-800">
+                                            <i class="fas fa-trophy mr-1"></i>
+                                            Fechado em 15 dias
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- AI Assistant -->
+    <button class="fixed bottom-6 right-6 bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition-colors z-50 group">
+        <i class="fas fa-robot text-xl"></i>
+        <span class="absolute right-full mr-3 bg-gray-900 text-white text-sm px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            Assistente IA - Pergunte sobre suas vendas
+        </span>
+    </button>
+
+    <!-- Quick Add Modal Placeholder -->
+    <div class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
+            <h3 class="text-lg font-semibold mb-4">Nova Oportunidade</h3>
+            <!-- Form would go here -->
+        </div>
+    </div>
+</body>
+</html>
