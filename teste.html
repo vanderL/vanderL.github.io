@@ -20,11 +20,11 @@
 
                 <!-- Navigation -->
                 <nav class="hidden md:flex items-center space-x-8">
-                    <a href="#" class="text-gray-900 font-medium border-b-2 border-indigo-600 pb-1">Dashboard</a>
-                    <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors">Projetos</a>
-                    <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors">Faturas</a>
-                    <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors">Suporte</a>
-                    <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors">Arquivos</a>
+                    <a href="#" onclick="showTab('dashboard')" id="nav-dashboard" class="text-gray-900 font-medium border-b-2 border-indigo-600 pb-1">Dashboard</a>
+                    <a href="#" onclick="showTab('projetos')" id="nav-projetos" class="text-gray-600 hover:text-gray-900 transition-colors">Projetos</a>
+                    <a href="#" onclick="showTab('faturas')" id="nav-faturas" class="text-gray-600 hover:text-gray-900 transition-colors">Faturas</a>
+                    <a href="#" onclick="showTab('suporte')" id="nav-suporte" class="text-gray-600 hover:text-gray-900 transition-colors">Suporte</a>
+                    <a href="#" onclick="showTab('arquivos')" id="nav-arquivos" class="text-gray-600 hover:text-gray-900 transition-colors">Arquivos</a>
                 </nav>
 
                 <!-- User Menu -->
@@ -51,322 +51,792 @@
     <!-- Mobile Navigation -->
     <div class="md:hidden bg-white border-b border-gray-200">
         <nav class="flex overflow-x-auto px-4 py-2 space-x-6">
-            <a href="#" class="text-indigo-600 font-medium whitespace-nowrap pb-2 border-b-2 border-indigo-600">Dashboard</a>
-            <a href="#" class="text-gray-600 whitespace-nowrap pb-2">Projetos</a>
-            <a href="#" class="text-gray-600 whitespace-nowrap pb-2">Faturas</a>
-            <a href="#" class="text-gray-600 whitespace-nowrap pb-2">Suporte</a>
-            <a href="#" class="text-gray-600 whitespace-nowrap pb-2">Arquivos</a>
+            <a href="#" onclick="showTab('dashboard')" id="nav-mobile-dashboard" class="text-indigo-600 font-medium whitespace-nowrap pb-2 border-b-2 border-indigo-600">Dashboard</a>
+            <a href="#" onclick="showTab('projetos')" id="nav-mobile-projetos" class="text-gray-600 whitespace-nowrap pb-2">Projetos</a>
+            <a href="#" onclick="showTab('faturas')" id="nav-mobile-faturas" class="text-gray-600 whitespace-nowrap pb-2">Faturas</a>
+            <a href="#" onclick="showTab('suporte')" id="nav-mobile-suporte" class="text-gray-600 whitespace-nowrap pb-2">Suporte</a>
+            <a href="#" onclick="showTab('arquivos')" id="nav-mobile-arquivos" class="text-gray-600 whitespace-nowrap pb-2">Arquivos</a>
         </nav>
     </div>
 
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Welcome Section -->
-        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow-sm p-8 mb-8 text-white">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h2 class="text-3xl font-bold mb-2">Olá, Tech Solutions! 👋</h2>
-                    <p class="text-indigo-100">Bem-vindo ao seu portal. Acompanhe seus projetos, faturas e muito mais.</p>
-                </div>
-                <div class="hidden lg:block">
-                    <div class="bg-white bg-opacity-20 rounded-lg p-6">
-                        <p class="text-sm text-indigo-100 mb-1">Saldo em aberto</p>
-                        <p class="text-2xl font-bold">R$ 23.500,00</p>
-                        <a href="#" class="text-sm text-white underline mt-2 inline-block hover:text-indigo-100">Ver faturas →</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quick Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <!-- Dashboard Tab -->
+        <div id="tab-dashboard" class="tab-content">
+            <!-- Welcome Section -->
+            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow-sm p-8 mb-8 text-white">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm text-gray-600">Projetos Ativos</p>
-                        <p class="text-2xl font-bold text-gray-900 mt-1">4</p>
+                        <h2 class="text-3xl font-bold mb-2">Olá, Tech Solutions! 👋</h2>
+                        <p class="text-indigo-100">Bem-vindo ao seu portal. Acompanhe seus projetos, faturas e muito mais.</p>
                     </div>
-                    <div class="bg-blue-100 p-3 rounded-full">
-                        <i class="fas fa-project-diagram text-blue-600"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-600">Tarefas Pendentes</p>
-                        <p class="text-2xl font-bold text-gray-900 mt-1">12</p>
-                    </div>
-                    <div class="bg-orange-100 p-3 rounded-full">
-                        <i class="fas fa-tasks text-orange-600"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-600">Faturas em Aberto</p>
-                        <p class="text-2xl font-bold text-gray-900 mt-1">2</p>
-                    </div>
-                    <div class="bg-yellow-100 p-3 rounded-full">
-                        <i class="fas fa-file-invoice-dollar text-yellow-600"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-600">Tickets Suporte</p>
-                        <p class="text-2xl font-bold text-gray-900 mt-1">1</p>
-                    </div>
-                    <div class="bg-green-100 p-3 rounded-full">
-                        <i class="fas fa-headset text-green-600"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Projects Section -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Active Projects -->
-            <div class="lg:col-span-2">
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-                    <div class="p-6 border-b border-gray-200">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-lg font-semibold text-gray-900">Seus Projetos</h3>
-                            <button class="text-sm text-indigo-600 hover:text-indigo-800">Ver todos</button>
-                        </div>
-                    </div>
-                    <div class="divide-y divide-gray-200">
-                        <!-- Project 1 -->
-                        <div class="p-6 hover:bg-gray-50 transition-colors">
-                            <div class="flex items-start justify-between mb-4">
-                                <div>
-                                    <h4 class="font-medium text-gray-900 mb-1">Sistema de Gestão Integrado</h4>
-                                    <p class="text-sm text-gray-600">Desenvolvimento de ERP customizado para sua empresa</p>
-                                </div>
-                                <span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">Em progresso</span>
-                            </div>
-                            <div class="grid grid-cols-3 gap-4 mb-4 text-sm">
-                                <div>
-                                    <p class="text-gray-500">Início</p>
-                                    <p class="font-medium text-gray-900">15/01/2024</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500">Previsão</p>
-                                    <p class="font-medium text-gray-900">15/04/2024</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500">Progresso</p>
-                                    <p class="font-medium text-gray-900">65%</p>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <div class="flex items-center justify-between text-sm mb-1">
-                                    <span class="text-gray-600">Progresso do Projeto</span>
-                                    <span class="font-medium text-gray-900">65%</span>
-                                </div>
-                                <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div class="bg-indigo-600 h-2 rounded-full" style="width: 65%"></div>
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-4 text-sm">
-                                    <button class="text-indigo-600 hover:text-indigo-800">
-                                        <i class="fas fa-eye mr-1"></i>
-                                        Ver detalhes
-                                    </button>
-                                    <button class="text-gray-600 hover:text-gray-800">
-                                        <i class="fas fa-comments mr-1"></i>
-                                        3 mensagens
-                                    </button>
-                                </div>
-                                <div class="flex -space-x-2">
-                                    <div class="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center text-white text-xs font-medium border-2 border-white">PC</div>
-                                    <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs font-medium border-2 border-white">MA</div>
-                                    <div class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white text-xs font-medium border-2 border-white">+2</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Project 2 -->
-                        <div class="p-6 hover:bg-gray-50 transition-colors">
-                            <div class="flex items-start justify-between mb-4">
-                                <div>
-                                    <h4 class="font-medium text-gray-900 mb-1">App Mobile iOS/Android</h4>
-                                    <p class="text-sm text-gray-600">Aplicativo nativo para seus clientes</p>
-                                </div>
-                                <span class="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full">Em revisão</span>
-                            </div>
-                            <div class="grid grid-cols-3 gap-4 mb-4 text-sm">
-                                <div>
-                                    <p class="text-gray-500">Início</p>
-                                    <p class="font-medium text-gray-900">01/02/2024</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500">Previsão</p>
-                                    <p class="font-medium text-gray-900">30/03/2024</p>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500">Progresso</p>
-                                    <p class="font-medium text-gray-900">85%</p>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <div class="flex items-center justify-between text-sm mb-1">
-                                    <span class="text-gray-600">Progresso do Projeto</span>
-                                    <span class="font-medium text-gray-900">85%</span>
-                                </div>
-                                <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 85%"></div>
-                                </div>
-                            </div>
-                            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
-                                <p class="text-sm text-yellow-800">
-                                    <i class="fas fa-exclamation-circle mr-1"></i>
-                                    Aguardando sua aprovação no protótipo
-                                </p>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-4 text-sm">
-                                    <button class="text-indigo-600 hover:text-indigo-800">
-                                        <i class="fas fa-eye mr-1"></i>
-                                        Ver detalhes
-                                    </button>
-                                    <button class="bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700">
-                                        <i class="fas fa-check mr-1"></i>
-                                        Aprovar
-                                    </button>
-                                </div>
-                                <div class="flex -space-x-2">
-                                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-medium border-2 border-white">JS</div>
-                                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-medium border-2 border-white">RF</div>
-                                </div>
-                            </div>
+                    <div class="hidden lg:block">
+                        <div class="bg-white bg-opacity-20 rounded-lg p-6">
+                            <p class="text-sm text-indigo-100 mb-1">Saldo em aberto</p>
+                            <p class="text-2xl font-bold">R$ 23.500,00</p>
+                            <a href="#" onclick="showTab('faturas')" class="text-sm text-white underline mt-2 inline-block hover:text-indigo-100">Ver faturas →</a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Right Sidebar -->
-            <div class="space-y-6">
-                <!-- Recent Activity -->
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Atividade Recente</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-start">
-                            <div class="bg-blue-100 p-2 rounded-full mr-3">
-                                <i class="fas fa-code text-blue-600 text-sm"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm text-gray-900">Nova versão do app disponível</p>
-                                <p class="text-xs text-gray-500">Há 2 horas</p>
-                            </div>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Projetos Ativos</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">4</p>
                         </div>
-                        <div class="flex items-start">
-                            <div class="bg-green-100 p-2 rounded-full mr-3">
-                                <i class="fas fa-check text-green-600 text-sm"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm text-gray-900">Módulo de pagamentos concluído</p>
-                                <p class="text-xs text-gray-500">Há 5 horas</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="bg-purple-100 p-2 rounded-full mr-3">
-                                <i class="fas fa-comment text-purple-600 text-sm"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm text-gray-900">Pedro comentou no projeto ERP</p>
-                                <p class="text-xs text-gray-500">Ontem às 18:30</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="bg-yellow-100 p-2 rounded-full mr-3">
-                                <i class="fas fa-file-invoice text-yellow-600 text-sm"></i>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm text-gray-900">Nova fatura emitida #1245</p>
-                                <p class="text-xs text-gray-500">Ontem às 14:00</p>
-                            </div>
+                        <div class="bg-blue-100 p-3 rounded-full">
+                            <i class="fas fa-project-diagram text-blue-600"></i>
                         </div>
                     </div>
                 </div>
 
-                <!-- Quick Actions -->
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Ações Rápidas</h3>
-                    <div class="space-y-3">
-                        <button class="w-full text-left px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex items-center">
-                            <i class="fas fa-download text-gray-600 mr-3"></i>
-                            <span class="text-sm font-medium text-gray-900">Baixar Contrato</span>
-                        </button>
-                        <button class="w-full text-left px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex items-center">
-                            <i class="fas fa-calendar text-gray-600 mr-3"></i>
-                            <span class="text-sm font-medium text-gray-900">Agendar Reunião</span>
-                        </button>
-                        <button class="w-full text-left px-4 py-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors flex items-center">
-                            <i class="fas fa-headset text-gray-600 mr-3"></i>
-                            <span class="text-sm font-medium text-gray-900">Abrir Ticket</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Support -->
-                <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg border border-indigo-200 p-6">
-                    <div class="text-center">
-                        <div class="bg-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
-                            <i class="fas fa-headset text-indigo-600 text-2xl"></i>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Tarefas Pendentes</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">12</p>
                         </div>
-                        <h4 class="font-semibold text-gray-900 mb-2">Precisa de ajuda?</h4>
-                        <p class="text-sm text-gray-600 mb-4">Nossa equipe está pronta para ajudar</p>
-                        <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors">
-                            Falar com Suporte
-                        </button>
+                        <div class="bg-orange-100 p-3 rounded-full">
+                            <i class="fas fa-tasks text-orange-600"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Faturas em Aberto</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">2</p>
+                        </div>
+                        <div class="bg-yellow-100 p-3 rounded-full">
+                            <i class="fas fa-file-invoice-dollar text-yellow-600"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Tickets Suporte</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">1</p>
+                        </div>
+                        <div class="bg-green-100 p-3 rounded-full">
+                            <i class="fas fa-headset text-green-600"></i>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Upcoming Deadlines -->
-        <div class="mt-8 bg-white rounded-lg shadow-sm border border-gray-200">
-            <div class="p-6 border-b border-gray-200">
-                <h3 class="text-lg font-semibold text-gray-900">Próximas Entregas e Marcos</h3>
-            </div>
-            <div class="p-6">
+            <!-- Recent Activity -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Atividade Recente</h3>
                 <div class="space-y-4">
-                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                        <div class="flex items-center">
-                            <div class="bg-orange-100 p-3 rounded-full mr-4">
-                                <i class="fas fa-flag text-orange-600"></i>
-                            </div>
-                            <div>
-                                <p class="font-medium text-gray-900">Entrega: Módulo de Relatórios</p>
-                                <p class="text-sm text-gray-600">Sistema de Gestão Integrado</p>
-                            </div>
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 p-2 rounded-full mr-3">
+                            <i class="fas fa-code text-blue-600 text-sm"></i>
                         </div>
-                        <div class="text-right">
-                            <p class="text-sm font-medium text-orange-600">Em 3 dias</p>
-                            <p class="text-xs text-gray-500">18/03/2024</p>
+                        <div class="flex-1">
+                            <p class="text-sm text-gray-900">Nova versão do app disponível para teste</p>
+                            <p class="text-xs text-gray-500">Há 2 horas</p>
                         </div>
                     </div>
-                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                        <div class="flex items-center">
-                            <div class="bg-blue-100 p-3 rounded-full mr-4">
-                                <i class="fas fa-mobile-alt text-blue-600"></i>
+                    <div class="flex items-start">
+                        <div class="bg-green-100 p-2 rounded-full mr-3">
+                            <i class="fas fa-check text-green-600 text-sm"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm text-gray-900">Módulo de pagamentos concluído</p>
+                            <p class="text-xs text-gray-500">Há 5 horas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projetos Tab -->
+        <div id="tab-projetos" class="tab-content hidden">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Seus Projetos</h2>
+                <p class="text-gray-600 mt-1">Acompanhe o progresso de todos os seus projetos</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+                <div class="flex flex-wrap items-center gap-4">
+                    <div class="flex items-center space-x-2">
+                        <label class="text-sm text-gray-600">Status:</label>
+                        <select class="border border-gray-300 rounded-lg px-3 py-1 text-sm">
+                            <option>Todos</option>
+                            <option>Em progresso</option>
+                            <option>Em revisão</option>
+                            <option>Concluído</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <label class="text-sm text-gray-600">Ordenar:</label>
+                        <select class="border border-gray-300 rounded-lg px-3 py-1 text-sm">
+                            <option>Data de início</option>
+                            <option>Prazo</option>
+                            <option>Progresso</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Project Card 1 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900">Sistema de Gestão Integrado</h3>
+                            <p class="text-sm text-gray-600 mt-1">ERP customizado para sua empresa</p>
+                        </div>
+                        <span class="px-3 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">Em progresso</span>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="flex items-center justify-between text-sm mb-2">
+                            <span class="text-gray-600">Progresso Geral</span>
+                            <span class="font-medium text-gray-900">65%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-indigo-600 h-2 rounded-full" style="width: 65%"></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 mb-4">
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>Fase 1: Análise de Requisitos</span>
                             </div>
+                            <span class="text-green-600">Concluído</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center">
+                                <i class="fas fa-circle-notch text-blue-500 mr-2 animate-spin"></i>
+                                <span>Fase 2: Desenvolvimento Backend</span>
+                            </div>
+                            <span class="text-blue-600">Em andamento</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center">
+                                <i class="far fa-circle text-gray-400 mr-2"></i>
+                                <span>Fase 3: Interface do Usuário</span>
+                            </div>
+                            <span class="text-gray-500">Pendente</span>
+                        </div>
+                    </div>
+
+                    <div class="border-t pt-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex -space-x-2">
+                                <img src="https://ui-avatars.com/api/?name=Pedro+Costa&background=6366f1&color=fff" alt="Pedro" class="w-8 h-8 rounded-full border-2 border-white">
+                                <img src="https://ui-avatars.com/api/?name=Maria+Silva&background=8b5cf6&color=fff" alt="Maria" class="w-8 h-8 rounded-full border-2 border-white">
+                                <div class="w-8 h-8 bg-gray-300 rounded-full border-2 border-white flex items-center justify-center text-xs font-medium text-gray-700">+3</div>
+                            </div>
+                            <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                                Ver detalhes →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 2 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900">App Mobile iOS/Android</h3>
+                            <p class="text-sm text-gray-600 mt-1">Aplicativo nativo para seus clientes</p>
+                        </div>
+                        <span class="px-3 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full">Em revisão</span>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="flex items-center justify-between text-sm mb-2">
+                            <span class="text-gray-600">Progresso Geral</span>
+                            <span class="font-medium text-gray-900">85%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-yellow-500 h-2 rounded-full" style="width: 85%"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
+                        <p class="text-sm text-yellow-800">
+                            <i class="fas fa-exclamation-circle mr-2"></i>
+                            Aguardando sua aprovação no protótipo
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
+                        <div>
+                            <p class="text-gray-500">Início</p>
+                            <p class="font-medium">01/02/2024</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-500">Prazo</p>
+                            <p class="font-medium">30/03/2024</p>
+                        </div>
+                    </div>
+
+                    <div class="border-t pt-4">
+                        <div class="flex items-center justify-between">
+                            <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700">
+                                <i class="fas fa-check mr-2"></i>
+                                Aprovar Protótipo
+                            </button>
+                            <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                                Ver protótipo →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 3 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900">Website Institucional</h3>
+                            <p class="text-sm text-gray-600 mt-1">Redesign completo do site</p>
+                        </div>
+                        <span class="px-3 py-1 text-xs bg-green-100 text-green-800 rounded-full">Concluído</span>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="flex items-center justify-between text-sm mb-2">
+                            <span class="text-gray-600">Progresso Geral</span>
+                            <span class="font-medium text-gray-900">100%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-600 h-2 rounded-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
+                        <p class="text-sm text-green-800">
+                            <i class="fas fa-check-circle mr-2"></i>
+                            Projeto concluído e entregue com sucesso
+                        </p>
+                    </div>
+
+                    <div class="border-t pt-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-3">
+                                <button class="text-gray-600 hover:text-gray-800 text-sm">
+                                    <i class="fas fa-download mr-1"></i>
+                                    Arquivos
+                                </button>
+                                <button class="text-gray-600 hover:text-gray-800 text-sm">
+                                    <i class="fas fa-file-contract mr-1"></i>
+                                    Contrato
+                                </button>
+                            </div>
+                            <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                                Ver histórico →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 4 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900">Integração API Pagamentos</h3>
+                            <p class="text-sm text-gray-600 mt-1">Gateway de pagamento personalizado</p>
+                        </div>
+                        <span class="px-3 py-1 text-xs bg-gray-100 text-gray-800 rounded-full">Planejamento</span>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="flex items-center justify-between text-sm mb-2">
+                            <span class="text-gray-600">Progresso Geral</span>
+                            <span class="font-medium text-gray-900">0%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-gray-400 h-2 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="text-center py-6 text-gray-500">
+                        <i class="fas fa-clipboard-list text-4xl mb-3"></i>
+                        <p class="text-sm">Projeto em fase de planejamento</p>
+                        <p class="text-xs mt-1">Início previsto: 01/04/2024</p>
+                    </div>
+
+                    <div class="border-t pt-4">
+                        <button class="w-full text-center text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                            Ver cronograma →
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Faturas Tab -->
+        <div id="tab-faturas" class="tab-content hidden">
+            <div class="mb-6 flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Faturas</h2>
+                    <p class="text-gray-600 mt-1">Gerencie suas faturas e pagamentos</p>
+                </div>
+                <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700">
+                    <i class="fas fa-download mr-2"></i>
+                    Exportar Relatório
+                </button>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <p class="text-sm text-gray-600">Total Faturado</p>
+                    <p class="text-2xl font-bold text-gray-900 mt-1">R$ 285.900,00</p>
+                    <p class="text-xs text-gray-500 mt-2">Últimos 12 meses</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-orange-200 p-6">
+                    <p class="text-sm text-gray-600">Em Aberto</p>
+                    <p class="text-2xl font-bold text-orange-600 mt-1">R$ 23.500,00</p>
+                    <p class="text-xs text-gray-500 mt-2">2 faturas</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <p class="text-sm text-gray-600">Vence em 30 dias</p>
+                    <p class="text-2xl font-bold text-gray-900 mt-1">R$ 15.000,00</p>
+                    <p class="text-xs text-gray-500 mt-2">1 fatura</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-green-200 p-6">
+                    <p class="text-sm text-gray-600">Pago este mês</p>
+                    <p class="text-2xl font-bold text-green-600 mt-1">R$ 45.000,00</p>
+                    <p class="text-xs text-gray-500 mt-2">3 faturas</p>
+                </div>
+            </div>
+
+            <!-- Invoices Table -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-900">Histórico de Faturas</h3>
+                        <div class="flex items-center space-x-2">
+                            <label class="text-sm text-gray-600">Status:</label>
+                            <select class="border border-gray-300 rounded-lg px-3 py-1 text-sm">
+                                <option>Todas</option>
+                                <option>Pagas</option>
+                                <option>Em aberto</option>
+                                <option>Vencidas</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr class="border-b border-gray-200">
+                                <th class="text-left py-3 px-6 text-xs font-medium text-gray-500 uppercase">Número</th>
+                                <th class="text-left py-3 px-6 text-xs font-medium text-gray-500 uppercase">Descrição</th>
+                                <th class="text-left py-3 px-6 text-xs font-medium text-gray-500 uppercase">Emissão</th>
+                                <th class="text-left py-3 px-6 text-xs font-medium text-gray-500 uppercase">Vencimento</th>
+                                <th class="text-right py-3 px-6 text-xs font-medium text-gray-500 uppercase">Valor</th>
+                                <th class="text-center py-3 px-6 text-xs font-medium text-gray-500 uppercase">Status</th>
+                                <th class="text-center py-3 px-6 text-xs font-medium text-gray-500 uppercase">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-4 px-6">
+                                    <p class="text-sm font-medium text-gray-900">#2024-1245</p>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <p class="text-sm text-gray-900">Desenvolvimento App Mobile - Parcela 3/3</p>
+                                    <p class="text-xs text-gray-500">Ref: Projeto App Mobile</p>
+                                </td>
+                                <td class="py-4 px-6 text-sm text-gray-600">10/03/2024</td>
+                                <td class="py-4 px-6 text-sm text-gray-600">25/03/2024</td>
+                                <td class="py-4 px-6 text-sm font-medium text-gray-900 text-right">R$ 15.000,00</td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full">Em aberto</span>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <button class="text-indigo-600 hover:text-indigo-800">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="text-gray-600 hover:text-gray-800">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                        <button class="bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700">
+                                            Pagar
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-4 px-6">
+                                    <p class="text-sm font-medium text-gray-900">#2024-1243</p>
+                                </td>
+                                <td class="py-4 px-6">
+                                    <p class="text-sm text-gray-900">Desenvolvimento App Mobile - Parcela 2/3</p>
+                                    <p class="text-xs text-gray-500">Ref: Projeto App Mobile</p>
+                                </td>
+                                <td class="py-4 px-6 text-sm text-gray-600">10/02/2024</td>
+                                <td class="py-4 px-6 text-sm text-gray-600">25/02/2024</td>
+                                <td class="py-4 px-6 text-sm font-medium text-gray-900 text-right">R$ 15.000,00</td>
+                                <td class="py-4 px-6 text-center">
+                                    <span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">Paga</span>
+                                </td>
+                                <td class="py-4 px-6 text-center">
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <button class="text-indigo-600 hover:text-indigo-800">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="text-gray-600 hover:text-gray-800">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                        <button class="text-green-600 hover:text-green-800">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Formas de Pagamento</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <i class="fas fa-barcode text-2xl text-gray-600"></i>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Disponível</span>
+                        </div>
+                        <h4 class="font-medium text-gray-900">Boleto Bancário</h4>
+                        <p class="text-sm text-gray-600 mt-1">Vencimento em até 3 dias úteis</p>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <i class="fas fa-credit-card text-2xl text-gray-600"></i>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Disponível</span>
+                        </div>
+                        <h4 class="font-medium text-gray-900">Cartão de Crédito</h4>
+                        <p class="text-sm text-gray-600 mt-1">Parcelamento em até 12x</p>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <i class="fas fa-qrcode text-2xl text-gray-600"></i>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Disponível</span>
+                        </div>
+                        <h4 class="font-medium text-gray-900">PIX</h4>
+                        <p class="text-sm text-gray-600 mt-1">Pagamento instantâneo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Suporte Tab -->
+        <div id="tab-suporte" class="tab-content hidden">
+            <div class="mb-6 flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Central de Suporte</h2>
+                    <p class="text-gray-600 mt-1">Estamos aqui para ajudar você</p>
+                </div>
+                <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700">
+                    <i class="fas fa-plus mr-2"></i>
+                    Novo Ticket
+                </button>
+            </div>
+
+            <!-- Quick Help -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 text-center">
+                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-book text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Base de Conhecimento</h3>
+                    <p class="text-sm text-gray-600 mb-4">Encontre respostas para as dúvidas mais comuns</p>
+                    <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                        Acessar →
+                    </button>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 text-center">
+                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-comments text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Chat ao Vivo</h3>
+                    <p class="text-sm text-gray-600 mb-4">Converse com nossa equipe em tempo real</p>
+                    <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                        Iniciar Chat →
+                    </button>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 text-center">
+                    <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-video text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Tutoriais em Vídeo</h3>
+                    <p class="text-sm text-gray-600 mb-4">Aprenda a usar todas as funcionalidades</p>
+                    <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                        Assistir →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tickets -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">Seus Tickets</h3>
+                </div>
+                <div class="divide-y divide-gray-200">
+                    <!-- Ticket 1 -->
+                    <div class="p-6 hover:bg-gray-50">
+                        <div class="flex items-start justify-between mb-3">
                             <div>
-                                <p class="font-medium text-gray-900">Aprovação: Protótipo do App</p>
-                                <p class="text-sm text-gray-600">App Mobile iOS/Android</p>
+                                <div class="flex items-center space-x-3">
+                                    <h4 class="font-medium text-gray-900">#SUP-2024-089</h4>
+                                    <span class="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full">Em andamento</span>
+                                    <span class="px-2 py-1 text-xs bg-orange-100 text-orange-800 rounded-full">Alta prioridade</span>
+                                </div>
+                                <p class="text-gray-900 mt-2">Erro ao processar pagamento no checkout</p>
+                                <p class="text-sm text-gray-600 mt-1">Projeto: App Mobile - Módulo de Pagamentos</p>
+                            </div>
+                            <p class="text-sm text-gray-500">Há 2 horas</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                            <p class="text-sm text-gray-700">
+                                <span class="font-medium">Última resposta (Suporte):</span> Identificamos o problema e nossa equipe está trabalhando na correção. Estimamos resolver em 4 horas.
+                            </p>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4 text-sm">
+                                <span class="text-gray-500">
+                                    <i class="fas fa-comments mr-1"></i>
+                                    3 respostas
+                                </span>
+                                <span class="text-gray-500">
+                                    <i class="fas fa-user mr-1"></i>
+                                    Pedro Costa
+                                </span>
+                            </div>
+                            <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                                Ver conversa →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Ticket 2 -->
+                    <div class="p-6 hover:bg-gray-50">
+                        <div class="flex items-start justify-between mb-3">
+                            <div>
+                                <div class="flex items-center space-x-3">
+                                    <h4 class="font-medium text-gray-900">#SUP-2024-087</h4>
+                                    <span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">Resolvido</span>
+                                    <span class="px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded-full">Baixa prioridade</span>
+                                </div>
+                                <p class="text-gray-900 mt-2">Dúvida sobre integração com API externa</p>
+                                <p class="text-sm text-gray-600 mt-1">Projeto: Sistema ERP - Integrações</p>
+                            </div>
+                            <p class="text-sm text-gray-500">3 dias atrás</p>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4 text-sm">
+                                <span class="text-gray-500">
+                                    <i class="fas fa-comments mr-1"></i>
+                                    5 respostas
+                                </span>
+                                <span class="text-gray-500">
+                                    <i class="fas fa-user mr-1"></i>
+                                    Maria Silva
+                                </span>
+                            </div>
+                            <button class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
+                                Ver conversa →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ -->
+            <div class="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Perguntas Frequentes</h3>
+                <div class="space-y-4">
+                    <details class="group">
+                        <summary class="flex items-center justify-between cursor-pointer py-3 px-4 bg-gray-50 rounded-lg hover:bg-gray-100">
+                            <span class="font-medium text-gray-900">Como faço para aprovar uma entrega?</span>
+                            <i class="fas fa-chevron-down text-gray-500 group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <div class="mt-3 px-4 text-sm text-gray-600">
+                            Para aprovar uma entrega, acesse a aba "Projetos", clique no projeto desejado e você verá um botão "Aprovar" nas entregas pendentes. Você também pode deixar comentários antes de aprovar.
+                        </div>
+                    </details>
+                    <details class="group">
+                        <summary class="flex items-center justify-between cursor-pointer py-3 px-4 bg-gray-50 rounded-lg hover:bg-gray-100">
+                            <span class="font-medium text-gray-900">Qual o prazo para pagamento das faturas?</span>
+                            <i class="fas fa-chevron-down text-gray-500 group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <div class="mt-3 px-4 text-sm text-gray-600">
+                            O prazo padrão é de 15 dias após a emissão da fatura. Você pode verificar a data de vencimento específica na aba "Faturas". Oferecemos desconto para pagamento antecipado.
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <!-- Arquivos Tab -->
+        <div id="tab-arquivos" class="tab-content hidden">
+            <div class="mb-6 flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Central de Arquivos</h2>
+                    <p class="text-gray-600 mt-1">Todos os documentos dos seus projetos em um só lugar</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="relative">
+                        <input type="text" placeholder="Buscar arquivos..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-indigo-500">
+                        <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                    </div>
+                    <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700">
+                        <i class="fas fa-upload mr-2"></i>
+                        Upload
+                    </button>
+                </div>
+            </div>
+
+            <!-- Storage Info -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-medium text-gray-900">Armazenamento Utilizado</h3>
+                    <span class="text-sm text-gray-600">2.8 GB de 10 GB</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-indigo-600 h-2 rounded-full" style="width: 28%"></div>
+                </div>
+            </div>
+
+            <!-- File Browser -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <!-- Folder Navigation -->
+                <div class="p-4 border-b border-gray-200">
+                    <nav class="flex items-center text-sm">
+                        <a href="#" class="text-gray-600 hover:text-gray-900">
+                            <i class="fas fa-home mr-1"></i>
+                            Início
+                        </a>
+                        <i class="fas fa-chevron-right mx-2 text-gray-400 text-xs"></i>
+                        <a href="#" class="text-gray-600 hover:text-gray-900">Projetos</a>
+                        <i class="fas fa-chevron-right mx-2 text-gray-400 text-xs"></i>
+                        <span class="text-gray-900 font-medium">Sistema ERP</span>
+                    </nav>
+                </div>
+
+                <!-- Files Grid -->
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Folder -->
+                        <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 hover:bg-indigo-50 cursor-pointer transition-colors">
+                            <div class="flex items-start justify-between mb-3">
+                                <i class="fas fa-folder text-3xl text-yellow-500"></i>
+                                <button class="text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                            <h4 class="font-medium text-gray-900 text-sm">Documentação</h4>
+                            <p class="text-xs text-gray-500 mt-1">15 arquivos</p>
+                        </div>
+
+                        <!-- PDF File -->
+                        <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 hover:bg-indigo-50 cursor-pointer transition-colors">
+                            <div class="flex items-start justify-between mb-3">
+                                <i class="fas fa-file-pdf text-3xl text-red-500"></i>
+                                <button class="text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                            <h4 class="font-medium text-gray-900 text-sm truncate">Contrato_Projeto_ERP.pdf</h4>
+                            <p class="text-xs text-gray-500 mt-1">2.5 MB • 10/01/2024</p>
+                        </div>
+
+                        <!-- Excel File -->
+                        <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 hover:bg-indigo-50 cursor-pointer transition-colors">
+                            <div class="flex items-start justify-between mb-3">
+                                <i class="fas fa-file-excel text-3xl text-green-500"></i>
+                                <button class="text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                            <h4 class="font-medium text-gray-900 text-sm truncate">Cronograma_Detalhado.xlsx</h4>
+                            <p class="text-xs text-gray-500 mt-1">856 KB • 15/02/2024</p>
+                        </div>
+
+                        <!-- Image File -->
+                        <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 hover:bg-indigo-50 cursor-pointer transition-colors">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-full h-20 bg-gray-100 rounded flex items-center justify-center">
+                                    <img src="https://via.placeholder.com/150x100" alt="Preview" class="rounded">
+                                </div>
+                            </div>
+                            <h4 class="font-medium text-gray-900 text-sm truncate">Mockup_Tela_Login.png</h4>
+                            <p class="text-xs text-gray-500 mt-1">1.2 MB • 20/02/2024</p>
+                        </div>
+
+                        <!-- ZIP File -->
+                        <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 hover:bg-indigo-50 cursor-pointer transition-colors">
+                            <div class="flex items-start justify-between mb-3">
+                                <i class="fas fa-file-archive text-3xl text-purple-500"></i>
+                                <button class="text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                            <h4 class="font-medium text-gray-900 text-sm truncate">Backup_Sistema_v1.2.zip</h4>
+                            <p class="text-xs text-gray-500 mt-1">45.8 MB • 01/03/2024</p>
+                        </div>
+
+                        <!-- Word File -->
+                        <div class="border border-gray-200 rounded-lg p-4 hover:border-indigo-300 hover:bg-indigo-50 cursor-pointer transition-colors">
+                            <div class="flex items-start justify-between mb-3">
+                                <i class="fas fa-file-word text-3xl text-blue-500"></i>
+                                <button class="text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
+                            <h4 class="font-medium text-gray-900 text-sm truncate">Manual_Usuario.docx</h4>
+                            <p class="text-xs text-gray-500 mt-1">3.2 MB • 05/03/2024</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Files -->
+            <div class="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Arquivos Recentes</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-file-pdf text-red-500 mr-3"></i>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Relatório_Progresso_Mar2024.pdf</p>
+                                <p class="text-xs text-gray-500">Modificado há 2 horas</p>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <p class="text-sm font-medium text-blue-600">Em 5 dias</p>
-                            <p class="text-xs text-gray-500">20/03/2024</p>
+                        <button class="text-indigo-600 hover:text-indigo-800">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-file-image text-green-500 mr-3"></i>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Logo_Versao_Final.svg</p>
+                                <p class="text-xs text-gray-500">Modificado ontem</p>
+                            </div>
                         </div>
+                        <button class="text-indigo-600 hover:text-indigo-800">
+                            <i class="fas fa-download"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -398,5 +868,43 @@
             </div>
         </div>
     </footer>
+
+    <!-- JavaScript for Tab Navigation -->
+    <script>
+        function showTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.add('hidden'));
+            
+            // Show selected tab
+            document.getElementById('tab-' + tabName).classList.remove('hidden');
+            
+            // Update navigation styling
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.classList.remove('text-gray-900', 'font-medium', 'border-b-2', 'border-indigo-600');
+                link.classList.add('text-gray-600');
+            });
+            
+            // Style active nav link
+            const activeLink = document.getElementById('nav-' + tabName);
+            const activeMobileLink = document.getElementById('nav-mobile-' + tabName);
+            
+            if (activeLink) {
+                activeLink.classList.remove('text-gray-600');
+                activeLink.classList.add('text-gray-900', 'font-medium', 'border-b-2', 'border-indigo-600');
+            }
+            
+            if (activeMobileLink) {
+                const mobileLinks = document.querySelectorAll('[id^="nav-mobile-"]');
+                mobileLinks.forEach(link => {
+                    link.classList.remove('text-indigo-600', 'font-medium', 'border-b-2', 'border-indigo-600');
+                    link.classList.add('text-gray-600');
+                });
+                activeMobileLink.classList.remove('text-gray-600');
+                activeMobileLink.classList.add('text-indigo-600', 'font-medium', 'border-b-2', 'border-indigo-600');
+            }
+        }
+    </script>
 </body>
 </html>
