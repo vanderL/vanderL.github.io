@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokerTrack - Home Player</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #1a1a1a;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #2a2a2a;
+            padding: 1rem;
+            border-bottom: 1px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #4CAF50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .user-details h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .user-details p {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .club-selector {
+            background: #333;
+            border: 1px solid #444;
+            border-radius: 20px;
+            padding: 6px 12px;
+            color: #fff;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .section {
+            background: #2a2a2a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card {
+            background: #333;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4CAF50;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .ranking-position {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .position-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .position-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .recent-games {
+            margin-top: 1rem;
+        }
+
+        .game-item {
+            background: #333;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .game-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .game-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .game-info p {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .game-result {
+            text-align: right;
+        }
+
+        .game-position {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .game-position.winner {
+            color: #FFD700;
+        }
+
+        .game-position.podium {
+            color: #4CAF50;
+        }
+
+        .game-position.other {
+            color: #888;
+        }
+
+        .game-points {
+            font-size: 0.8rem;
+            color: #4CAF50;
+        }
+
+        .next-tournaments {
+            margin-top: 1rem;
+        }
+
+        .tournament-item {
+            background: #333;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tournament-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .tournament-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .tournament-info p {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .confirm-btn {
+            background: #4CAF50;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .confirm-btn.confirmed {
+            background: #333;
+            color: #4CAF50;
+        }
+
+        .bottom-nav {
+            background: #2a2a2a;
+            border-top: 1px solid #333;
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .nav-content {
+            max-width: 400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .nav-item:hover {
+            background: #333;
+        }
+
+        .nav-item.active {
+            color: #4CAF50;
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+        }
+
+        .nav-label {
+            font-size: 0.7rem;
+        }
+
+        .period-selector {
+            display: flex;
+            background: #333;
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .period-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #888;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .period-btn.active {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .saldo-card {
+            background: linear-gradient(135deg, #333, #444);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .saldo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .saldo-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #4CAF50;
+        }
+
+        .saque-btn {
+            background: #4CAF50;
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.75rem;
+                margin-bottom: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="user-info">
+                <div class="avatar">JS</div>
+                <div class="user-details">
+                    <h3>João Silva</h3>
+                    <p>Player desde Jan/2024</p>
+                </div>
+            </div>
+            <select class="club-selector" id="clubSelector" onchange="changeClub()">
+                <option value="ldm">LDM Poker</option>
+                <option value="ace">Ace Club</option>
+            </select>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Saldo PPPoker -->
+        <div class="section">
+            <div class="section-title">💰 Saldo PPPoker</div>
+            <div class="saldo-card">
+                <div class="saldo-header">
+                    <div>
+                        <div class="saldo-value">R$ 156,80</div>
+                        <div style="font-size: 0.8rem; color: #888;">Disponível para saque</div>
+                    </div>
+                    <button class="saque-btn" onclick="solicitarSaque()">Sacar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Minha Posição no Ranking -->
+        <div class="section">
+            <div class="section-title">🏆 Meu Ranking - LDM Poker</div>
+            
+            <div class="period-selector">
+                <button class="period-btn active" onclick="changePeriod('mes')">Este Mês</button>
+                <button class="period-btn" onclick="changePeriod('total')">Geral</button>
+            </div>
+
+            <div class="ranking-position">
+                <div class="position-number">3º</div>
+                <div class="position-label">lugar no ranking mensal</div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">847</div>
+                    <div class="stat-label">Pontos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Jogos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">Vitórias</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Top 3</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Próximos Torneios -->
+        <div class="section">
+            <div class="section-title">📅 Próximos Torneios</div>
+            
+            <div class="next-tournaments">
+                <div class="tournament-item">
+                    <div class="tournament-info">
+                        <h4>LSOP Online</h4>
+                        <p>Hoje • 22:00 • Buy-in R$ 10</p>
+                    </div>
+                    <button class="confirm-btn" onclick="toggleConfirm(this)">Confirmar</button>
+                </div>
+                
+                <div class="tournament-item">
+                    <div class="tournament-info">
+                        <h4>Satélite LDM</h4>
+                        <p>Amanhã • 20:00 • Buy-in R$ 30</p>
+                    </div>
+                    <button class="confirm-btn confirmed" onclick="toggleConfirm(this)">✓ Confirmado</button>
+                </div>
+                
+                <div class="tournament-item">
+                    <div class="tournament-info">
+                        <h4>LSOP Especial</h4>
+                        <p>Sábado • 21:00 • Buy-in R$ 20</p>
+                    </div>
+                    <button class="confirm-btn" onclick="toggleConfirm(this)">Confirmar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Jogos Recentes -->
+        <div class="section">
+            <div class="section-title">🎮 Jogos Recentes</div>
+            
+            <div class="recent-games">
+                <div class="game-item">
+                    <div class="game-info">
+                        <h4>LSOP Online</h4>
+                        <p>Ontem • 14 players</p>
+                    </div>
+                    <div class="game-result">
+                        <div class="game-position winner">1º</div>
+                        <div class="game-points">+125 pts</div>
+                    </div>
+                </div>
+                
+                <div class="game-item">
+                    <div class="game-info">
+                        <h4>Satélite LDM</h4>
+                        <p>Anteontem • 8 players</p>
+                    </div>
+                    <div class="game-result">
+                        <div class="game-position podium">3º</div>
+                        <div class="game-points">+45 pts</div>
+                    </div>
+                </div>
+                
+                <div class="game-item">
+                    <div class="game-info">
+                        <h4>LSOP Online</h4>
+                        <p>15 Jan • 12 players</p>
+                    </div>
+                    <div class="game-result">
+                        <div class="game-position other">8º</div>
+                        <div class="game-points">+12 pts</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-content">
+            <div class="nav-item active">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">Home</div>
+            </div>
+            <div class="nav-item" onclick="goToRankings()">
+                <div class="nav-icon">🏆</div>
+                <div class="nav-label">Rankings</div>
+            </div>
+            <div class="nav-item" onclick="goToTournaments()">
+                <div class="nav-icon">📅</div>
+                <div class="nav-label">Torneios</div>
+            </div>
+            <div class="nav-item" onclick="goToProfile()">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">Perfil</div>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        let currentClub = 'ldm';
+        let currentPeriod = 'mes';
+
+        function changeClub() {
+            const selector = document.getElementById('clubSelector');
+            currentClub = selector.value;
+            
+            // Update ranking data based on selected club
+            if (currentClub === 'ace') {
+                document.querySelector('.position-number').textContent = '5º';
+                document.querySelector('.stat-value').textContent = '423';
+                document.querySelector('.section-title').innerHTML = '🏆 Meu Ranking - Ace Club';
+            } else {
+                document.querySelector('.position-number').textContent = '3º';
+                document.querySelector('.stat-value').textContent = '847';
+                document.querySelector('.section-title').innerHTML = '🏆 Meu Ranking - LDM Poker';
+            }
+        }
+
+        function changePeriod(period) {
+            // Update period buttons
+            document.querySelectorAll('.period-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            currentPeriod = period;
+            
+            // Update stats based on period
+            if (period === 'total') {
+                document.querySelector('.position-number').textContent = '2º';
+                document.querySelector('.position-label').textContent = 'lugar no ranking geral';
+                document.querySelectorAll('.stat-value')[0].textContent = '2.847';
+                document.querySelectorAll('.stat-value')[1].textContent = '48';
+                document.querySelectorAll('.stat-value')[2].textContent = '8';
+                document.querySelectorAll('.stat-value')[3].textContent = '22';
+            } else {
+                document.querySelector('.position-number').textContent = '3º';
+                document.querySelector('.position-label').textContent = 'lugar no ranking mensal';
+                document.querySelectorAll('.stat-value')[0].textContent = '847';
+                document.querySelectorAll('.stat-value')[1].textContent = '12';
+                document.querySelectorAll('.stat-value')[2].textContent = '2';
+                document.querySelectorAll('.stat-value')[3].textContent = '5';
+            }
+        }
+
+        function toggleConfirm(button) {
+            if (button.classList.contains('confirmed')) {
+                button.classList.remove('confirmed');
+                button.textContent = 'Confirmar';
+            } else {
+                button.classList.add('confirmed');
+                button.textContent = '✓ Confirmado';
+            }
+        }
+
+        function solicitarSaque() {
+            alert('💰 Solicitação de Saque\n\nValor disponível: R$ 156,80\n\nSua solicitação será enviada para aprovação do admin do clube.\n\n✅ Saque solicitado com sucesso!');
+        }
+
+        function goToRankings() {
+            alert('🏆 Navegando para Rankings Completos');
+        }
+
+        function goToTournaments() {
+            alert('📅 Navegando para Confirmar Presença');
+        }
+
+        function goToProfile() {
+            alert('👤 Navegando para Meu Perfil');
+        }
+    </script>
+</body>
+</html>

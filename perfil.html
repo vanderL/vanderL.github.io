@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokerTrack - Meu Perfil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #1a1a1a;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #2a2a2a;
+            padding: 1rem;
+            border-bottom: 1px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #4CAF50;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .header-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .edit-btn {
+            background: none;
+            border: none;
+            color: #4CAF50;
+            font-size: 0.9rem;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 1rem;
+            margin-bottom: 80px;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #2a2a2a, #333);
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #4CAF50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-subtitle {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 1rem;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .profile-stat {
+            text-align: center;
+        }
+
+        .profile-stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #4CAF50;
+        }
+
+        .profile-stat-label {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 0.25rem;
+        }
+
+        .section {
+            background: #2a2a2a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .club-item {
+            background: #333;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .club-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .club-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .club-info p {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .club-stats {
+            text-align: right;
+        }
+
+        .club-position {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #4CAF50;
+            margin-bottom: 0.25rem;
+        }
+
+        .club-points {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .achievement-card {
+            background: #333;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .achievement-desc {
+            font-size: 0.7rem;
+            color: #888;
+        }
+
+        .stats-detailed {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-detail {
+            background: #333;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .stat-detail-label {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-detail-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #4CAF50;
+        }
+
+        .history-item {
+            background: #333;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .history-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .history-info p {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .history-result {
+            text-align: right;
+        }
+
+        .history-position {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .history-position.winner {
+            color: #FFD700;
+        }
+
+        .history-position.podium {
+            color: #4CAF50;
+        }
+
+        .history-position.itm {
+            color: #FFA500;
+        }
+
+        .history-position.other {
+            color: #888;
+        }
+
+        .history-points {
+            font-size: 0.8rem;
+            color: #4CAF50;
+        }
+
+        .settings-item {
+            background: #333;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .settings-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .settings-item:hover {
+            background: #3a3a3a;
+        }
+
+        .settings-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .settings-icon {
+            font-size: 1.2rem;
+        }
+
+        .settings-text h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .settings-text p {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .settings-arrow {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .filter-tabs {
+            display: flex;
+            background: #333;
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .filter-tab {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #888;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-tab.active {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .bottom-nav {
+            background: #2a2a2a;
+            border-top: 1px solid #333;
+            padding: 1rem;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .nav-content {
+            max-width: 400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .nav-item:hover {
+            background: #333;
+        }
+
+        .nav-item.active {
+            color: #4CAF50;
+        }
+
+        .nav-icon {
+            font-size: 1.2rem;
+        }
+
+        .nav-label {
+            font-size: 0.7rem;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.75rem;
+            }
+            
+            .achievements-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <button class="back-btn" onclick="goBack()">←</button>
+            <div class="header-title">Meu Perfil</div>
+            <button class="edit-btn" onclick="editProfile()">Editar</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar">JS</div>
+            <div class="profile-name">João Silva</div>
+            <div class="profile-subtitle">Jogador desde Janeiro 2024</div>
+            
+            <div class="profile-stats">
+                <div class="profile-stat">
+                    <div class="profile-stat-value">48</div>
+                    <div class="profile-stat-label">Jogos</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-value">8</div>
+                    <div class="profile-stat-label">Vitórias</div>
+                </div>
+                <div class="profile-stat">
+                    <div class="profile-stat-value">22</div>
+                    <div class="profile-stat-label">Top 3</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Meus Clubes -->
+        <div class="section">
+            <div class="section-title">🏛️ Meus Clubes</div>
+            
+            <div class="club-item">
+                <div class="club-info">
+                    <h4>LDM Poker</h4>
+                    <p>Membro desde Jan 2024 • 42 jogos</p>
+                </div>
+                <div class="club-stats">
+                    <div class="club-position">2º lugar</div>
+                    <div class="club-points">2.847 pontos</div>
+                </div>
+            </div>
+            
+            <div class="club-item">
+                <div class="club-info">
+                    <h4>Ace Club</h4>
+                    <p>Membro desde Mar 2024 • 6 jogos</p>
+                </div>
+                <div class="club-stats">
+                    <div class="club-position">5º lugar</div>
+                    <div class="club-points">423 pontos</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conquistas -->
+        <div class="section">
+            <div class="section-title">🏆 Conquistas</div>
+            
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <div class="achievement-icon">👑</div>
+                    <div class="achievement-title">Primeiro Lugar</div>
+                    <div class="achievement-desc">8 vitórias</div>
+                </div>
+                
+                <div class="achievement-card">
+                    <div class="achievement-icon">🥉</div>
+                    <div class="achievement-title">Pódio Frequente</div>
+                    <div class="achievement-desc">22 top 3</div>
+                </div>
+                
+                <div class="achievement-card">
+                    <div class="achievement-icon">🔥</div>
+                    <div class="achievement-title">Sequência</div>
+                    <div class="achievement-desc">5 ITMs seguidos</div>
+                </div>
+                
+                <div class="achievement-card">
+                    <div class="achievement-icon">📈</div>
+                    <div class="achievement-title">Em Alta</div>
+                    <div class="achievement-desc">Top 3 este mês</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estatísticas Detalhadas -->
+        <div class="section">
+            <div class="section-title">📊 Estatísticas Detalhadas</div>
+            
+            <div class="stats-detailed">
+                <div class="stat-detail">
+                    <div class="stat-detail-label">Taxa de ITM</div>
+                    <div class="stat-detail-value">45.8%</div>
+                </div>
+                
+                <div class="stat-detail">
+                    <div class="stat-detail-label">Média de Pontos</div>
+                    <div class="stat-detail-value">59.3</div>
+                </div>
+                
+                <div class="stat-detail">
+                    <div class="stat-detail-label">ROI Mensal</div>
+                    <div class="stat-detail-value">+23.5%</div>
+                </div>
+                
+                <div class="stat-detail">
+                    <div class="stat-detail-label">Melhor Sequência</div>
+                    <div class="stat-detail-value">5 ITMs</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Histórico de Jogos -->
+        <div class="section">
+            <div class="section-title">📈 Histórico de Jogos</div>
+            
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="filterHistory('all')">Todos</button>
+                <button class="filter-tab" onclick="filterHistory('wins')">Vitórias</button>
+                <button class="filter-tab" onclick="filterHistory('itm')">ITM</button>
+            </div>
+            
+            <div id="historyList">
+                <div class="history-item">
+                    <div class="history-info">
+                        <h4>LSOP Online - LDM</h4>
+                        <p>Ontem • 14 players • R$ 10</p>
+                    </div>
+                    <div class="history-result">
+                        <div class="history-position winner">1º</div>
+                        <div class="history-points">+125 pts</div>
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-info">
+                        <h4>Satélite LDM</h4>
+                        <p>Anteontem • 8 players • R$ 30</p>
+                    </div>
+                    <div class="history-result">
+                        <div class="history-position podium">3º</div>
+                        <div class="history-points">+45 pts</div>
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-info">
+                        <h4>High Stakes - Ace</h4>
+                        <p>15 Jan • 10 players • R$ 50</p>
+                    </div>
+                    <div class="history-result">
+                        <div class="history-position itm">4º</div>
+                        <div class="history-points">+32 pts</div>
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-info">
+                        <h4>LSOP Online - LDM</h4>
+                        <p>14 Jan • 12 players • R$ 10</p>
+                    </div>
+                    <div class="history-result">
+                        <div class="history-position other">8º</div>
+                        <div class="history-points">+12 pts</div>
+                    </div>
+                </div>
+                
+                <div class="history-item">
+                    <div class="history-info">
+                        <h4>Satélite LDM</h4>
+                        <p>12 Jan • 6 players • R$ 30</p>
+                    </div>
+                    <div class="history-result">
+                        <div class="history-position winner">1º</div>
+                        <div class="history-points">+98 pts</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Configurações -->
+        <div class="section">
+            <div class="section-title">⚙️ Configurações</div>
+            
+            <div class="settings-item" onclick="editPersonalInfo()">
+                <div class="settings-info">
+                    <div class="settings-icon">👤</div>
+                    <div class="settings-text">
+                        <h4>Informações Pessoais</h4>
+                        <p>Nome, foto, contato</p>
+                    </div>
+                </div>
+                <div class="settings-arrow">›</div>
+            </div>
+            
+            <div class="settings-item" onclick="manageNotifications()">
+                <div class="settings-info">
+                    <div class="settings-icon">🔔</div>
+                    <div class="settings-text">
+                        <h4>Notificações</h4>
+                        <p>Torneios, resultados, lembretes</p>
+                    </div>
+                </div>
+                <div class="settings-arrow">›</div>
+            </div>
+            
+            <div class="settings-item" onclick="privacySettings()">
+                <div class="settings-info">
+                    <div class="settings-icon">🔒</div>
+                    <div class="settings-text">
+                        <h4>Privacidade</h4>
+                        <p>Visibilidade de estatísticas</p>
+                    </div>
+                </div>
+                <div class="settings-arrow">›</div>
+            </div>
+            
+            <div class="settings-item" onclick="supportHelp()">
+                <div class="settings-info">
+                    <div class="settings-icon">❓</div>
+                    <div class="settings-text">
+                        <h4>Ajuda e Suporte</h4>
+                        <p>FAQ, contato, tutoriais</p>
+                    </div>
+                </div>
+                <div class="settings-arrow">›</div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-content">
+            <div class="nav-item" onclick="goToHome()">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">Home</div>
+            </div>
+            <div class="nav-item" onclick="goToRankings()">
+                <div class="nav-icon">🏆</div>
+                <div class="nav-label">Rankings</div>
+            </div>
+            <div class="nav-item" onclick="goToTournaments()">
+                <div class="nav-icon">📅</div>
+                <div class="nav-label">Torneios</div>
+            </div>
+            <div class="nav-item active">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">Perfil</div>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        function filterHistory(type) {
+            // Update filter tabs
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            
+            // Filter history items (simplified for demo)
+            const historyItems = document.querySelectorAll('.history-item');
+            
+            historyItems.forEach(item => {
+                const position = item.querySelector('.history-position');
+                const positionClass = position.className;
+                
+                if (type === 'all') {
+                    item.style.display = 'flex';
+                } else if (type === 'wins' && positionClass.includes('winner')) {
+                    item.style.display = 'flex';
+                } else if (type === 'itm' && (positionClass.includes('winner') || positionClass.includes('podium') || positionClass.includes('itm'))) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function editProfile() {
+            alert('✏️ Editar Perfil\n\nFuncionalidade em desenvolvimento...\n\n• Alterar foto\n• Editar informações\n• Configurar preferências');
+        }
+
+        function editPersonalInfo() {
+            alert('👤 Informações Pessoais\n\n• Nome: João Silva\n• Email: joao@email.com\n• Telefone: (88) 9 8888-8888\n• Foto: Alterar');
+        }
+
+        function manageNotifications() {
+            alert('🔔 Configurações de Notificação\n\n✅ Novos torneios\n✅ Lembretes de confirmação\n✅ Resultados de jogos\n❌ Rankings semanais\n❌ Promoções');
+        }
+
+        function privacySettings() {
+            alert('🔒 Configurações de Privacidade\n\n✅ Mostrar estatísticas públicas\n✅ Aparecer em rankings\n❌ Mostrar histórico de jogos\n✅ Permitir convites');
+        }
+
+        function supportHelp() {
+            alert('❓ Ajuda e Suporte\n\n📖 Como funciona o sistema de pontos?\n📞 Contatar administrador\n🎮 Tutorial PPPoker\n📋 Termos de uso');
+        }
+
+        function goBack() {
+            alert('← Voltando para Home Player');
+        }
+
+        function goToHome() {
+            alert('🏠 Navegando para Home');
+        }
+
+        function goToRankings() {
+            alert('🏆 Navegando para Rankings');
+        }
+
+        function goToTournaments() {
+            alert('📅 Navegando para Torneios');
+        }
+    </script>
+</body>
+</html>
