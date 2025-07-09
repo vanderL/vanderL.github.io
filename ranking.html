@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokerTrack - Rankings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #1a1a1a;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #2a2a2a;
+            padding: 1rem;
+            border-bottom: 1px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #4CAF50;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .header-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .period-btn {
+            background: #333;
+            border: none;
+            color: #888;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .tabs {
+            display: flex;
+            background: #2a2a2a;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            padding: 4px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .tab.active {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .tab:not(.active) {
+            color: #888;
+        }
+
+        .ranking-card {
+            background: #2a2a2a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .ranking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .ranking-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .ranking-stats {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .ranking-list {
+            list-style: none;
+        }
+
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .ranking-item:last-child {
+            border-bottom: none;
+        }
+
+        .ranking-item.me {
+            background: rgba(76, 175, 80, 0.1);
+            margin: 0 -12px;
+            padding: 12px;
+            border-radius: 8px;
+            border-bottom: 1px solid transparent;
+        }
+
+        .position {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-right: 12px;
+        }
+
+        .position.first {
+            background: #FFD700;
+            color: #1a1a1a;
+        }
+
+        .position.second {
+            background: #C0C0C0;
+            color: #1a1a1a;
+        }
+
+        .position.third {
+            background: #CD7F32;
+            color: white;
+        }
+
+        .position.me {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .position.other {
+            background: #333;
+            color: #888;
+        }
+
+        .player-info {
+            flex: 1;
+        }
+
+        .player-name {
+            font-weight: 600;
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 2px;
+        }
+
+        .player-name.me {
+            color: #4CAF50;
+        }
+
+        .player-stats {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .player-points {
+            text-align: right;
+        }
+
+        .points {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #4CAF50;
+            margin-bottom: 2px;
+        }
+
+        .player-games {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            background: #333;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #4CAF50;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #888;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <button class="back-btn" onclick="goBack()">←</button>
+            <div class="header-title">Rankings LDM</div>
+            <button class="period-btn" onclick="changePeriod()">2024</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('tournaments')">🏆 Torneios</div>
+            <div class="tab" onclick="switchTab('satellites')">🚀 Satélites</div>
+        </div>
+
+        <!-- Stats Summary -->
+        <div class="summary-stats">
+            <div class="stat-item">
+                <div class="stat-value" id="total-games">127</div>
+                <div class="stat-label">Jogos em 2024</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="active-players">18</div>
+                <div class="stat-label">Jogadores Ativos</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="total-prize">R$ 18,5K</div>
+                <div class="stat-label">Total Distribuído</div>
+            </div>
+        </div>
+
+        <!-- Tournaments Ranking -->
+        <div id="tournaments-ranking" class="ranking-card">
+            <div class="ranking-header">
+                <div class="ranking-title">🏆 Ranking Torneios</div>
+                <div class="ranking-stats">35 jogadores</div>
+            </div>
+            
+            <ul class="ranking-list">
+                <li class="ranking-item">
+                    <div class="position first">1</div>
+                    <div class="player-info">
+                        <div class="player-name">João Silva</div>
+                        <div class="player-stats">23 jogos • 8 vitórias • 65% ITM</div>
+                    </div>
+                    <div class="player-points">
+                        <div class="points">485</div>
+                        <div class="player-games">23 jogos</div>
+                    </div>
+                </li>
+                
+                <li class="ranking-item">
+                    <div class="position second">2</div>
+                    <div class="player-info">
+                        <div class="player-name">Pedro Costa</div>
+                        <div class="player-stats">28 jogos • 6 vitórias • 57% ITM</div>
+                    </div>
+                    <div class="player-points">
+                        <div class="points">423</div>
+                        <div class="player-games">28 jogos</div>
+                    </div>
+                </li>
+                
+                <li class="ranking-item me">
+                    <div class="position me">3</div>
+                    <div class="player-info">
+                        <div class="player-name me">Maria Santos (Você)</div>
+                        <div class="player-stats">31 jogos • 5 vitórias • 48% ITM</div>
+                    </div>
+                    <div class="player-points">
+                        <div class="points">401</div>
+                        <div class="player-games">31 jogos</div>
+                    </div>
+                </li>
+                
+                <li class="ranking-item">
+                    <div class="position other">4</div>
+                    <div class="player-info">
+                        <div class="player-name">Carlos Lima</div>
+                        <div class="player-stats">19 jogos • 3 vitórias • 42% ITM</div>
+                    </div>
+                    <div class="player-points">
+                        <div class="points">298</div>
+                        <div class="player-games">19 jogos</div>
+                    </div>
+                </li>
+                
+                <li class="ranking-item">
+                    <div class="position other">5</div>
+                    <div class="player-info">
+                        <div class="player-name">Ana Santos</div>
+                        <div class="player-stats">25 jogos • 2 vitórias • 36% ITM</div>
+                    </div>
+                    <div class="player-points">
+                        <div class="points">267</div>
+                        <div class="player-games">25 jogos</div>
+                    </div>
+                </li>
+                
+                <li class="ranking-item">
+                    <div class="position other">6</div>
+                    <div class="player-info">
+                        <div class="player-name">Roberto Alves</div>
+                        <div class="player-stats">16 jogos • 1 vitória • 31% ITM</div>
+                    </div>
+                    <div class="player-points">
+                        <div class="points">189</div>
+                        <div class="player-games">16 jogos</div>
+                    </div>
+                </li>
+
+                <li class="ranking-item">
+                    <div class="position other">7</div>
+                    <div class="player-info">
+                        <div class="player-name">Francisco Admin</div>
+                        <div class="player-stats">12 jogos • 2 vitórias • 41% ITM</div>
+                    </div>
+                    <div class="player-points">
+                        <div class="points">156</div>
+                        <div class="player-games">12 jogos</div>
+                    </div>
+                </li>
+
+                <li class="ranking-item">
+                    <div class="position other">8</div>
+                    <div class="player-info">
+                        <div class="player-name">Lucas Mendes</div>
+                        <div class="player-stats">14 jogos • 1 vitória • 28% ITM</div>
+                    </div>
+                    <div class="player-points">
+                        <div class="points">134</div>
+                        <div class="player-games">14 jogos</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Satellites Ranking (Hidden by default) -->
+        <div id="satellites-ranking" class="ranking-card" style="display: none;">
+            <div class="ranking-header">
+                <div class="ranking-title">🚀 Ranking Satélites</div>
+                <div class="ranking-stats">28 jogadores</div>
+            </div>
+            
+            <ul class="ranking-list">
+                <li class="ranking-item">
+                    <div class="position first">1</div>
+                    <div class="player-info">
+                        <div class="player-name">Carlos Lima</div>
+                        <div class="player-stats">15 satélites • 12 tickets • 80% conversão</div>
+                    </div>
+                    <div class="player-points">
+                        <div class="points">180</div>
+                        <div class="player-games">15 satélites</div>
+                    </div>
+                </li>
+                
+                <li class="ranking-item me">
+                    <div class="position me">2</div>
+                    <div class="player-info">
+                        <div class="player-name me">Maria Santos (Você)</div>
+                        <div class="player-stats">18 satélites • 13 tickets • 72% conversão</div>
+                    </div>
+                    <div class="player-points">
+                        <div class="points">156</div>
+                        <div class="player-games">18 satélites</div>
+                    </div>
+                </li>
+                
+                <li class="ranking-item">
+                    <div class="position third">3</div>
+                    <div class="player-info">
+                        <div class="player-name">João Silva</div>
+                        <div class="player-stats">12 satélites • 8 tickets • 67% conversão</div>
+                    </div>
+                    <div class="player-points">
+                        <div class="points">128</div>
+                        <div class="player-games">12 satélites</div>
+                    </div>
+                </li>
+                
+                <li class="ranking-item">
+                    <div class="position other">4</div>
+                    <div class="player-info">
+                        <div class="player-name">Pedro Costa</div>
+                        <div class="player-stats">20 satélites • 11 tickets • 55% conversão</div>
+                    </div>
+                    <div class="player-points">
+                        <div class="points">99</div>
+                        <div class="player-games">20 satélites</div>
+                    </div>
+                </li>
+                
+                <li class="ranking-item">
+                    <div class="position other">5</div>
+                    <div class="player-info">
+                        <div class="player-name">Ana Santos</div>
+                        <div class="player-stats">14 satélites • 6 tickets • 43% conversão</div>
+                    </div>
+                    <div class="player-points">
+                        <div class="points">72</div>
+                        <div class="player-games">14 satélites</div>
+                    </div>
+                </li>
+
+                <li class="ranking-item">
+                    <div class="position other">6</div>
+                    <div class="player-info">
+                        <div class="player-name">Francisco Admin</div>
+                        <div class="player-stats">8 satélites • 4 tickets • 50% conversão</div>
+                    </div>
+                    <div class="player-points">
+                        <div class="points">64</div>
+                        <div class="player-games">8 satélites</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+            
+            // Hide all ranking cards
+            document.getElementById('tournaments-ranking').style.display = 'none';
+            document.getElementById('satellites-ranking').style.display = 'none';
+            
+            // Show selected ranking
+            document.getElementById(tab + '-ranking').style.display = 'block';
+            
+            // Update stats based on tab
+            if (tab === 'tournaments') {
+                document.getElementById('total-games').textContent = '127';
+                document.getElementById('active-players').textContent = '18';
+                document.getElementById('total-prize').textContent = 'R$ 18,5K';
+            } else {
+                document.getElementById('total-games').textContent = '89';
+                document.getElementById('active-players').textContent = '15';
+                document.getElementById('total-prize').textContent = 'R$ 12,3K';
+            }
+        }
+
+        function goBack() {
+            alert('← Voltando para tela principal');
+        }
+
+        function changePeriod() {
+            const periods = ['2024', 'Janeiro', 'Dezembro', 'Novembro'];
+            const current = event.target.textContent;
+            const currentIndex = periods.indexOf(current);
+            const nextIndex = (currentIndex + 1) % periods.length;
+            event.target.textContent = periods[nextIndex];
+        }
+
+        // Highlight current user
+        document.querySelectorAll('.ranking-item.me').forEach(item => {
+            item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+    </script>
+</body>
+</html>
