@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokerTrack - Criar Torneio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #1a1a1a;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #2a2a2a;
+            padding: 1rem;
+            border-bottom: 1px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #4CAF50;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .header-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .create-btn {
+            background: #4CAF50;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .create-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .section {
+            background: #2a2a2a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            background: #333;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            background: #333;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 12px;
+            background: #333;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.9rem;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .template-card {
+            background: #333;
+            border: 2px solid #444;
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .template-card:hover {
+            border-color: #4CAF50;
+        }
+
+        .template-card.active {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .template-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .template-details {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .rebuy-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .rebuy-item {
+            background: #444;
+            border-radius: 6px;
+            padding: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+
+        .rebuy-value {
+            color: #4CAF50;
+            font-weight: 600;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 0.5rem;
+        }
+
+        .checkbox {
+            width: 16px;
+            height: 16px;
+            background: #333;
+            border: 1px solid #444;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .checkbox.checked {
+            background: #4CAF50;
+            border-color: #4CAF50;
+        }
+
+        .preview-section {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .post-preview {
+            background: #0a0a0a;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            color: #4CAF50;
+            white-space: pre-line;
+            margin-bottom: 1rem;
+        }
+
+        .preview-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .preview-btn {
+            flex: 1;
+            padding: 8px;
+            background: #333;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .preview-btn.primary {
+            background: #4CAF50;
+        }
+
+        .info-card {
+            background: #333;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            color: #888;
+        }
+
+        .info-value {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .warning {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid #FFC107;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            color: #FFC107;
+            margin-top: 0.5rem;
+        }
+
+        .success {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid #4CAF50;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            color: #4CAF50;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.75rem;
+            }
+            
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <button class="back-btn" onclick="goBack()">←</button>
+            <div class="header-title">Criar Torneio</div>
+            <button class="create-btn" id="createBtn" onclick="createTournament()">Criar</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Template Selection -->
+        <div class="section">
+            <div class="section-title">🎯 Escolher Template</div>
+            
+            <div class="template-grid">
+                <div class="template-card active" onclick="selectTemplate('lsop')" id="lsop-template">
+                    <div class="template-title">LSOP Online</div>
+                    <div class="template-details">Torneio principal<br>Buy-in padrão</div>
+                </div>
+                <div class="template-card" onclick="selectTemplate('satelite')" id="satelite-template">
+                    <div class="template-title">Satélite</div>
+                    <div class="template-details">Qualificatório<br>Tickets de entrada</div>
+                </div>
+                <div class="template-card" onclick="selectTemplate('especial')" id="especial-template">
+                    <div class="template-title">Especial</div>
+                    <div class="template-details">High stakes<br>Evento único</div>
+                </div>
+                <div class="template-card" onclick="selectTemplate('custom')" id="custom-template">
+                    <div class="template-title">Personalizado</div>
+                    <div class="template-details">Configuração<br>manual</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Basic Info -->
+        <div class="section">
+            <div class="section-title">📝 Informações Básicas</div>
+            
+            <div class="form-group">
+                <label class="form-label">Nome do Torneio</label>
+                <input type="text" class="form-input" id="tournamentName" value="LSOP ONLINE" onchange="updatePreview()">
+            </div>
+
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">Data</label>
+                    <input type="date" class="form-input" id="tournamentDate" onchange="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Horário</label>
+                    <input type="time" class="form-input" id="tournamentTime" value="22:00" onchange="updatePreview()">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Descrição (Opcional)</label>
+                <textarea class="form-textarea" id="tournamentDescription" placeholder="Informações adicionais sobre o torneio..." onchange="updatePreview()"></textarea>
+            </div>
+        </div>
+
+        <!-- Buy-in Structure -->
+        <div class="section">
+            <div class="section-title">💰 Estrutura de Buy-in</div>
+            
+            <div class="grid-3">
+                <div class="form-group">
+                    <label class="form-label">Buy-in (R$)</label>
+                    <input type="number" class="form-input" id="buyIn" value="10" onchange="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Promo (R$)</label>
+                    <input type="number" class="form-input" id="promoPrice" value="5" onchange="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Primeiros</label>
+                    <input type="number" class="form-input" id="promoSlots" value="8" onchange="updatePreview()">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Rebuys Permitidos</label>
+                <div class="rebuy-options" id="rebuyOptions">
+                    <div class="rebuy-item">
+                        <span>Rebuy Simples</span>
+                        <span class="rebuy-value">R$ 10</span>
+                    </div>
+                    <div class="rebuy-item">
+                        <span>Rebuy Duplo</span>
+                        <span class="rebuy-value">R$ 20</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Structure -->
+        <div class="section">
+            <div class="section-title">🎮 Estrutura do Jogo</div>
+            
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">Chips Iniciais</label>
+                    <input type="number" class="form-input" id="initialChips" value="25000" onchange="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Blinds (min)</label>
+                    <input type="number" class="form-input" id="blindLevels" value="10" onchange="updatePreview()">
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">Late Registration</label>
+                    <input type="time" class="form-input" id="lateReg" value="00:10" onchange="updatePreview()">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Máx. Jogadores</label>
+                    <input type="number" class="form-input" id="maxPlayers" value="15" onchange="updatePreview()">
+                </div>
+            </div>
+        </div>
+
+        <!-- Tournament Info -->
+        <div class="section">
+            <div class="section-title">📊 Informações Calculadas</div>
+            
+            <div class="info-card">
+                <div class="info-item">
+                    <span class="info-label">Prize Pool Estimado:</span>
+                    <span class="info-value" id="estimatedPrize">R$ 150</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Valor por Player:</span>
+                    <span class="info-value" id="valuePerPlayer">R$ 10</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Duração Estimada:</span>
+                    <span class="info-value" id="estimatedDuration">2h30min</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Grau de Pontuação:</span>
+                    <span class="info-value" id="pointsGrade">0.1 (Normal)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Post Preview -->
+        <div class="section">
+            <div class="section-title">📱 Preview do Post</div>
+            
+            <div class="preview-section">
+                <div class="post-preview" id="postPreview">
+LSOP ONLINE
+HOJE - 22:00 - LATE 00:10
+
+BUY IN PROMO R$5 25K
+8 PRIMEIROS INSCRITOS ATÉ O INÍCIO DO TORNEIO
+
+BUY IN R$10 25K
+REBUY R$10 25K
+REBUY DUPLO R$20 25K
+
+BLINDS - 10 MIN
+
+🎯 4420673 📱 (88) 9 8114-0471
+                </div>
+                
+                <div class="preview-actions">
+                    <button class="preview-btn" onclick="copyPost()">📋 Copiar</button>
+                    <button class="preview-btn primary" onclick="shareWhatsApp()">📱 WhatsApp</button>
+                </div>
+            </div>
+
+            <div class="success" id="successMessage" style="display: none;">
+                ✅ Post copiado! Cole no WhatsApp do grupo LDM
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTemplate = 'lsop';
+
+        function selectTemplate(template) {
+            // Remove active class from all templates
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Add active class to selected template
+            document.getElementById(`${template}-template`).classList.add('active');
+            currentTemplate = template;
+            
+            // Load template presets
+            loadTemplatePresets(template);
+            updatePreview();
+        }
+
+        function loadTemplatePresets(template) {
+            const presets = {
+                lsop: {
+                    name: 'LSOP ONLINE',
+                    buyIn: 10,
+                    promoPrice: 5,
+                    promoSlots: 8,
+                    initialChips: 25000,
+                    blindLevels: 10,
+                    lateReg: '00:10',
+                    maxPlayers: 15
+                },
+                satelite: {
+                    name: 'SATÉLITE LDM',
+                    buyIn: 30,
+                    promoPrice: 20,
+                    promoSlots: 4,
+                    initialChips: 15000,
+                    blindLevels: 8,
+                    lateReg: '00:15',
+                    maxPlayers: 8
+                },
+                especial: {
+                    name: 'HIGH STAKES LDM',
+                    buyIn: 50,
+                    promoPrice: 40,
+                    promoSlots: 5,
+                    initialChips: 50000,
+                    blindLevels: 15,
+                    lateReg: '00:20',
+                    maxPlayers: 12
+                },
+                custom: {
+                    name: 'TORNEIO CUSTOMIZADO',
+                    buyIn: 20,
+                    promoPrice: 15,
+                    promoSlots: 6,
+                    initialChips: 30000,
+                    blindLevels: 12,
+                    lateReg: '00:15',
+                    maxPlayers: 10
+                }
+            };
+
+            const preset = presets[template];
+            document.getElementById('tournamentName').value = preset.name;
+            document.getElementById('buyIn').value = preset.buyIn;
+            document.getElementById('promoPrice').value = preset.promoPrice;
+            document.getElementById('promoSlots').value = preset.promoSlots;
+            document.getElementById('initialChips').value = preset.initialChips;
+            document.getElementById('blindLevels').value = preset.blindLevels;
+            document.getElementById('lateReg').value = preset.lateReg;
+            document.getElementById('maxPlayers').value = preset.maxPlayers;
+
+            // Set today's date by default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tournamentDate').value = today;
+        }
+
+        function updatePreview() {
+            const name = document.getElementById('tournamentName').value;
+            const date = document.getElementById('tournamentDate').value;
+            const time = document.getElementById('tournamentTime').value;
+            const buyIn = document.getElementById('buyIn').value;
+            const promoPrice = document.getElementById('promoPrice').value;
+            const promoSlots = document.getElementById('promoSlots').value;
+            const initialChips = document.getElementById('initialChips').value;
+            const blindLevels = document.getElementById('blindLevels').value;
+            const lateReg = document.getElementById('lateReg').value;
+            const maxPlayers = document.getElementById('maxPlayers').value;
+
+            // Format date
+            const dateObj = new Date(date + 'T00:00:00');
+            const today = new Date();
+            let dateText = '';
+            
+            if (dateObj.toDateString() === today.toDateString()) {
+                dateText = 'HOJE';
+            } else if (dateObj.getTime() === today.getTime() + 24*60*60*1000) {
+                dateText = 'AMANHÃ';
+            } else {
+                dateText = dateObj.toLocaleDateString('pt-BR', { weekday: 'long' }).toUpperCase();
+            }
+
+            // Generate post
+            const post = `${name}
+${dateText} - ${time} - LATE ${lateReg}
+
+BUY IN PROMO R$${promoPrice} ${(initialChips/1000).toFixed(0)}K
+${promoSlots} PRIMEIROS INSCRITOS ATÉ O INÍCIO DO TORNEIO
+
+BUY IN R$${buyIn} ${(initialChips/1000).toFixed(0)}K
+REBUY R$${buyIn} ${(initialChips/1000).toFixed(0)}K
+REBUY DUPLO R$${buyIn * 2} ${(initialChips/1000).toFixed(0)}K
+
+BLINDS - ${blindLevels} MIN
+
+🎯 4420673 📱 (88) 9 8114-0471`;
+
+            document.getElementById('postPreview').textContent = post;
+
+            // Update calculated info
+            updateCalculatedInfo();
+        }
+
+        function updateCalculatedInfo() {
+            const buyIn = parseInt(document.getElementById('buyIn').value) || 0;
+            const maxPlayers = parseInt(document.getElementById('maxPlayers').value) || 0;
+            const blindLevels = parseInt(document.getElementById('blindLevels').value) || 0;
+
+            // Estimated prize pool (assuming 80% attendance)
+            const estimatedPlayers = Math.floor(maxPlayers * 0.8);
+            const estimatedPrize = estimatedPlayers * buyIn;
+            
+            // Estimated duration (based on blind levels)
+            const estimatedMinutes = estimatedPlayers * blindLevels * 1.5;
+            const hours = Math.floor(estimatedMinutes / 60);
+            const minutes = Math.floor(estimatedMinutes % 60);
+
+            // Points grade based on template
+            const gradeMap = {
+                lsop: '0.1 (Normal)',
+                satelite: '0.1 (Normal)', 
+                especial: '0.15 (Importante)',
+                custom: '0.1 (Normal)'
+            };
+
+            document.getElementById('estimatedPrize').textContent = `R$ ${estimatedPrize}`;
+            document.getElementById('valuePerPlayer').textContent = `R$ ${buyIn}`;
+            document.getElementById('estimatedDuration').textContent = `${hours}h${minutes.toString().padStart(2, '0')}min`;
+            document.getElementById('pointsGrade').textContent = gradeMap[currentTemplate];
+        }
+
+        function copyPost() {
+            const postText = document.getElementById('postPreview').textContent;
+            navigator.clipboard.writeText(postText).then(() => {
+                const successMsg = document.getElementById('successMessage');
+                successMsg.style.display = 'block';
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 3000);
+            });
+        }
+
+        function shareWhatsApp() {
+            const postText = document.getElementById('postPreview').textContent;
+            const encodedText = encodeURIComponent(postText);
+            const whatsappUrl = `https://wa.me/?text=${encodedText}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function createTournament() {
+            const name = document.getElementById('tournamentName').value;
+            const date = document.getElementById('tournamentDate').value;
+            const time = document.getElementById('tournamentTime').value;
+
+            if (!name || !date || !time) {
+                alert('❌ Preencha os campos obrigatórios!');
+                return;
+            }
+
+            alert(`✅ Torneio Criado!\n\n🎮 ${name}\n📅 ${date} ${time}\n\n• Post gerado automaticamente\n• Pronto para compartilhar no WhatsApp\n• Sistema aguardando confirmações\n• Rankings preparados para receber resultados`);
+        }
+
+        function goBack() {
+            alert('← Voltando para Home Admin');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTemplatePresets('lsop');
+            updatePreview();
+        });
+    </script>
+</body>
+</html>
