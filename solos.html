@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOLOS - Dashboard Executivo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'solos-green': '#2D5D3D',
+                        'solos-light-green': '#4A7A5A',
+                        'solos-accent': '#6B8F47',
+                        'solos-bg': '#F8FAF6',
+                        'solos-card': '#FFFFFF',
+                        'solos-text': '#1F2937',
+                        'solos-muted': '#6B7280'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #2D5D3D 0%, #4A7A5A 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(45, 93, 61, 0.1), 0 2px 4px -1px rgba(45, 93, 61, 0.06);
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #6B8F47 0%, #4A7A5A 100%);
+        }
+    </style>
+</head>
+<body class="bg-solos-bg font-sans">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                        <span class="text-solos-green font-bold text-xl">S</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">SOLOS</h1>
+                        <p class="text-green-100 text-sm">Economia Circular</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-right">
+                        <p class="text-sm text-green-100">Olá, Camila Araújo</p>
+                        <p class="text-xs text-green-200">Gerente de Projetos</p>
+                    </div>
+                    <div class="w-10 h-10 bg-solos-accent rounded-full flex items-center justify-center">
+                        <span class="text-white font-semibold">CA</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- KPIs Gerais -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-solos-card rounded-xl p-6 card-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-solos-muted text-sm font-medium">Projetos Ativos</p>
+                        <p class="text-3xl font-bold text-solos-green">8</p>
+                    </div>
+                    <div class="w-12 h-12 bg-solos-green bg-opacity-10 rounded-lg flex items-center justify-center">
+                        <span class="text-solos-green text-xl">📊</span>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center text-sm">
+                    <span class="text-green-600 font-medium">+2</span>
+                    <span class="text-solos-muted ml-1">este mês</span>
+                </div>
+            </div>
+
+            <div class="bg-solos-card rounded-xl p-6 card-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-solos-muted text-sm font-medium">Toneladas Coletadas</p>
+                        <p class="text-3xl font-bold text-solos-green">2.4</p>
+                    </div>
+                    <div class="w-12 h-12 bg-solos-accent bg-opacity-10 rounded-lg flex items-center justify-center">
+                        <span class="text-solos-accent text-xl">♻️</span>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center text-sm">
+                    <span class="text-green-600 font-medium">+15%</span>
+                    <span class="text-solos-muted ml-1">vs mês anterior</span>
+                </div>
+            </div>
+
+            <div class="bg-solos-card rounded-xl p-6 card-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-solos-muted text-sm font-medium">Renda Gerada</p>
+                        <p class="text-3xl font-bold text-solos-green">R$ 8.2M</p>
+                    </div>
+                    <div class="w-12 h-12 bg-yellow-500 bg-opacity-10 rounded-lg flex items-center justify-center">
+                        <span class="text-yellow-600 text-xl">💰</span>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center text-sm">
+                    <span class="text-green-600 font-medium">+12%</span>
+                    <span class="text-solos-muted ml-1">crescimento</span>
+                </div>
+            </div>
+
+            <div class="bg-solos-card rounded-xl p-6 card-shadow">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-solos-muted text-sm font-medium">Pessoas Mobilizadas</p>
+                        <p class="text-3xl font-bold text-solos-green">2.5M</p>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-500 bg-opacity-10 rounded-lg flex items-center justify-center">
+                        <span class="text-blue-600 text-xl">👥</span>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center text-sm">
+                    <span class="text-green-600 font-medium">+8%</span>
+                    <span class="text-solos-muted ml-1">engajamento</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projetos Ativos -->
+        <div class="bg-solos-card rounded-xl p-6 card-shadow mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-solos-text">Projetos Ativos</h2>
+                <div class="flex space-x-2">
+                    <button class="px-4 py-2 text-sm bg-solos-green text-white rounded-lg hover:bg-solos-light-green transition-colors">
+                        + Novo Projeto
+                    </button>
+                    <button class="px-4 py-2 text-sm border border-solos-green text-solos-green rounded-lg hover:bg-solos-green hover:text-white transition-colors">
+                        Relatório Geral
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Projeto Vidrado -->
+                <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                                <span class="text-green-600 font-bold text-sm">V</span>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-solos-text">Vidrado</h3>
+                                <p class="text-sm text-solos-muted">Heineken • Caraíva, BA</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 text-xs bg-green-100 text-green-700 rounded-full">Em andamento</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-solos-muted">Resíduos Coletados</span>
+                                <span class="text-solos-text font-medium">13.5%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="progress-bar h-2 rounded-full" style="width: 13.5%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-solos-muted mt-1">
+                                <span>5.4 ton</span>
+                                <span>Meta: 40 ton</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-solos-muted">Estabelecimentos</span>
+                                <span class="text-solos-text font-medium">40%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="progress-bar h-2 rounded-full" style="width: 40%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-solos-muted mt-1">
+                                <span>30</span>
+                                <span>Meta: 75</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                        <div class="text-sm text-solos-muted">
+                            Próxima coleta: <span class="text-solos-text font-medium">22 Jul</span>
+                        </div>
+                        <button class="text-solos-green text-sm font-medium hover:text-solos-light-green">
+                            Ver projeto →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Projeto Re-ciclo -->
+                <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <span class="text-blue-600 font-bold text-sm">R</span>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-solos-text">Re-ciclo</h3>
+                                <p class="text-sm text-solos-muted">Prefeitura Fortaleza • Fortaleza, CE</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 text-xs bg-green-100 text-green-700 rounded-full">Em andamento</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-solos-muted">Resíduos Coletados</span>
+                                <span class="text-solos-text font-medium">78%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="progress-bar h-2 rounded-full" style="width: 78%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-solos-muted mt-1">
+                                <span>234 ton</span>
+                                <span>Meta: 300 ton</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-solos-muted">Usuários Ativos</span>
+                                <span class="text-solos-text font-medium">84%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="progress-bar h-2 rounded-full" style="width: 84%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-solos-muted mt-1">
+                                <span>882</span>
+                                <span>Meta: 1.050</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                        <div class="text-sm text-solos-muted">
+                            Última coleta: <span class="text-solos-text font-medium">Hoje</span>
+                        </div>
+                        <button class="text-solos-green text-sm font-medium hover:text-solos-light-green">
+                            Ver projeto →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Projeto Carnaval Salvador -->
+                <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                <span class="text-yellow-600 font-bold text-sm">C</span>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-solos-text">Carnaval Salvador</h3>
+                                <p class="text-sm text-solos-muted">Ambev • Salvador, BA</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded-full">Finalizado</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-solos-muted">Resíduos Coletados</span>
+                                <span class="text-solos-text font-medium">109%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="progress-bar h-2 rounded-full" style="width: 100%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-solos-muted mt-1">
+                                <span>657 ton</span>
+                                <span>Meta: 600 ton</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-solos-muted">Renda Gerada</span>
+                                <span class="text-solos-text font-medium">R$ 1.3M</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="progress-bar h-2 rounded-full" style="width: 100%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-solos-muted mt-1">
+                                <span>10k catadores</span>
+                                <span>Meta atingida</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                        <div class="text-sm text-solos-muted">
+                            Finalizado: <span class="text-solos-text font-medium">Fev 2024</span>
+                        </div>
+                        <button class="text-solos-green text-sm font-medium hover:text-solos-light-green">
+                            Ver relatório →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Projeto Braskem Recicla -->
+                <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <span class="text-purple-600 font-bold text-sm">B</span>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-solos-text">Braskem Recicla</h3>
+                                <p class="text-sm text-solos-muted">Braskem • Múltiplas cidades</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 text-xs bg-orange-100 text-orange-700 rounded-full">Pausado</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-solos-muted">Eventos Realizados</span>
+                                <span class="text-solos-text font-medium">11/15</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="progress-bar h-2 rounded-full" style="width: 73%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-solos-muted mt-1">
+                                <span>107 ton coletadas</span>
+                                <span>17k visitantes</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-solos-muted">Renda Gerada</span>
+                                <span class="text-solos-text font-medium">R$ 215k</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="progress-bar h-2 rounded-full" style="width: 73%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-solos-muted mt-1">
+                                <span>Meta parcial</span>
+                                <span>Retoma Set/2024</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                        <div class="text-sm text-solos-muted">
+                            Próximo evento: <span class="text-solos-text font-medium">Set 2024</span>
+                        </div>
+                        <button class="text-solos-green text-sm font-medium hover:text-solos-light-green">
+                            Ver projeto →
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alertas e Próximas Ações -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Alertas -->
+            <div class="bg-solos-card rounded-xl p-6 card-shadow">
+                <h3 class="text-lg font-semibold text-solos-text mb-4">🚨 Alertas</h3>
+                <div class="space-y-3">
+                    <div class="flex items-start space-x-3 p-3 bg-red-50 rounded-lg">
+                        <div class="w-2 h-2 bg-red-500 rounded-full mt-2"></div>
+                        <div>
+                            <p class="text-sm font-medium text-red-800">Vidrado abaixo da meta</p>
+                            <p class="text-xs text-red-600">Apenas 13.5% da meta de coleta</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3 p-3 bg-yellow-50 rounded-lg">
+                        <div class="w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
+                        <div>
+                            <p class="text-sm font-medium text-yellow-800">Relatório pendente</p>
+                            <p class="text-xs text-yellow-600">Heineken aguarda relatório mensal</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Próximas Ações -->
+            <div class="bg-solos-card rounded-xl p-6 card-shadow">
+                <h3 class="text-lg font-semibold text-solos-text mb-4">📅 Próximas Ações</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
+                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-blue-800">Coleta Vidrado</p>
+                            <p class="text-xs text-blue-600">22 Jul - Zona 1 e 2</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-green-800">Reunião Ambev</p>
+                            <p class="text-xs text-green-600">25 Jul - Planejamento 2025</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance -->
+            <div class="bg-solos-card rounded-xl p-6 card-shadow">
+                <h3 class="text-lg font-semibold text-solos-text mb-4">📈 Performance</h3>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-solos-muted">Eficiência Geral</span>
+                            <span class="text-solos-text font-medium">87%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="progress-bar h-2 rounded-full" style="width: 87%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-solos-muted">Satisfação Clientes</span>
+                            <span class="text-solos-text font-medium">94%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="progress-bar h-2 rounded-full" style="width: 94%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
