@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOLOS - Gestão de Rotas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'solos-green': '#2D5D3D',
+                        'solos-light-green': '#4A7A5A',
+                        'solos-accent': '#6B8F47',
+                        'solos-bg': '#F8FAF6',
+                        'solos-card': '#FFFFFF',
+                        'solos-text': '#1F2937',
+                        'solos-muted': '#6B7280'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #2D5D3D 0%, #4A7A5A 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(45, 93, 61, 0.1), 0 2px 4px -1px rgba(45, 93, 61, 0.06);
+        }
+        .draggable-item {
+            cursor: move;
+            transition: all 0.2s ease;
+        }
+        .draggable-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(45, 93, 61, 0.15);
+        }
+        .drop-zone {
+            min-height: 100px;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .drop-zone.drag-over {
+            border-color: #6B8F47;
+            background-color: #f0f9ff;
+        }
+        .route-header {
+            background: linear-gradient(90deg, #6B8F47 0%, #4A7A5A 100%);
+        }
+        .zona-badge {
+            background: linear-gradient(135deg, #2D5D3D 0%, #4A7A5A 100%);
+        }
+    </style>
+</head>
+<body class="bg-solos-bg font-sans">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <button onclick="history.back()" class="text-white hover:text-green-200 transition-colors">
+                        ← Voltar
+                    </button>
+                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                        <span class="text-solos-green font-bold text-xl">🗺️</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">Gestão de Rotas</h1>
+                        <p class="text-green-100 text-sm">Projeto Vidrado • Caraíva, BA</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-right">
+                        <p class="text-sm text-green-100">Olá, Camila Araújo</p>
+                        <p class="text-xs text-green-200">Gerente de Projetos</p>
+                    </div>
+                    <div class="w-10 h-10 bg-solos-accent rounded-full flex items-center justify-center">
+                        <span class="text-white font-semibold">CA</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Controles Superiores -->
+        <div class="bg-solos-card rounded-xl p-6 card-shadow mb-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+                <div class="flex items-center space-x-4">
+                    <div>
+                        <label class="block text-sm font-medium text-solos-text mb-1">Data da Rota</label>
+                        <input type="date" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-solos-green focus:border-solos-green" value="2024-07-22">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-solos-text mb-1">Coletor</label>
+                        <select class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-solos-green focus:border-solos-green min-w-40">
+                            <option>José Santos</option>
+                            <option>Maria Silva</option>
+                            <option>Pedro Oliveira</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-solos-text mb-1">Modal</label>
+                        <select class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-solos-green focus:border-solos-green min-w-32">
+                            <option>Triciclo TR-01</option>
+                            <option>Caminhão CM-02</option>
+                            <option>Moto MT-03</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button class="px-4 py-2 bg-solos-green text-white rounded-lg hover:bg-solos-light-green transition-colors">
+                        📊 Relatório da Rota
+                    </button>
+                    <button class="px-4 py-2 bg-solos-accent text-white rounded-lg hover:bg-solos-light-green transition-colors">
+                        💾 Salvar Rota
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rotas por Zona -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- ZONA 1 -->
+            <div class="bg-solos-card rounded-xl card-shadow overflow-hidden">
+                <div class="route-header text-white p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-bold">ZONA 1</h3>
+                            <p class="text-green-100 text-sm">Beira Rio • Centro</p>
+                        </div>
+                        <div class="zona-badge text-white px-3 py-1 rounded-full text-sm font-medium">
+                            8 estabelecimentos
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="text-sm text-solos-muted">
+                            <span class="font-medium">Estimativa:</span> 2h30min
+                        </div>
+                        <div class="text-sm text-solos-muted">
+                            <span class="font-medium">Peso estimado:</span> 45kg
+                        </div>
+                    </div>
+                    
+                    <div class="drop-zone p-2 mb-4" id="zona1-drop">
+                        <div class="space-y-3">
+                            <!-- Estabelecimento 1 -->
+                            <div class="draggable-item bg-white border border-gray-200 rounded-lg p-3 cursor-move" draggable="true">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 bg-solos-green text-white rounded-full flex items-center justify-center text-sm font-bold">
+                                            1
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-solos-text">Restaurante Dom Sabor</p>
+                                            <p class="text-xs text-solos-muted">Av. Navegantes, 123</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">G</span>
+                                        <span class="text-xs text-solos-muted">~8kg</span>
+                                    </div>
+                                </div>
+                                <div class="mt-2 flex items-center justify-between text-xs text-solos-muted">
+                                    <span>Última coleta: 15/07</span>
+                                    <span class="text-green-600">✓ Agendado</span>
+                                </div>
+                            </div>
+
+                            <!-- Estabelecimento 2 -->
+                            <div class="draggable-item bg-white border border-gray-200 rounded-lg p-3 cursor-move" draggable="true">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 bg-solos-green text-white rounded-full flex items-center justify-center text-sm font-bold">
+                                            2
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-solos-text">Pousada Beira Rio</p>
+                                            <p class="text-xs text-solos-muted">R. Miramar, 45</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">M</span>
+                                        <span class="text-xs text-solos-muted">~5kg</span>
+                                    </div>
+                                </div>
+                                <div class="mt-2 flex items-center justify-between text-xs text-solos-muted">
+                                    <span>Última coleta: 16/07</span>
+                                    <span class="text-green-600">✓ Agendado</span>
+                                </div>
+                            </div>
+
+                            <!-- Estabelecimento 3 -->
+                            <div class="draggable-item bg-white border border-gray-200 rounded-lg p-3 cursor-move" draggable="true">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 bg-solos-green text-white rounded-full flex items-center justify-center text-sm font-bold">
+                                            3
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-solos-text">Bar do Caju</p>
+                                            <p class="text-xs text-solos-muted">Beco da Lua, 12</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full">P</span>
+                                        <span class="text-xs text-solos-muted">~3kg</span>
+                                    </div>
+                                </div>
+                                <div class="mt-2 flex items-center justify-between text-xs text-solos-muted">
+                                    <span>Última coleta: 14/07</span>
+                                    <span class="text-yellow-600">⚠️ Pendente</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full py-2 text-sm text-solos-green border border-solos-green rounded-lg hover:bg-solos-green hover:text-white transition-colors">
+                        + Adicionar Estabelecimento
+                    </button>
+                </div>
+            </div>
+
+            <!-- ZONA 2 -->
+            <div class="bg-solos-card rounded-xl card-shadow overflow-hidden">
+                <div class="route-header text-white p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-bold">ZONA 2</h3>
+                            <p class="text-green-100 text-sm">Caramuru • Praia</p>
+                        </div>
+                        <div class="zona-badge text-white px-3 py-1 rounded-full text-sm font-medium">
+                            12 estabelecimentos
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="text-sm text-solos-muted">
+                            <span class="font-medium">Estimativa:</span> 3h45min
+                        </div>
+                        <div class="text-sm text-solos-muted">
+                            <span class="font-medium">Peso estimado:</span> 78kg
+                        </div>
+                    </div>
+                    
+                    <div class="drop-zone p-2 mb-4" id="zona2-drop">
+                        <div class="space-y-3">
+                            <!-- Estabelecimento 1 -->
+                            <div class="draggable-item bg-white border border-gray-200 rounded-lg p-3 cursor-move" draggable="true">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 bg-solos-green text-white rounded-full flex items-center justify-center text-sm font-bold">
+                                            1
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-solos-text">Barraca Caramuru</p>
+                                            <p class="text-xs text-solos-muted">Praia de Caraíva</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">G</span>
+                                        <span class="text-xs text-solos-muted">~12kg</span>
+                                    </div>
+                                </div>
+                                <div class="mt-2 flex items-center justify-between text-xs text-solos-muted">
+                                    <span>Última coleta: 17/07</span>
+                                    <span class="text-green-600">✓ Agendado</span>
+                                </div>
+                            </div>
+
+                            <!-- Estabelecimento 2 -->
+                            <div class="draggable-item bg-white border border-gray-200 rounded-lg p-3 cursor-move" draggable="true">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 bg-solos-green text-white rounded-full flex items-center justify-center text-sm font-bold">
+                                            2
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-solos-text">Awêry Caraíva</p>
+                                            <p class="text-xs text-solos-muted">Caramuru, 78</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">M</span>
+                                        <span class="text-xs text-solos-muted">~6kg</span>
+                                    </div>
+                                </div>
+                                <div class="mt-2 flex items-center justify-between text-xs text-solos-muted">
+                                    <span>Última coleta: 18/07</span>
+                                    <span class="text-green-600">✓ Agendado</span>
+                                </div>
+                            </div>
+
+                            <!-- Estabelecimento 3 -->
+                            <div class="draggable-item bg-white border border-gray-200 rounded-lg p-3 cursor-move" draggable="true">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 bg-solos-green text-white rounded-full flex items-center justify-center text-sm font-bold">
+                                            3
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-solos-text">Casa Deck Caraíva</p>
+                                            <p class="text-xs text-solos-muted">Beco da Lua, 90</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full">P</span>
+                                        <span class="text-xs text-solos-muted">~4kg</span>
+                                    </div>
+                                </div>
+                                <div class="mt-2 flex items-center justify-between text-xs text-solos-muted">
+                                    <span>Última coleta: 19/07</span>
+                                    <span class="text-red-600">❌ Não coletado</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full py-2 text-sm text-solos-green border border-solos-green rounded-lg hover:bg-solos-green hover:text-white transition-colors">
+                        + Adicionar Estabelecimento
+                    </button>
+                </div>
+            </div>
+
+            <!-- ZONA 3 -->
+            <div class="bg-solos-card rounded-xl card-shadow overflow-hidden">
+                <div class="route-header text-white p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-bold">ZONA 3</h3>
+                            <p class="text-green-100 text-sm">Aldeia • Outros</p>
+                        </div>
+                        <div class="zona-badge text-white px-3 py-1 rounded-full text-sm font-medium">
+                            5 estabelecimentos
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="text-sm text-solos-muted">
+                            <span class="font-medium">Estimativa:</span> 1h15min
+                        </div>
+                        <div class="text-sm text-solos-muted">
+                            <span class="font-medium">Peso estimado:</span> 23kg
+                        </div>
+                    </div>
+                    
+                    <div class="drop-zone p-2 mb-4" id="zona3-drop">
+                        <div class="space-y-3">
+                            <!-- Estabelecimento 1 -->
+                            <div class="draggable-item bg-white border border-gray-200 rounded-lg p-3 cursor-move" draggable="true">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 bg-solos-green text-white rounded-full flex items-center justify-center text-sm font-bold">
+                                            1
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-solos-text">Aldeia Pataxó</p>
+                                            <p class="text-xs text-solos-muted">Aldeia Indígena</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">M</span>
+                                        <span class="text-xs text-solos-muted">~7kg</span>
+                                    </div>
+                                </div>
+                                <div class="mt-2 flex items-center justify-between text-xs text-solos-muted">
+                                    <span>Última coleta: 20/07</span>
+                                    <span class="text-green-600">✓ Agendado</span>
+                                </div>
+                            </div>
+
+                            <!-- Estabelecimento 2 -->
+                            <div class="draggable-item bg-white border border-gray-200 rounded-lg p-3 cursor-move" draggable="true">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 bg-solos-green text-white rounded-full flex items-center justify-center text-sm font-bold">
+                                            2
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-solos-text">Padaria Pão Nobre</p>
+                                            <p class="text-xs text-solos-muted">R. Principal, 234</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full">P</span>
+                                        <span class="text-xs text-solos-muted">~3kg</span>
+                                    </div>
+                                </div>
+                                <div class="mt-2 flex items-center justify-between text-xs text-solos-muted">
+                                    <span>Última coleta: 21/07</span>
+                                    <span class="text-yellow-600">⚠️ Pendente</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full py-2 text-sm text-solos-green border border-solos-green rounded-lg hover:bg-solos-green hover:text-white transition-colors">
+                        + Adicionar Estabelecimento
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resumo da Rota -->
+        <div class="mt-6 bg-solos-card rounded-xl p-6 card-shadow">
+            <h3 class="text-lg font-bold text-solos-text mb-4">📊 Resumo da Rota - 22 de Julho</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="text-center p-4 bg-solos-bg rounded-lg">
+                    <div class="text-2xl font-bold text-solos-green">25</div>
+                    <div class="text-sm text-solos-muted">Estabelecimentos</div>
+                </div>
+                <div class="text-center p-4 bg-solos-bg rounded-lg">
+                    <div class="text-2xl font-bold text-solos-green">146kg</div>
+                    <div class="text-sm text-solos-muted">Peso Estimado</div>
+                </div>
+                <div class="text-center p-4 bg-solos-bg rounded-lg">
+                    <div class="text-2xl font-bold text-solos-green">7h30min</div>
+                    <div class="text-sm text-solos-muted">Tempo Estimado</div>
+                </div>
+                <div class="text-center p-4 bg-solos-bg rounded-lg">
+                    <div class="text-2xl font-bold text-solos-green">R$ 438</div>
+                    <div class="text-sm text-solos-muted">Valor Estimado</div>
+                </div>
+            </div>
+            
+            <div class="mt-4 flex items-center justify-between">
+                <div class="flex items-center space-x-4 text-sm text-solos-muted">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                        <span>22 Agendados</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 bg-yellow-500 rounded-full"></span>
+                        <span>2 Pendentes</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                        <span>1 Não coletado</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button class="px-4 py-2 bg-solos-green text-white rounded-lg hover:bg-solos-light-green transition-colors">
+                        🚀 Iniciar Rota
+                    </button>
+                    <button class="px-4 py-2 border border-solos-green text-solos-green rounded-lg hover:bg-solos-green hover:text-white transition-colors">
+                        📋 Exportar Lista
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funcionalidade de drag and drop
+        document.addEventListener('DOMContentLoaded', function() {
+            const draggables = document.querySelectorAll('.draggable-item');
+            const dropZones = document.querySelectorAll('.drop-zone');
+            
+            draggables.forEach(draggable => {
+                draggable.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.setData('text/plain', e.target.outerHTML);
+                    e.dataTransfer.effectAllowed = 'move';
+                });
+            });
+            
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    zone.classList.add('drag-over');
+                });
+                
+                zone.addEventListener('dragleave', function(e) {
+                    zone.classList.remove('drag-over');
+                });
+                
+                zone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    zone.classList.remove('drag-over');
+                    
+                    const data = e.dataTransfer.getData('text/plain');
+                    const newElement = document.createElement('div');
+                    newElement.innerHTML = data;
+                    
+                    // Reordenar números
+                    const items = zone.querySelectorAll('.draggable-item');
+                    const newOrder = items.length + 1;
+                    newElement.querySelector('.bg-solos-green').textContent = newOrder;
+                    
+                    zone.appendChild(newElement.firstElementChild);
+                    
+                    // Reordenar todos os itens
+                    updateOrder(zone);
+                });
+            });
+            
+            function updateOrder(zone) {
+                const items = zone.querySelectorAll('.draggable-item');
+                items.forEach((item, index) => {
+                    item.querySelector('.bg-solos-green').textContent = index + 1;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
