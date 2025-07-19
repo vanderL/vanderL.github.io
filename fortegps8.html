@@ -1,0 +1,1292 @@
+ 
+ <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - Sistema ForteGPS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'forte-green': '#0f5132',
+                        'forte-green-light': '#198754',
+                        'forte-green-dark': '#0a3622'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .config-nav-btn {
+            color: #6b7280;
+            background-color: transparent;
+        }
+        
+        .config-nav-btn:hover {
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+        
+        .config-nav-btn.active {
+            background-color: #0f5132;
+            color: white;
+        }
+
+        /* Animações suaves para transições */
+        .config-section {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scroll suave para navegação */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo e Título -->
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-forte-green rounded-xl flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">F</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">ForteGPS</h1>
+                        <p class="text-sm text-gray-600">Sistema de Gestão Financeira</p>
+                    </div>
+                </div>
+
+                <!-- Menu Principal -->
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Dashboard</a>
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Clientes</a>
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Cobrança</a>
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Mensagens</a>
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Relatórios</a>
+                    <a href="#" class="text-forte-green font-medium border-b-2 border-forte-green pb-1">Configurações</a>
+                </nav>
+
+                <!-- Ações do Usuário -->
+                <div class="flex items-center space-x-4">
+                    <button onclick="exportSettings()" class="bg-forte-green hover:bg-forte-green-dark text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2">
+                        <span>💾</span>
+                        <span>Salvar Tudo</span>
+                    </button>
+                    <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                        <span class="text-gray-600 text-sm font-medium">JD</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Título da Página -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Configurações do Sistema</h2>
+            <p class="text-gray-600">Configure integrações, automações e preferências do sistema</p>
+        </div>
+
+        <!-- Navegação Lateral + Conteúdo -->
+        <div class="grid lg:grid-cols-4 gap-8">
+            <!-- Menu Lateral -->
+            <div class="lg:col-span-1">
+                <nav class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 sticky top-6">
+                    <div class="space-y-2">
+                        <button onclick="showSection('geral')" class="config-nav-btn active w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center space-x-3">
+                            <span>⚙️</span>
+                            <span>Geral</span>
+                        </button>
+                        
+                        <button onclick="showSection('integracoes')" class="config-nav-btn w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center space-x-3">
+                            <span>🔗</span>
+                            <span>Integrações</span>
+                        </button>
+                        
+                        <button onclick="showSection('cobranca')" class="config-nav-btn w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center space-x-3">
+                            <span>📞</span>
+                            <span>Cobrança</span>
+                        </button>
+                        
+                        <button onclick="showSection('mensagens')" class="config-nav-btn w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center space-x-3">
+                            <span>📱</span>
+                            <span>Mensagens</span>
+                        </button>
+                        
+                        <button onclick="showSection('relatorios')" class="config-nav-btn w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center space-x-3">
+                            <span>📊</span>
+                            <span>Relatórios</span>
+                        </button>
+                        
+                        <button onclick="showSection('usuarios')" class="config-nav-btn w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center space-x-3">
+                            <span>👥</span>
+                            <span>Usuários</span>
+                        </button>
+                        
+                        <button onclick="showSection('backup')" class="config-nav-btn w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center space-x-3">
+                            <span>💾</span>
+                            <span>Backup</span>
+                        </button>
+                        
+                        <button onclick="showSection('suporte')" class="config-nav-btn w-full text-left px-4 py-3 rounded-lg transition-colors flex items-center space-x-3">
+                            <span>🆘</span>
+                            <span>Suporte</span>
+                        </button>
+                    </div>
+                </nav>
+            </div>
+
+            <!-- Área de Conteúdo -->
+            <div class="lg:col-span-3">
+                <!-- Seção: Geral -->
+                <div id="geral-section" class="config-section">
+                    <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-6">Configurações Gerais</h3>
+                        
+                        <!-- Informações da Empresa -->
+                        <div class="mb-8">
+                            <h4 class="font-medium text-gray-900 mb-4">Informações da Empresa</h4>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Nome da Empresa</label>
+                                    <input type="text" value="ForteGPS Rastreamento" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">CNPJ</label>
+                                    <input type="text" value="12.345.678/0001-90" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Telefone Principal</label>
+                                    <input type="text" value="(85) 3333-4444" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">E-mail Corporativo</label>
+                                    <input type="email" value="contato@fortegps.com" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Endereço Completo</label>
+                                    <input type="text" value="Rua Exemplo, 123 - Centro, Fortaleza/CE" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Configurações de Sistema -->
+                        <div class="mb-8">
+                            <h4 class="font-medium text-gray-900 mb-4">Configurações de Sistema</h4>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <div class="font-medium text-gray-900">Modo Escuro</div>
+                                        <div class="text-sm text-gray-600">Alterar tema da interface</div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" class="sr-only peer">
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-forte-green peer-focus:ring-opacity-25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forte-green"></div>
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <div class="font-medium text-gray-900">Notificações Push</div>
+                                        <div class="text-sm text-gray-600">Receber alertas no navegador</div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" checked class="sr-only peer">
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-forte-green peer-focus:ring-opacity-25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forte-green"></div>
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <div class="font-medium text-gray-900">Atualização Automática</div>
+                                        <div class="text-sm text-gray-600">Atualizar dados a cada 5 minutos</div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" checked class="sr-only peer">
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-forte-green peer-focus:ring-opacity-25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forte-green"></div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fuso Horário e Formato -->
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-4">Localização e Formato</h4>
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Fuso Horário</label>
+                                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                        <option value="America/Fortaleza" selected>Brasília (UTC-3)</option>
+                                        <option value="America/Sao_Paulo">São Paulo (UTC-3)</option>
+                                        <option value="America/Manaus">Manaus (UTC-4)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Formato de Data</label>
+                                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                        <option value="dd/mm/yyyy" selected>DD/MM/AAAA</option>
+                                        <option value="mm/dd/yyyy">MM/DD/AAAA</option>
+                                        <option value="yyyy-mm-dd">AAAA-MM-DD</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Moeda</label>
+                                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                        <option value="BRL" selected>Real (R$)</option>
+                                        <option value="USD">Dólar ($)</option>
+                                        <option value="EUR">Euro (€)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção: Integrações -->
+                <div id="integracoes-section" class="config-section hidden">
+                    <div class="space-y-6">
+                        <!-- WhatsApp -->
+                        <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                                        <span class="text-green-600 text-xl">📱</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-semibold text-gray-900">WhatsApp Business</h3>
+                                        <p class="text-gray-600">Integração para envio de mensagens</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <span class="text-green-600 font-medium">Conectado</span>
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Token da API</label>
+                                    <input type="password" value="sk_live_51H7pKj2eZvKYlo2C..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Número do WhatsApp</label>
+                                    <input type="text" value="+55 85 99999-9999" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Webhook URL</label>
+                                    <input type="url" value="https://fortegps.com/webhook/whatsapp" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Limite de Mensagens/Hora</label>
+                                    <input type="number" value="100" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                </div>
+                            </div>
+
+                            <div class="mt-6 flex items-center space-x-4">
+                                <button onclick="testWhatsApp()" class="px-4 py-2 bg-green-100 hover:bg-green-200 text-green-700 rounded-lg transition-colors">
+                                    🧪 Testar Conexão
+                                </button>
+                                <button onclick="reconnectWhatsApp()" class="px-4 py-2 bg-yellow-100 hover:bg-yellow-200 text-yellow-700 rounded-lg transition-colors">
+                                    🔄 Reconectar
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Integração Bancária -->
+                        <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                                        <span class="text-blue-600 text-xl">🏦</span>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-semibold text-gray-900">Bancos Integrados</h3>
+                                        <p class="text-gray-600">Importação automática de extratos</p>
+                                    </div>
+                                </div>
+                                <button onclick="addBank()" class="px-4 py-2 bg-forte-green hover:bg-forte-green-dark text-white rounded-lg transition-colors">
+                                    + Adicionar Banco
+                                </button>
+                            </div>
+
+                            <div class="space-y-4">
+                                <!-- Banco do Brasil -->
+                                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                            <span class="text-yellow-600 font-bold text-sm">BB</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-gray-900">Banco do Brasil</div>
+                                            <div class="text-sm text-gray-600">Conta: ****-1234</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                            <span class="text-sm text-green-600">Conectado</span>
+                                        </div>
+                                        <button class="text-gray-600 hover:text-gray-800">⚙️</button>
+                                    </div>
+                                </div>
+
+                                <!-- Itaú -->
+                                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                                            <span class="text-orange-600 font-bold text-sm">IT</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-gray-900">Itaú</div>
+                                            <div class="text-sm text-gray-600">Conta: ****-5678</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <div class="flex items-center space-x-2">
+                                            <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                            <span class="text-sm text-yellow-600">Pendente</span>
+                                        </div>
+                                        <button class="text-gray-600 hover:text-gray-800">⚙️</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PIX -->
+                        <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+                            <div class="flex items-center space-x-4 mb-6">
+                                <div class="w-12 h-12 bg-forte-green bg-opacity-10 rounded-xl flex items-center justify-center">
+                                    <span class="text-forte-green text-xl">💳</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900">PIX</h3>
+                                    <p class="text-gray-600">Configuração de chaves PIX para pagamento</p>
+                                </div>
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Chave PIX Principal</label>
+                                    <input type="text" value="contato@fortegps.com" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Chave PIX Secundária</label>
+                                    <input type="text" value="(85) 99999-9999" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção: Cobrança -->
+                <div id="cobranca-section" class="config-section hidden">
+                    <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-6">Configurações de Cobrança</h3>
+                        
+                        <!-- Prazos e Alertas -->
+                        <div class="mb-8">
+                            <h4 class="font-medium text-gray-900 mb-4">Prazos e Classificação</h4>
+                            <div class="grid md:grid-cols-3 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Baixa Prioridade</label>
+                                    <div class="flex items-center space-x-2">
+                                        <input type="number" value="1" min="1" class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                        <span class="text-sm text-gray-600">a</span>
+                                        <input type="number" value="15" min="1" class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                        <span class="text-sm text-gray-600">dias</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Média Prioridade</label>
+                                    <div class="flex items-center space-x-2">
+                                        <input type="number" value="16" min="1" class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                        <span class="text-sm text-gray-600">a</span>
+                                        <input type="number" value="30" min="1" class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                        <span class="text-sm text-gray-600">dias</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Alta Prioridade</label>
+                                    <div class="flex items-center space-x-2">
+                                        <input type="number" value="31" min="1" class="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                        <span class="text-sm text-gray-600">+ dias</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Metas -->
+                        <div class="mb-8">
+                            <h4 class="font-medium text-gray-900 mb-4">Metas de Cobrança</h4>
+                            <div class="grid md:grid-cols-3 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Meta de Inadimplência (%)</label>
+                                    <input type="number" value="20" max="100" step="0.1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Meta de Recuperação Mensal (R$)</label>
+                                    <input type="number" value="180000" step="1000" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Taxa de Conversão Mínima (%)</label>
+                                    <input type="number" value="30" max="100" step="0.1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Automações -->
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-4">Automações de Cobrança</h4>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <div class="font-medium text-gray-900">Cobrança Automática</div>
+                                        <div class="text-sm text-gray-600">Enviar mensagem após 3 dias de atraso</div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" checked class="sr-only peer">
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-forte-green peer-focus:ring-opacity-25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forte-green"></div>
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <div class="font-medium text-gray-900">Escalonamento Automático</div>
+                                        <div class="text-sm text-gray-600">Aumentar prioridade após 15 dias sem resposta</div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" checked class="sr-only peer">
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-forte-green peer-focus:ring-opacity-25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forte-green"></div>
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <div class="font-medium text-gray-900">Follow-up Inteligente</div>
+                                        <div class="text-sm text-gray-600">Reagendar contato automaticamente após promessas</div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" class="sr-only peer">
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-forte-green peer-focus:ring-opacity-25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-forte-green"></div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção: Mensagens -->
+                <div id="mensagens-section" class="config-section hidden">
+                    <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-6">Configurações de Mensagens</h3>
+                        
+                        <!-- Horários de Funcionamento -->
+                        <div class="mb-8">
+                            <h4 class="font-medium text-gray-900 mb-4">Horários de Funcionamento</h4>
+                            <div class="space-y-4">
+                                <div class="grid grid-cols-7 gap-4">
+                                    <div class="text-center">
+                                        <div class="text-sm font-medium text-gray-700 mb-2">Dom</div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" class="sr-only peer">
+                                            <div class="w-8 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-forte-green rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-forte-green"></div>
+                                        </label>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-sm font-medium text-gray-700 mb-2">Seg</div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" checked class="sr-only peer">
+                                            <div class="w-8 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-forte-green rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-forte-green"></div>
+                                        </label>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-sm font-medium text-gray-700 mb-2">Ter</div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" checked class="sr-only peer">
+                                            <div class="w-8 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-forte-green rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-forte-green"></div>
+                                        </label>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-sm font-medium text-gray-700 mb-2">Qua</div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" checked class="sr-only peer">
+                                            <div class="w-8 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-forte-green rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-forte-green"></div>
+                                        </label>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-sm font-medium text-gray-700 mb-2">Qui</div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" checked class="sr-only peer">
+                                            <div class="w-8 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-forte-green rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-forte-green"></div>
+                                        </label>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-sm font-medium text-gray-700 mb-2">Sex</div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" checked class="sr-only peer">
+                                            <div class="w-8 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-forte-green rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-forte-green"></div>
+                                        </label>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-sm font-medium text-gray-700 mb-2">Sáb</div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" class="sr-only peer">
+                                            <div class="w-8 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-forte-green rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-forte-green"></div>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Horário de Início</label>
+                                        <input type="time" value="08:00" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Horário de Fim</label>
+                                        <input type="time" value="18:00" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Configurações de Aniversário -->
+                        <div class="mb-8">
+                            <h4 class="font-medium text-gray-900 mb-4">Mensagens de Aniversário</h4>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 bg-purple-50 rounded-lg border border-purple-200">
+                                    <div>
+                                        <div class="font-medium text-purple-900">Envio Automático</div>
+                                        <div class="text-sm text-purple-700">Enviar parabéns automaticamente no aniversário</div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" checked class="sr-only peer">
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-500 peer-focus:ring-opacity-25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-500"></div>
+                                    </label>
+                                </div>
+                                
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Horário do Envio</label>
+                                        <input type="time" value="08:00" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Apenas Clientes</label>
+                                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                            <option>Todos os clientes</option>
+                                            <option selected>Apenas em dia</option>
+                                            <option>Apenas inadimplentes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Limites e Restrições -->
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-4">Limites e Restrições</h4>
+                            <div class="grid md:grid-cols-3 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Mensagens por Hora</label>
+                                    <input type="number" value="100" min="1" max="1000" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Mensagens por Cliente/Dia</label>
+                                    <input type="number" value="3" min="1" max="10" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Intervalo Mínimo (min)</label>
+                                    <input type="number" value="60" min="5" max="1440" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção: Relatórios -->
+                <div id="relatorios-section" class="config-section hidden">
+                    <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-6">Configurações de Relatórios</h3>
+                        
+                        <!-- Agendamentos -->
+                        <div class="mb-8">
+                            <h4 class="font-medium text-gray-900 mb-4">Relatórios Agendados</h4>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                                    <div>
+                                        <div class="font-medium text-gray-900">Dashboard Executivo</div>
+                                        <div class="text-sm text-gray-600">Semanalmente, segunda-feira às 08:00</div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-sm text-green-600">Ativo</span>
+                                        <button class="text-gray-600 hover:text-gray-800">✏️</button>
+                                        <button class="text-red-600 hover:text-red-800">🗑️</button>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                                    <div>
+                                        <div class="font-medium text-gray-900">Inadimplência Mensal</div>
+                                        <div class="text-sm text-gray-600">Mensalmente, dia 1º às 09:00</div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-sm text-green-600">Ativo</span>
+                                        <button class="text-gray-600 hover:text-gray-800">✏️</button>
+                                        <button class="text-red-600 hover:text-red-800">🗑️</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button onclick="addScheduledReport()" class="mt-4 px-4 py-2 bg-forte-green hover:bg-forte-green-dark text-white rounded-lg transition-colors">
+                                + Novo Agendamento
+                            </button>
+                        </div>
+
+                        <!-- E-mails de Destino -->
+                        <div class="mb-8">
+                            <h4 class="font-medium text-gray-900 mb-4">E-mails de Destino</h4>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                                    <div>
+                                        <div class="font-medium text-gray-900">diretor@fortegps.com</div>
+                                        <div class="text-sm text-gray-600">Diretor Financeiro</div>
+                                    </div>
+                                    <button class="text-red-600 hover:text-red-800">×</button>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                                    <div>
+                                        <div class="font-medium text-gray-900">coordenador@fortegps.com</div>
+                                        <div class="text-sm text-gray-600">Coordenador de Cobrança</div>
+                                    </div>
+                                    <button class="text-red-600 hover:text-red-800">×</button>
+                                </div>
+                                
+                                <div class="flex space-x-3">
+                                    <input type="email" placeholder="Adicionar novo e-mail..." class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                    <button class="px-4 py-2 bg-forte-green hover:bg-forte-green-dark text-white rounded-lg transition-colors">Adicionar</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Configurações de Exportação -->
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-4">Configurações de Exportação</h4>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Formato Padrão</label>
+                                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                        <option value="pdf" selected>PDF</option>
+                                        <option value="excel">Excel (.xlsx)</option>
+                                        <option value="csv">CSV</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Incluir Gráficos</label>
+                                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                        <option value="yes" selected>Sim</option>
+                                        <option value="no">Não</option>
+                                        <option value="summary">Apenas resumo</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção: Usuários -->
+                <div id="usuarios-section" class="config-section hidden">
+                    <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-semibold text-gray-900">Gerenciamento de Usuários</h3>
+                            <button onclick="addUser()" class="px-4 py-2 bg-forte-green hover:bg-forte-green-dark text-white rounded-lg transition-colors">
+                                + Novo Usuário
+                            </button>
+                        </div>
+                        
+                        <!-- Lista de Usuários -->
+                        <div class="space-y-4 mb-8">
+                            <!-- Admin -->
+                            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-forte-green rounded-full flex items-center justify-center">
+                                        <span class="text-white font-medium">JD</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900">João Diretor</div>
+                                        <div class="text-sm text-gray-600">joao@fortegps.com</div>
+                                        <div class="flex items-center space-x-2 mt-1">
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-forte-green bg-opacity-10 text-forte-green">
+                                                👑 Administrador
+                                            </span>
+                                            <span class="text-xs text-green-600">● Online</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-sm text-gray-500">Último acesso: hoje</span>
+                                    <button class="text-gray-600 hover:text-gray-800">⚙️</button>
+                                </div>
+                            </div>
+
+                            <!-- Cobrador 1 -->
+                            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                                        <span class="text-white font-medium">MC</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900">Maria Clara</div>
+                                        <div class="text-sm text-gray-600">maria@fortegps.com</div>
+                                        <div class="flex items-center space-x-2 mt-1">
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
+                                                📞 Cobrador
+                                            </span>
+                                            <span class="text-xs text-green-600">● Online</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-sm text-gray-500">Último acesso: hoje</span>
+                                    <button class="text-gray-600 hover:text-gray-800">⚙️</button>
+                                </div>
+                            </div>
+
+                            <!-- Cobrador 2 -->
+                            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
+                                        <span class="text-white font-medium">RS</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900">Roberto Silva</div>
+                                        <div class="text-sm text-gray-600">roberto@fortegps.com</div>
+                                        <div class="flex items-center space-x-2 mt-1">
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-purple-100 text-purple-800">
+                                                📞 Cobrador
+                                            </span>
+                                            <span class="text-xs text-gray-500">● Offline (30min)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-sm text-gray-500">Último acesso: hoje</span>
+                                    <button class="text-gray-600 hover:text-gray-800">⚙️</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Configurações de Permissões -->
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-4">Níveis de Permissão</h4>
+                            <div class="grid md:grid-cols-3 gap-6">
+                                <div class="p-4 border border-forte-green rounded-lg bg-forte-green bg-opacity-5">
+                                    <div class="font-medium text-forte-green-dark mb-2">👑 Administrador</div>
+                                    <ul class="text-sm text-gray-700 space-y-1">
+                                        <li>• Todas as funcionalidades</li>
+                                        <li>• Gerenciar usuários</li>
+                                        <li>• Configurações do sistema</li>
+                                        <li>• Relatórios completos</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-4 border border-blue-300 rounded-lg bg-blue-50">
+                                    <div class="font-medium text-blue-800 mb-2">📞 Cobrador</div>
+                                    <ul class="text-sm text-gray-700 space-y-1">
+                                        <li>• Agenda de cobrança</li>
+                                        <li>• Envio de mensagens</li>
+                                        <li>• Histórico de clientes</li>
+                                        <li>• Confirmar pagamentos</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-4 border border-gray-300 rounded-lg bg-gray-50">
+                                    <div class="font-medium text-gray-800 mb-2">📊 Consulta</div>
+                                    <ul class="text-sm text-gray-700 space-y-1">
+                                        <li>• Visualizar relatórios</li>
+                                        <li>• Consultar histórico</li>
+                                        <li>• Dashboard resumido</li>
+                                        <li>• Sem edição</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção: Backup -->
+                <div id="backup-section" class="config-section hidden">
+                    <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-6">Backup e Segurança</h3>
+                        
+                        <!-- Backup Automático -->
+                        <div class="mb-8">
+                            <h4 class="font-medium text-gray-900 mb-4">Backup Automático</h4>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 bg-green-50 rounded-lg border border-green-200">
+                                    <div>
+                                        <div class="font-medium text-green-800">Backup Diário</div>
+                                        <div class="text-sm text-green-600">Todos os dias às 02:00 (horário local)</div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" checked class="sr-only peer">
+                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-500 peer-focus:ring-opacity-25 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                                    </label>
+                                </div>
+                                
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Retenção de Backups</label>
+                                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                            <option value="30" selected>30 dias</option>
+                                            <option value="60">60 dias</option>
+                                            <option value="90">90 dias</option>
+                                            <option value="365">1 ano</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Local de Armazenamento</label>
+                                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                            <option value="aws" selected>Amazon S3</option>
+                                            <option value="google">Google Drive</option>
+                                            <option value="local">Servidor Local</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Últimos Backups -->
+                        <div class="mb-8">
+                            <h4 class="font-medium text-gray-900 mb-4">Histórico de Backups</h4>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                                    <div>
+                                        <div class="font-medium text-gray-900">Backup_2025-07-19_02-00.sql</div>
+                                        <div class="text-sm text-gray-600">Hoje às 02:00 • 45.2 MB</div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-sm text-green-600">✅ Sucesso</span>
+                                        <button class="text-blue-600 hover:text-blue-800">📥 Download</button>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                                    <div>
+                                        <div class="font-medium text-gray-900">Backup_2025-07-18_02-00.sql</div>
+                                        <div class="text-sm text-gray-600">Ontem às 02:00 • 44.8 MB</div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-sm text-green-600">✅ Sucesso</span>
+                                        <button class="text-blue-600 hover:text-blue-800">📥 Download</button>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                                    <div>
+                                        <div class="font-medium text-gray-900">Backup_2025-07-17_02-00.sql</div>
+                                        <div class="text-sm text-gray-600">17/07 às 02:00 • 44.5 MB</div>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-sm text-green-600">✅ Sucesso</span>
+                                        <button class="text-blue-600 hover:text-blue-800">📥 Download</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Backup Manual -->
+                        <div>
+                            <h4 class="font-medium text-gray-900 mb-4">Backup Manual</h4>
+                            <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                <p class="text-sm text-gray-600 mb-4">
+                                    Crie um backup manual dos dados atuais do sistema. Recomendado antes de grandes alterações.
+                                </p>
+                                <button onclick="createBackup()" class="px-6 py-2 bg-forte-green hover:bg-forte-green-dark text-white rounded-lg transition-colors">
+                                    💾 Criar Backup Agora
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção: Suporte -->
+                <div id="suporte-section" class="config-section hidden">
+                    <div class="space-y-6">
+                        <!-- Informações do Sistema -->
+                        <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-6">Informações do Sistema</h3>
+                            
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <div class="space-y-4">
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-600">Versão:</span>
+                                            <span class="font-medium text-gray-900">v2.1.3</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-600">Última atualização:</span>
+                                            <span class="font-medium text-gray-900">15/07/2025</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-600">Licença:</span>
+                                            <span class="font-medium text-green-600">Ativa até 15/07/2026</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-600">Servidor:</span>
+                                            <span class="font-medium text-gray-900">AWS São Paulo</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="space-y-4">
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-600">Banco de dados:</span>
+                                            <span class="font-medium text-gray-900">PostgreSQL 14.2</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-600">Uptime:</span>
+                                            <span class="font-medium text-gray-900">99.98%</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-600">Usuários ativos:</span>
+                                            <span class="font-medium text-gray-900">3/5</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-600">Armazenamento:</span>
+                                            <span class="font-medium text-gray-900">2.1 GB / 10 GB</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contato e Suporte -->
+                        <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-6">Contato e Suporte</h3>
+                            
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <!-- Canais de Suporte -->
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-4">Canais de Suporte</h4>
+                                    <div class="space-y-4">
+                                        <div class="flex items-center space-x-3 p-3 bg-green-50 rounded-lg border border-green-200">
+                                            <span class="text-green-600 text-xl">📱</span>
+                                            <div>
+                                                <div class="font-medium text-green-800">WhatsApp</div>
+                                                <div class="text-sm text-green-600">(85) 99999-0000</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                            <span class="text-blue-600 text-xl">📧</span>
+                                            <div>
+                                                <div class="font-medium text-blue-800">E-mail</div>
+                                                <div class="text-sm text-blue-600">suporte@fortegps.com</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg border border-purple-200">
+                                            <span class="text-purple-600 text-xl">📞</span>
+                                            <div>
+                                                <div class="font-medium text-purple-800">Telefone</div>
+                                                <div class="text-sm text-purple-600">(85) 3333-4444</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Enviar Ticket -->
+                                <div>
+                                    <h4 class="font-medium text-gray-900 mb-4">Abrir Ticket de Suporte</h4>
+                                    <form class="space-y-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo do Problema</label>
+                                            <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                                <option>Erro no sistema</option>
+                                                <option>Dúvida sobre funcionalidade</option>
+                                                <option>Solicitação de melhoria</option>
+                                                <option>Problema de integração</option>
+                                                <option>Outro</option>
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Prioridade</label>
+                                            <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                                <option>🔴 Crítica - Sistema parado</option>
+                                                <option>🟡 Alta - Funcionalidade importante</option>
+                                                <option>🟢 Normal - Dúvida ou melhoria</option>
+                                                <option>⚪ Baixa - Sugestão</option>
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Descrição</label>
+                                            <textarea rows="4" placeholder="Descreva o problema ou dúvida em detalhes..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green"></textarea>
+                                        </div>
+
+                                        <button type="submit" class="w-full px-4 py-2 bg-forte-green hover:bg-forte-green-dark text-white rounded-lg transition-colors">
+                                            📤 Enviar Ticket
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Logs do Sistema -->
+                        <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-6">Logs do Sistema</h3>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-green-600">✅</span>
+                                        <div>
+                                            <div class="text-sm font-medium text-green-800">Sistema iniciado com sucesso</div>
+                                            <div class="text-xs text-green-600">Hoje às 08:00:15</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-blue-600">📱</span>
+                                        <div>
+                                            <div class="text-sm font-medium text-blue-800">WhatsApp conectado com sucesso</div>
+                                            <div class="text-xs text-blue-600">Hoje às 08:01:32</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-gray-600">💾</span>
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-800">Backup automático concluído</div>
+                                            <div class="text-xs text-gray-600">Hoje às 02:00:45</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-yellow-600">⚠️</span>
+                                        <div>
+                                            <div class="text-sm font-medium text-yellow-800">Alta utilização de CPU detectada</div>
+                                            <div class="text-xs text-yellow-600">Ontem às 14:30:22</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="mt-4 text-sm text-forte-green hover:text-forte-green-dark transition-colors">
+                                📜 Ver logs completos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Navegação entre seções
+        function showSection(sectionName) {
+            // Esconder todas as seções
+            document.querySelectorAll('.config-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Mostrar seção selecionada
+            document.getElementById(sectionName + '-section').classList.remove('hidden');
+            
+            // Atualizar botões de navegação
+            document.querySelectorAll('.config-nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Funções de Integração
+        function testWhatsApp() {
+            showNotification('🧪 Testando conexão WhatsApp...', 'info');
+            
+            setTimeout(() => {
+                showNotification('✅ WhatsApp conectado com sucesso!', 'success');
+            }, 2000);
+        }
+
+        function reconnectWhatsApp() {
+            showNotification('🔄 Reconectando WhatsApp...', 'info');
+            
+            setTimeout(() => {
+                showNotification('✅ WhatsApp reconectado!', 'success');
+            }, 3000);
+        }
+
+        function addBank() {
+            showNotification('🏦 Abrindo assistente de integração bancária...', 'info');
+        }
+
+        // Funções de Usuários
+        function addUser() {
+            showNotification('👥 Abrindo formulário de novo usuário...', 'info');
+        }
+
+        // Funções de Relatórios
+        function addScheduledReport() {
+            showNotification('📊 Abrindo configuração de novo agendamento...', 'info');
+        }
+
+        // Funções de Backup
+        function createBackup() {
+            showNotification('💾 Iniciando backup manual...', 'info');
+            
+            // Simular progresso do backup
+            setTimeout(() => {
+                showNotification('⏳ Backup em progresso... 25%', 'info');
+            }, 1000);
+            
+            setTimeout(() => {
+                showNotification('⏳ Backup em progresso... 75%', 'info');
+            }, 3000);
+            
+            setTimeout(() => {
+                showNotification('✅ Backup manual criado com sucesso!', 'success');
+            }, 5000);
+        }
+
+        // Salvar Configurações
+        function exportSettings() {
+            showNotification('💾 Salvando todas as configurações...', 'info');
+            
+            setTimeout(() => {
+                showNotification('✅ Configurações salvas com sucesso!', 'success');
+            }, 2000);
+        }
+
+        // Sistema de notificações
+        function showNotification(message, type = 'success') {
+            const colors = {
+                success: 'bg-forte-green',
+                info: 'bg-blue-500',
+                warning: 'bg-yellow-500',
+                error: 'bg-red-500'
+            };
+
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 ${colors[type]} text-white px-6 py-4 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform max-w-sm`;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 4000);
+        }
+
+        // Auto-save das configurações
+        function autoSave() {
+            // Salvar automaticamente as configurações quando houver mudanças
+            const inputs = document.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    // Simular auto-save
+                    console.log('Auto-saving configuration...');
+                });
+            });
+        }
+
+        // Validações em tempo real
+        function validateSettings() {
+            // Validar configurações críticas
+            const whatsappToken = document.querySelector('input[type="password"]');
+            if (whatsappToken && whatsappToken.value.length < 10) {
+                console.warn('Token WhatsApp muito curto');
+            }
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            autoSave();
+            validateSettings();
+            
+            // Mostrar notificação de boas-vindas
+            setTimeout(() => {
+                showNotification('⚙️ Configurações do sistema carregadas!', 'info');
+            }, 1000);
+        });
+
+        // Atalhos de teclado para navegação
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey) {
+                switch(e.key) {
+                    case 's':
+                        e.preventDefault();
+                        exportSettings();
+                        break;
+                    case '1':
+                        e.preventDefault();
+                        showSection('geral');
+                        break;
+                    case '2':
+                        e.preventDefault();
+                        showSection('integracoes');
+                        break;
+                    case '3':
+                        e.preventDefault();
+                        showSection('cobranca');
+                        break;
+                }
+            }
+        });
+
+        // Monitoramento do sistema em tempo real
+        function startSystemMonitoring() {
+            setInterval(() => {
+                // Simular verificação de status
+                const connections = {
+                    whatsapp: Math.random() > 0.1,
+                    database: Math.random() > 0.05,
+                    backup: Math.random() > 0.02
+                };
+                
+                // Atualizar indicadores visuais
+                if (!connections.whatsapp) {
+                    showNotification('⚠️ Conexão WhatsApp instável!', 'warning');
+                }
+            }, 30000); // Verificar a cada 30 segundos
+        }
+
+        // Iniciar monitoramento
+        startSystemMonitoring();
+    </script>
+
+    
+</body>
+</html>
