@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico do Cliente - Sistema ForteGPS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'forte-green': '#0f5132',
+                        'forte-green-light': '#198754',
+                        'forte-green-dark': '#0a3622'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo e Título -->
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-forte-green rounded-xl flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">F</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">ForteGPS</h1>
+                        <p class="text-sm text-gray-600">Sistema de Gestão Financeira</p>
+                    </div>
+                </div>
+
+                <!-- Breadcrumb -->
+                <div class="hidden md:flex items-center space-x-2 text-sm text-gray-600">
+                    <a href="#" class="hover:text-forte-green transition-colors">Clientes</a>
+                    <span>›</span>
+                    <a href="#" class="hover:text-forte-green transition-colors">Lista de Inadimplentes</a>
+                    <span>›</span>
+                    <span class="text-gray-900 font-medium">João Silva</span>
+                </div>
+
+                <!-- Ações do Usuário -->
+                <div class="flex items-center space-x-4">
+                    <button onclick="openContactModal()" class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-4 py-2 rounded-lg transition-colors flex items-center space-x-2">
+                        <span>📞</span>
+                        <span>Novo Contato</span>
+                    </button>
+                    <button onclick="confirmPayment()" class="bg-forte-green hover:bg-forte-green-dark text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2">
+                        <span>✅</span>
+                        <span>Confirmar Pagamento</span>
+                    </button>
+                    <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                        <span class="text-gray-600 text-sm font-medium">JD</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Informações do Cliente -->
+        <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100 mb-8">
+            <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between space-y-6 lg:space-y-0">
+                <!-- Dados Pessoais -->
+                <div class="flex items-start space-x-6">
+                    <div class="w-20 h-20 bg-red-100 rounded-xl flex items-center justify-center">
+                        <span class="text-red-600 text-2xl font-bold">JS</span>
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-2">João Silva</h2>
+                        <div class="space-y-2 text-gray-600">
+                            <div class="flex items-center space-x-2">
+                                <span>📞</span>
+                                <span>(85) 99999-1234</span>
+                                <button class="text-forte-green hover:underline text-sm">Ligar</button>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span>📱</span>
+                                <span>(85) 98888-5678</span>
+                                <button class="text-forte-green hover:underline text-sm">WhatsApp</button>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span>📧</span>
+                                <span>joao.silva@email.com</span>
+                                <button class="text-forte-green hover:underline text-sm">Enviar</button>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span>📍</span>
+                                <span>Fortaleza, CE</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status e Métricas -->
+                <div class="grid grid-cols-2 lg:grid-cols-1 gap-4 lg:text-right">
+                    <div class="bg-red-50 rounded-lg p-4 border border-red-200">
+                        <div class="text-2xl font-bold text-red-700 mb-1">45 dias</div>
+                        <div class="text-sm text-red-600">em atraso</div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                        <div class="text-2xl font-bold text-gray-900 mb-1">R$ 187,50</div>
+                        <div class="text-sm text-gray-600">valor devido</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tags e Observações -->
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <div class="flex flex-wrap items-center gap-3 mb-4">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        🚨 Alta Prioridade
+                    </span>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                        📱 Prefere WhatsApp
+                    </span>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        ⏰ Melhor horário: 14h-17h
+                    </span>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        🎂 Aniversário: 15/03
+                    </span>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <h4 class="font-medium text-gray-900 mb-2">Observações Importantes</h4>
+                    <p class="text-sm text-gray-700">
+                        Cliente trabalha como motorista de aplicativo. Prefere contato via WhatsApp após 14h. 
+                        Prometeu regularizar pagamento até final do mês. Histórico de bom pagador até período de desemprego.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeline e Detalhes -->
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Timeline Principal -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-semibold text-gray-900">Timeline de Interações</h3>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="filterTimeline('todos')" class="timeline-filter active px-3 py-1 rounded text-sm transition-colors">Todos</button>
+                            <button onclick="filterTimeline('pagamentos')" class="timeline-filter px-3 py-1 rounded text-sm transition-colors">Pagamentos</button>
+                            <button onclick="filterTimeline('contatos')" class="timeline-filter px-3 py-1 rounded text-sm transition-colors">Contatos</button>
+                            <button onclick="filterTimeline('acordos')" class="timeline-filter px-3 py-1 rounded text-sm transition-colors">Acordos</button>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Items -->
+                    <div class="space-y-6">
+                        <!-- Hoje -->
+                        <div class="timeline-item" data-type="contatos">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <span class="text-blue-600 text-sm">📱</span>
+                                    </div>
+                                    <div class="w-0.5 h-12 bg-gray-200 mt-2"></div>
+                                </div>
+                                <div class="flex-1 pb-8">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="font-medium text-gray-900">WhatsApp enviado</h4>
+                                        <span class="text-sm text-gray-500">Hoje, 14:30</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3">
+                                        Mensagem de cobrança automática enviada. Template: "Lembrete de vencimento - Valor em atraso"
+                                    </p>
+                                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
+                                        <p class="text-sm text-blue-800">
+                                            "Olá João! Identificamos que sua mensalidade do rastreador está em atraso há 45 dias (R$ 187,50). 
+                                            Entre em contato para regularizar ou clique aqui para efetuar o pagamento: [link]"
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center space-x-4 text-xs text-gray-500">
+                                        <span>📤 Enviado</span>
+                                        <span>✅ Entregue</span>
+                                        <span>👁️ Visualizado às 14:45</span>
+                                        <span class="text-gray-400">• Sem resposta</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ontem -->
+                        <div class="timeline-item" data-type="contatos">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                                        <span class="text-yellow-600 text-sm">📞</span>
+                                    </div>
+                                    <div class="w-0.5 h-12 bg-gray-200 mt-2"></div>
+                                </div>
+                                <div class="flex-1 pb-8">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="font-medium text-gray-900">Tentativa de ligação</h4>
+                                        <span class="text-sm text-gray-500">Ontem, 15:20</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3">
+                                        Ligação não atendida. Telefone tocou até completar e caiu na caixa postal.
+                                    </p>
+                                    <div class="flex items-center space-x-4 text-xs text-gray-500">
+                                        <span>⏱️ Duração: 0:32</span>
+                                        <span>📞 Não atendeu</span>
+                                        <span>🔄 Reagendado para hoje</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <span class="text-xs text-gray-600">Por: </span>
+                                        <span class="text-xs font-medium text-gray-900">Maria Clara</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3 dias atrás -->
+                        <div class="timeline-item" data-type="contatos">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-10 h-10 bg-forte-green bg-opacity-20 rounded-full flex items-center justify-center">
+                                        <span class="text-forte-green text-sm">📱</span>
+                                    </div>
+                                    <div class="w-0.5 h-12 bg-gray-200 mt-2"></div>
+                                </div>
+                                <div class="flex-1 pb-8">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="font-medium text-gray-900">Resposta no WhatsApp</h4>
+                                        <span class="text-sm text-gray-500">3 dias atrás, 16:45</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3">
+                                        Cliente respondeu à mensagem de cobrança com promessa de pagamento.
+                                    </p>
+                                    <div class="bg-green-50 border border-green-200 rounded-lg p-3 mb-3">
+                                        <p class="text-sm text-green-800">
+                                            💬 <strong>João Silva:</strong> "Oi! Desculpa o atraso. Tive uns problemas financeiros mas já estou trabalhando de novo. 
+                                            Vou conseguir pagar até sexta que vem. Pode ser?"
+                                        </p>
+                                    </div>
+                                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
+                                        <p class="text-sm text-blue-800">
+                                            💬 <strong>Maria Clara:</strong> "Olá João! Que bom saber que está trabalhando novamente. 
+                                            Vou anotar sua promessa para sexta-feira (19/07). Qualquer coisa, me chame aqui. Obrigada!"
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center space-x-4 text-xs text-gray-500">
+                                        <span>💬 Conversação</span>
+                                        <span>✅ Promessa de pagamento</span>
+                                        <span>📅 Prazo: 19/07/2025</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <span class="text-xs text-gray-600">Por: </span>
+                                        <span class="text-xs font-medium text-gray-900">Maria Clara</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 1 semana atrás -->
+                        <div class="timeline-item" data-type="acordos">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                        <span class="text-purple-600 text-sm">📋</span>
+                                    </div>
+                                    <div class="w-0.5 h-12 bg-gray-200 mt-2"></div>
+                                </div>
+                                <div class="flex-1 pb-8">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="font-medium text-gray-900">Tentativa de acordo</h4>
+                                        <span class="text-sm text-gray-500">1 semana atrás, 14:10</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3">
+                                        Proposto parcelamento em 3x sem juros. Cliente disse que precisava consultar a esposa.
+                                    </p>
+                                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-3 mb-3">
+                                        <div class="text-sm text-purple-800">
+                                            <p><strong>Proposta oferecida:</strong></p>
+                                            <ul class="mt-2 ml-4 list-disc">
+                                                <li>3x R$ 62,50 (sem juros)</li>
+                                                <li>1ª parcela: 15/07</li>
+                                                <li>2ª parcela: 15/08</li>
+                                                <li>3ª parcela: 15/09</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-4 text-xs text-gray-500">
+                                        <span>📞 Ligação atendida</span>
+                                        <span>⏱️ Duração: 5:23</span>
+                                        <span>🤔 Cliente vai pensar</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <span class="text-xs text-gray-600">Por: </span>
+                                        <span class="text-xs font-medium text-gray-900">Roberto Silva</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2 semanas atrás -->
+                        <div class="timeline-item" data-type="pagamentos">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                        <span class="text-red-600 text-sm">❌</span>
+                                    </div>
+                                    <div class="w-0.5 h-12 bg-gray-200 mt-2"></div>
+                                </div>
+                                <div class="flex-1 pb-8">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="font-medium text-gray-900">Vencimento não pago</h4>
+                                        <span class="text-sm text-gray-500">04/06/2025</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3">
+                                        Mensalidade de junho não foi paga na data de vencimento. Valor: R$ 187,50
+                                    </p>
+                                    <div class="flex items-center space-x-4 text-xs text-gray-500">
+                                        <span>💰 R$ 187,50</span>
+                                        <span>📅 Vencimento: 04/06</span>
+                                        <span>🔴 Não pago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2 meses atrás -->
+                        <div class="timeline-item" data-type="pagamentos">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex flex-col items-center">
+                                    <div class="w-10 h-10 bg-forte-green bg-opacity-20 rounded-full flex items-center justify-center">
+                                        <span class="text-forte-green text-sm">✅</span>
+                                    </div>
+                                    <div class="w-0.5 h-12 bg-gray-200 mt-2"></div>
+                                </div>
+                                <div class="flex-1 pb-8">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h4 class="font-medium text-gray-900">Pagamento realizado</h4>
+                                        <span class="text-sm text-gray-500">03/05/2025</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3">
+                                        Mensalidade de maio paga no dia anterior ao vencimento via PIX.
+                                    </p>
+                                    <div class="flex items-center space-x-4 text-xs text-gray-500">
+                                        <span>💰 R$ 187,50</span>
+                                        <span>💳 PIX</span>
+                                        <span>⏰ 1 dia antes do vencimento</span>
+                                        <span>✅ Confirmado</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botão Ver Mais -->
+                        <div class="text-center">
+                            <button onclick="loadMoreHistory()" class="text-forte-green hover:text-forte-green-dark transition-colors text-sm">
+                                📜 Ver histórico completo (mais 12 interações)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar: Resumos e Ações -->
+            <div class="space-y-6">
+                <!-- Estatísticas Rápidas -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Estatísticas</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Total de contatos</span>
+                            <span class="font-medium text-gray-900">23</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Ligações atendidas</span>
+                            <span class="font-medium text-gray-900">8 (35%)</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">WhatsApp respondidos</span>
+                            <span class="font-medium text-gray-900">4 (67%)</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Promessas cumpridas</span>
+                            <span class="font-medium text-red-600">1 de 3 (33%)</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Cliente há</span>
+                            <span class="font-medium text-gray-900">2 anos e 4 meses</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">Histórico de pagamentos</span>
+                            <span class="font-medium text-forte-green">Excelente até maio/25</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Próximas Ações -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Próximas Ações</h3>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <span class="text-yellow-600">⚠️</span>
+                                <span class="font-medium text-yellow-800">Prazo vencendo hoje</span>
+                            </div>
+                            <p class="text-sm text-yellow-700">
+                                Cliente prometeu pagar até hoje (19/07). Acompanhar se pagamento foi realizado.
+                            </p>
+                        </div>
+
+                        <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <span class="text-blue-600">📱</span>
+                                <span class="font-medium text-blue-800">WhatsApp visualizado</span>
+                            </div>
+                            <p class="text-sm text-blue-700">
+                                Mensagem enviada hoje foi visualizada. Cliente pode estar preparando resposta.
+                            </p>
+                        </div>
+
+                        <div class="p-3 bg-green-50 border border-green-200 rounded-lg">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <span class="text-green-600">🎂</span>
+                                <span class="font-medium text-green-800">Aniversário próximo</span>
+                            </div>
+                            <p class="text-sm text-green-700">
+                                Aniversário em 15/03. Boa oportunidade para melhorar relacionamento.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ações Rápidas -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Ações Rápidas</h3>
+                    <div class="space-y-3">
+                        <button onclick="confirmPayment()" class="w-full bg-forte-green hover:bg-forte-green-dark text-white p-3 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                            <span>✅</span>
+                            <span>Confirmar Pagamento</span>
+                        </button>
+                        
+                        <button onclick="scheduleCall()" class="w-full bg-blue-100 hover:bg-blue-200 text-blue-800 p-3 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                            <span>📞</span>
+                            <span>Agendar Ligação</span>
+                        </button>
+                        
+                        <button onclick="sendWhatsApp()" class="w-full bg-green-100 hover:bg-green-200 text-green-800 p-3 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                            <span>📱</span>
+                            <span>Enviar WhatsApp</span>
+                        </button>
+                        
+                        <button onclick="makeAgreement()" class="w-full bg-yellow-100 hover:bg-yellow-200 text-yellow-800 p-3 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                            <span>📋</span>
+                            <span>Fazer Acordo</span>
+                        </button>
+                        
+                        <button onclick="addNote()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 p-3 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                            <span>📝</span>
+                            <span>Adicionar Observação</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Informações do Veículo -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Dados do Veículo</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Placa:</span>
+                            <span class="text-sm font-medium text-gray-900">ABC-1234</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Modelo:</span>
+                            <span class="text-sm font-medium text-gray-900">Honda Civic 2018</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Tipo de plano:</span>
+                            <span class="text-sm font-medium text-gray-900">Completo</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Instalação:</span>
+                            <span class="text-sm font-medium text-gray-900">15/03/2023</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Status do rastreador:</span>
+                            <span class="text-sm font-medium text-forte-green">🟢 Ativo</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Última localização:</span>
+                            <span class="text-sm font-medium text-gray-900">Hoje, 14:22</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 bg-forte-green bg-opacity-10 hover:bg-forte-green hover:text-white text-forte-green p-2 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                        <span>🗺️</span>
+                        <span>Ver Localização Atual</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: Novo Contato -->
+    <div id="contactModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-blue-600 text-2xl">📞</span>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Registrar Novo Contato</h3>
+                <p class="text-gray-600">João Silva</p>
+            </div>
+
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Contato</label>
+                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                        <option>📞 Ligação telefônica</option>
+                        <option>📱 WhatsApp</option>
+                        <option>📧 E-mail</option>
+                        <option>💬 SMS</option>
+                        <option>🏠 Visita presencial</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Resultado do Contato</label>
+                    <select id="contactResult" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                        <option>Selecione o resultado...</option>
+                        <option>✅ Cliente atendeu - Conversa normal</option>
+                        <option>💰 Pagamento confirmado</option>
+                        <option>📋 Acordo fechado</option>
+                        <option>⏰ Promessa de pagamento</option>
+                        <option>📞 Não atendeu</option>
+                        <option>📱 Mensagem não visualizada</option>
+                        <option>❌ Recusou negociar</option>
+                        <option>😤 Cliente irritado</option>
+                        <option>📞 Número não existe</option>
+                        <option>🔄 Solicitou reagendamento</option>
+                    </select>
+                </div>
+
+                <!-- Campo condicional para acordo -->
+                <div id="agreementDetails" class="hidden space-y-3">
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <h4 class="font-medium text-green-800 mb-3">Detalhes do Acordo</h4>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs text-green-700 mb-1">Número de parcelas</label>
+                                <select class="w-full px-3 py-2 text-sm border border-green-300 rounded focus:ring-1 focus:ring-green-500">
+                                    <option>À vista</option>
+                                    <option>2x</option>
+                                    <option>3x</option>
+                                    <option>4x</option>
+                                    <option>6x</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-green-700 mb-1">Valor da parcela</label>
+                                <input type="text" placeholder="R$ 62,50" class="w-full px-3 py-2 text-sm border border-green-300 rounded focus:ring-1 focus:ring-green-500">
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <label class="block text-xs text-green-700 mb-1">Data da primeira parcela</label>
+                            <input type="date" class="w-full px-3 py-2 text-sm border border-green-300 rounded focus:ring-1 focus:ring-green-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Campo condicional para promessa -->
+                <div id="promiseDetails" class="hidden">
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <h4 class="font-medium text-yellow-800 mb-3">Promessa de Pagamento</h4>
+                        <div>
+                            <label class="block text-xs text-yellow-700 mb-1">Data prometida</label>
+                            <input type="date" class="w-full px-3 py-2 text-sm border border-yellow-300 rounded focus:ring-1 focus:ring-yellow-500">
+                        </div>
+                        <div class="mt-3">
+                            <label class="block text-xs text-yellow-700 mb-1">Valor prometido</label>
+                            <input type="text" placeholder="R$ 187,50" class="w-full px-3 py-2 text-sm border border-yellow-300 rounded focus:ring-1 focus:ring-yellow-500">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Observações</label>
+                    <textarea rows="4" placeholder="Descreva os detalhes da conversa, reação do cliente, observações importantes..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green"></textarea>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                        <span class="text-sm text-blue-800">Agendar próximo contato automaticamente</span>
+                    </label>
+                    <div class="mt-2 grid grid-cols-2 gap-3">
+                        <input type="date" class="px-3 py-2 text-sm border border-blue-300 rounded focus:ring-1 focus:ring-blue-500">
+                        <input type="time" class="px-3 py-2 text-sm border border-blue-300 rounded focus:ring-1 focus:ring-blue-500">
+                    </div>
+                </div>
+
+                <div class="flex space-x-4 pt-4">
+                    <button type="button" onclick="closeContactModal()" class="flex-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="flex-1 px-4 py-2 bg-forte-green hover:bg-forte-green-dark text-white rounded-lg transition-colors">
+                        💾 Salvar Contato
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Filtros da Timeline
+        function filterTimeline(type) {
+            const items = document.querySelectorAll('.timeline-item');
+            const buttons = document.querySelectorAll('.timeline-filter');
+            
+            // Atualizar botões
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filtrar itens
+            items.forEach(item => {
+                if (type === 'todos' || item.dataset.type === type) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Carregar mais histórico
+        function loadMoreHistory() {
+            showNotification('📜 Carregando histórico completo...', 'info');
+            
+            // Simular carregamento
+            setTimeout(() => {
+                showNotification('✅ Histórico completo carregado!', 'success');
+            }, 1500);
+        }
+
+        // Modais
+        function openContactModal() {
+            document.getElementById('contactModal').classList.remove('hidden');
+        }
+
+        function closeContactModal() {
+            document.getElementById('contactModal').classList.add('hidden');
+        }
+
+        // Ações rápidas
+        function confirmPayment() {
+            showNotification('✅ Redirecionando para confirmação de pagamento...', 'success');
+        }
+
+        function scheduleCall() {
+            showNotification('📞 Abrindo agenda para agendar ligação...', 'info');
+        }
+
+        function sendWhatsApp() {
+            showNotification('📱 Abrindo interface do WhatsApp...', 'info');
+        }
+
+        function makeAgreement() {
+            showNotification('📋 Abrindo formulário de acordo...', 'info');
+        }
+
+        function addNote() {
+            const note = prompt('Digite a observação para adicionar ao histórico:');
+            if (note) {
+                showNotification('📝 Observação adicionada ao histórico!', 'success');
+            }
+        }
+
+        // Campos condicionais no modal
+        document.getElementById('contactResult').addEventListener('change', function() {
+            const value = this.value;
+            const agreementDiv = document.getElementById('agreementDetails');
+            const promiseDiv = document.getElementById('promiseDetails');
+            
+            // Esconder todos os campos condicionais
+            agreementDiv.classList.add('hidden');
+            promiseDiv.classList.add('hidden');
+            
+            // Mostrar campos específicos baseado na seleção
+            if (value.includes('Acordo fechado')) {
+                agreementDiv.classList.remove('hidden');
+            } else if (value.includes('Promessa de pagamento')) {
+                promiseDiv.classList.remove('hidden');
+            }
+        });
+
+        // Sistema de notificações
+        function showNotification(message, type = 'success') {
+            const colors = {
+                success: 'bg-forte-green',
+                info: 'bg-blue-500',
+                warning: 'bg-yellow-500',
+                error: 'bg-red-500'
+            };
+
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 ${colors[type]} text-white px-6 py-4 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform`;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Fechar modal clicando fora
+        document.getElementById('contactModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeContactModal();
+            }
+        });
+
+        // Envio do formulário
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '⏳ Salvando...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                closeContactModal();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                showNotification('💾 Contato registrado com sucesso!', 'success');
+                
+                // Simular adição do novo item na timeline
+                addNewTimelineItem();
+            }, 2000);
+        });
+
+        // Adicionar novo item na timeline (simulação)
+        function addNewTimelineItem() {
+            const timeline = document.querySelector('.space-y-6');
+            const newItem = document.createElement('div');
+            newItem.className = 'timeline-item';
+            newItem.dataset.type = 'contatos';
+            newItem.innerHTML = `
+                <div class="flex items-start space-x-4">
+                    <div class="flex flex-col items-center">
+                        <div class="w-10 h-10 bg-forte-green bg-opacity-20 rounded-full flex items-center justify-center">
+                            <span class="text-forte-green text-sm">💾</span>
+                        </div>
+                        <div class="w-0.5 h-12 bg-gray-200 mt-2"></div>
+                    </div>
+                    <div class="flex-1 pb-8">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-medium text-gray-900">Contato registrado</h4>
+                            <span class="text-sm text-gray-500">Agora mesmo</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">
+                            Novo contato adicionado ao histórico do cliente.
+                        </p>
+                        <div class="flex items-center space-x-4 text-xs text-gray-500">
+                            <span>💾 Registrado pelo sistema</span>
+                            <span>👤 Por: João (usuário atual)</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            timeline.insertBefore(newItem, timeline.firstChild);
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar se há parâmetros na URL para destacar ações específicas
+            const urlParams = new URLSearchParams(window.location.search);
+            const action = urlParams.get('action');
+            
+            if (action === 'payment') {
+                setTimeout(() => {
+                    showNotification('💡 Dica: Verifique se o pagamento foi realizado antes de confirmar!', 'info');
+                }, 1000);
+            }
+        });
+    </script>
+
+    <style>
+        .timeline-filter {
+            background-color: #f9fafb;
+            color: #6b7280;
+        }
+        
+        .timeline-filter:hover {
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+        
+        .timeline-filter.active {
+            background-color: #0f5132;
+            color: white;
+        }
+
+        /* Animação suave para itens da timeline */
+        .timeline-item {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .timeline-item[style*="display: none"] {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        /* Destaque para o período atual */
+        .current-time-highlight {
+            box-shadow: 0 0 0 2px #0f5132;
+            background-color: #f0fdf4;
+        }
+    </style>
+</body>
+</html>
