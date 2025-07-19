@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios - Sistema ForteGPS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'forte-green': '#0f5132',
+                        'forte-green-light': '#198754',
+                        'forte-green-dark': '#0a3622'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo e Título -->
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-forte-green rounded-xl flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">F</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">ForteGPS</h1>
+                        <p class="text-sm text-gray-600">Sistema de Gestão Financeira</p>
+                    </div>
+                </div>
+
+                <!-- Menu Principal -->
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Dashboard</a>
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Clientes</a>
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Cobrança</a>
+                    <a href="#" class="text-forte-green font-medium border-b-2 border-forte-green pb-1">Relatórios</a>
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Configurações</a>
+                </nav>
+
+                <!-- Ações do Usuário -->
+                <div class="flex items-center space-x-4">
+                    <button onclick="exportReport()" class="bg-forte-green hover:bg-forte-green-dark text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2">
+                        <span>📊</span>
+                        <span>Exportar</span>
+                    </button>
+                    <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                        <span class="text-gray-600 text-sm font-medium">JD</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Título da Página -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Relatórios Gerenciais</h2>
+            <p class="text-gray-600">Analytics completos para tomada de decisão estratégica</p>
+        </div>
+
+        <!-- Filtros Globais -->
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-8">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+                <div class="flex flex-wrap items-center gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Período</label>
+                        <select onchange="updatePeriod()" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                            <option value="7d">Últimos 7 dias</option>
+                            <option value="30d" selected>Últimos 30 dias</option>
+                            <option value="90d">Últimos 90 dias</option>
+                            <option value="1y">Último ano</option>
+                            <option value="custom">Período personalizado</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Cobrador</label>
+                        <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                            <option>Todos os cobradores</option>
+                            <option>Maria Clara</option>
+                            <option>Roberto Silva</option>
+                            <option>Ana Santos</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Cliente</label>
+                        <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                            <option>Todos</option>
+                            <option>Plano Básico</option>
+                            <option>Plano Completo</option>
+                            <option>Plano Premium</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-2">
+                    <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">
+                        🔄 Atualizar
+                    </button>
+                    <button onclick="scheduleReport()" class="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors">
+                        📅 Agendar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cards de KPIs Principais -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Taxa de Inadimplência -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                        <span class="text-red-600 text-xl">📊</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-red-500 text-xs font-medium bg-red-50 px-2 py-1 rounded-full">-2.5% vs mês anterior</span>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-1">27.5%</div>
+                <div class="text-gray-600 text-sm mb-2">Taxa de Inadimplência</div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-red-500 h-2 rounded-full" style="width: 27.5%"></div>
+                </div>
+                <div class="mt-2 text-xs text-gray-500">Meta: ≤20%</div>
+            </div>
+
+            <!-- Valor Recuperado -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-forte-green bg-opacity-10 rounded-xl flex items-center justify-center">
+                        <span class="text-forte-green text-xl">💰</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-forte-green text-xs font-medium bg-green-50 px-2 py-1 rounded-full">+18.3% vs mês anterior</span>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-1">R$ 142k</div>
+                <div class="text-gray-600 text-sm mb-2">Valor Recuperado (Julho)</div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-forte-green h-2 rounded-full" style="width: 79%"></div>
+                </div>
+                <div class="mt-2 text-xs text-gray-500">Meta mensal: R$ 180k (79%)</div>
+            </div>
+
+            <!-- Eficiência de Cobrança -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                        <span class="text-blue-600 text-xl">🎯</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-blue-600 text-xs font-medium bg-blue-50 px-2 py-1 rounded-full">+5.2% vs mês anterior</span>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-1">34.6%</div>
+                <div class="text-gray-600 text-sm mb-2">Taxa de Conversão</div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-blue-500 h-2 rounded-full" style="width: 34.6%"></div>
+                </div>
+                <div class="mt-2 text-xs text-gray-500">Contatos que resultaram em acordo/pagamento</div>
+            </div>
+
+            <!-- Tempo Médio de Recuperação -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                        <span class="text-purple-600 text-xl">⏱️</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-purple-600 text-xs font-medium bg-purple-50 px-2 py-1 rounded-full">-3 dias vs mês anterior</span>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold text-gray-900 mb-1">23 dias</div>
+                <div class="text-gray-600 text-sm mb-2">Tempo Médio de Recuperação</div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-purple-500 h-2 rounded-full" style="width: 60%"></div>
+                </div>
+                <div class="mt-2 text-xs text-gray-500">Do primeiro contato ao pagamento</div>
+            </div>
+        </div>
+
+        <!-- Gráficos Principais -->
+        <div class="grid lg:grid-cols-2 gap-8 mb-8">
+            <!-- Evolução da Inadimplência -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900">Evolução da Inadimplência</h3>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 text-xs bg-forte-green text-white rounded-full">Mensal</button>
+                        <button class="px-3 py-1 text-xs text-gray-600 hover:bg-gray-100 rounded-full">Semanal</button>
+                        <button class="px-3 py-1 text-xs text-gray-600 hover:bg-gray-100 rounded-full">Diário</button>
+                    </div>
+                </div>
+                <div class="h-80">
+                    <canvas id="inadimplenciaChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Recuperação por Cobrador -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900">Recuperação por Cobrador</h3>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 text-xs bg-forte-green text-white rounded-full">Julho</button>
+                        <button class="px-3 py-1 text-xs text-gray-600 hover:bg-gray-100 rounded-full">Junho</button>
+                        <button class="px-3 py-1 text-xs text-gray-600 hover:bg-gray-100 rounded-full">Maio</button>
+                    </div>
+                </div>
+                <div class="h-80">
+                    <canvas id="cobradorChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Análises Detalhadas -->
+        <div class="grid lg:grid-cols-3 gap-8 mb-8">
+            <!-- Top Tipos de Contato -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-900 mb-6">Eficiência por Canal</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-green-600 text-lg">📱</span>
+                            <div>
+                                <div class="font-medium text-gray-900">WhatsApp</div>
+                                <div class="text-sm text-gray-600">234 contatos</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-semibold text-green-600">67%</div>
+                            <div class="text-xs text-gray-500">conversão</div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-blue-600 text-lg">📞</span>
+                            <div>
+                                <div class="font-medium text-gray-900">Ligação</div>
+                                <div class="text-sm text-gray-600">189 contatos</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-semibold text-blue-600">45%</div>
+                            <div class="text-xs text-gray-500">conversão</div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-purple-600 text-lg">📧</span>
+                            <div>
+                                <div class="font-medium text-gray-900">E-mail</div>
+                                <div class="text-sm text-gray-600">67 contatos</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-semibold text-purple-600">23%</div>
+                            <div class="text-xs text-gray-500">conversão</div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-yellow-600 text-lg">📬</span>
+                            <div>
+                                <div class="font-medium text-gray-900">SMS</div>
+                                <div class="text-sm text-gray-600">45 contatos</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-semibold text-yellow-600">18%</div>
+                            <div class="text-xs text-gray-500">conversão</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Distribuição por Dias de Atraso -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-900 mb-6">Clientes por Atraso</h3>
+                <div class="h-64">
+                    <canvas id="atrasoChart"></canvas>
+                </div>
+                <div class="mt-4 grid grid-cols-2 gap-4 text-sm">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-green-600">1.247</div>
+                        <div class="text-gray-600">Em dia</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-red-600">471</div>
+                        <div class="text-gray-600">Em atraso</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ranking de Performance -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <h3 class="text-lg font-semibold text-gray-900 mb-6">Ranking dos Cobradores</h3>
+                <div class="space-y-4">
+                    <!-- 1º Lugar -->
+                    <div class="flex items-center space-x-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm font-bold">1</span>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-medium text-gray-900">Maria Clara</div>
+                            <div class="text-sm text-gray-600">38% conversão • R$ 47.2k</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-yellow-600">🏆</div>
+                        </div>
+                    </div>
+
+                    <!-- 2º Lugar -->
+                    <div class="flex items-center space-x-4 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                        <div class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm font-bold">2</span>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-medium text-gray-900">Roberto Silva</div>
+                            <div class="text-sm text-gray-600">37% conversão • R$ 39.8k</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-gray-500">🥈</div>
+                        </div>
+                    </div>
+
+                    <!-- 3º Lugar -->
+                    <div class="flex items-center space-x-4 p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                        <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm font-bold">3</span>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-medium text-gray-900">Ana Santos</div>
+                            <div class="text-sm text-gray-600">29% conversão • R$ 31.4k</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-orange-500">🥉</div>
+                        </div>
+                    </div>
+
+                    <!-- Estatísticas do Ranking -->
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-forte-green">📈</div>
+                                <div class="text-xs text-gray-600">Média de conversão: 34.6%</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-lg font-bold text-blue-600">💰</div>
+                                <div class="text-xs text-gray-600">Total recuperado: R$ 118.4k</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Relatórios Pré-definidos -->
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <h3 class="text-lg font-semibold text-gray-900 mb-6">Relatórios Pré-definidos</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <button onclick="generateReport('inadimplencia')" class="p-4 border border-gray-200 rounded-lg hover:border-forte-green hover:shadow-md transition-all text-left">
+                    <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mb-3">
+                        <span class="text-red-600 text-lg">📊</span>
+                    </div>
+                    <div class="font-medium text-gray-900 mb-1">Inadimplência Detalhada</div>
+                    <div class="text-sm text-gray-600">Análise completa por período, cobrador e segmento</div>
+                </button>
+
+                <button onclick="generateReport('cobranca')" class="p-4 border border-gray-200 rounded-lg hover:border-forte-green hover:shadow-md transition-all text-left">
+                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
+                        <span class="text-blue-600 text-lg">📞</span>
+                    </div>
+                    <div class="font-medium text-gray-900 mb-1">Performance de Cobrança</div>
+                    <div class="text-sm text-gray-600">Eficiência por cobrador e canal de contato</div>
+                </button>
+
+                <button onclick="generateReport('financeiro')" class="p-4 border border-gray-200 rounded-lg hover:border-forte-green hover:shadow-md transition-all text-left">
+                    <div class="w-10 h-10 bg-forte-green bg-opacity-10 rounded-lg flex items-center justify-center mb-3">
+                        <span class="text-forte-green text-lg">💰</span>
+                    </div>
+                    <div class="font-medium text-gray-900 mb-1">Recuperação Financeira</div>
+                    <div class="text-sm text-gray-600">Valores recuperados vs metas estabelecidas</div>
+                </button>
+
+                <button onclick="generateReport('trends')" class="p-4 border border-gray-200 rounded-lg hover:border-forte-green hover:shadow-md transition-all text-left">
+                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-3">
+                        <span class="text-purple-600 text-lg">📈</span>
+                    </div>
+                    <div class="font-medium text-gray-900 mb-1">Tendências e Projeções</div>
+                    <div class="text-sm text-gray-600">Análises preditivas e tendências futuras</div>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: Agendamento de Relatório -->
+    <div id="scheduleModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-blue-600 text-2xl">📅</span>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Agendar Relatório</h3>
+                <p class="text-gray-600">Configure envio automático de relatórios</p>
+            </div>
+
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Relatório</label>
+                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                        <option>Dashboard Executivo</option>
+                        <option>Inadimplência Detalhada</option>
+                        <option>Performance de Cobrança</option>
+                        <option>Recuperação Financeira</option>
+                        <option>Relatório Completo</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Frequência</label>
+                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                        <option>Diário</option>
+                        <option>Semanal</option>
+                        <option>Mensal</option>
+                        <option>Trimestral</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Dia/Horário do Envio</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <select class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                            <option>Segunda-feira</option>
+                            <option>Terça-feira</option>
+                            <option>Quarta-feira</option>
+                            <option>Quinta-feira</option>
+                            <option>Sexta-feira</option>
+                        </select>
+                        <input type="time" value="08:00" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Destinatários</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" checked class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                            <span class="text-sm text-gray-700">diretor@fortegps.com</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" checked class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                            <span class="text-sm text-gray-700">coordenador@fortegps.com</span>
+                        </label>
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                            <span class="text-sm text-gray-700">gerente@fortegps.com</span>
+                        </label>
+                    </div>
+                    <input type="email" placeholder="Adicionar outro e-mail..." class="w-full mt-2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                </div>
+
+                <div class="flex space-x-4 pt-4">
+                    <button type="button" onclick="closeScheduleModal()" class="flex-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="flex-1 px-4 py-2 bg-forte-green hover:bg-forte-green-dark text-white rounded-lg transition-colors">
+                        📅 Agendar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Gráfico de Evolução da Inadimplência
+        const ctx1 = document.getElementById('inadimplenciaChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
+                datasets: [
+                    {
+                        label: 'Taxa de Inadimplência (%)',
+                        data: [32.5, 31.8, 30.2, 29.7, 28.1, 30.0, 27.5],
+                        borderColor: '#dc2626',
+                        backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: 'Meta (20%)',
+                        data: [20, 20, 20, 20, 20, 20, 20],
+                        borderColor: '#0f5132',
+                        borderDash: [5, 5],
+                        pointRadius: 0,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 15,
+                        max: 35,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Recuperação por Cobrador
+        const ctx2 = document.getElementById('cobradorChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Maria Clara', 'Roberto Silva', 'Ana Santos'],
+                datasets: [
+                    {
+                        label: 'Valor Recuperado (R$ mil)',
+                        data: [47.2, 39.8, 31.4],
+                        backgroundColor: [
+                            'rgba(15, 81, 50, 0.8)',
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(168, 85, 247, 0.8)'
+                        ],
+                        borderColor: [
+                            '#0f5132',
+                            '#3b82f6',
+                            '#a855f7'
+                        ],
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Taxa de Conversão (%)',
+                        data: [38, 37, 29],
+                        type: 'line',
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        yAxisID: 'y1',
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        ticks: {
+                            callback: function(value) {
+                                return 'R$ ' + value + 'k';
+                            }
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Distribuição por Atraso
+        const ctx3 = document.getElementById('atrasoChart').getContext('2d');
+        new Chart(ctx3, {
+            type: 'doughnut',
+            data: {
+                labels: ['Em dia', '1-15 dias', '16-30 dias', '31-60 dias', '60+ dias'],
+                datasets: [{
+                    data: [1247, 156, 128, 97, 90],
+                    backgroundColor: [
+                        '#0f5132',
+                        '#fbbf24',
+                        '#f97316',
+                        '#ef4444',
+                        '#991b1b'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20
+                        }
+                    }
+                }
+            }
+        });
+
+        // Funções de Interação
+        function updatePeriod() {
+            const period = event.target.value;
+            showNotification(`📊 Atualizando dados para ${period}...`, 'info');
+            
+            // Simular atualização dos dados
+            setTimeout(() => {
+                showNotification('✅ Dados atualizados com sucesso!', 'success');
+            }, 2000);
+        }
+
+        function exportReport() {
+            showNotification('📊 Gerando arquivo de exportação...', 'info');
+            
+            // Simular processo de exportação
+            setTimeout(() => {
+                showNotification('✅ Relatório exportado! Download iniciado.', 'success');
+            }, 3000);
+        }
+
+        function scheduleReport() {
+            document.getElementById('scheduleModal').classList.remove('hidden');
+        }
+
+        function closeScheduleModal() {
+            document.getElementById('scheduleModal').classList.add('hidden');
+        }
+
+        function generateReport(type) {
+            const reportNames = {
+                'inadimplencia': 'Inadimplência Detalhada',
+                'cobranca': 'Performance de Cobrança',
+                'financeiro': 'Recuperação Financeira',
+                'trends': 'Tendências e Projeções'
+            };
+            
+            showNotification(`📊 Gerando relatório: ${reportNames[type]}...`, 'info');
+            
+            setTimeout(() => {
+                showNotification(`✅ Relatório ${reportNames[type]} gerado com sucesso!`, 'success');
+            }, 2500);
+        }
+
+        // Sistema de notificações
+        function showNotification(message, type = 'success') {
+            const colors = {
+                success: 'bg-forte-green',
+                info: 'bg-blue-500',
+                warning: 'bg-yellow-500',
+                error: 'bg-red-500'
+            };
+
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 ${colors[type]} text-white px-6 py-4 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform`;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 4000);
+        }
+
+        // Fechar modal clicando fora
+        document.getElementById('scheduleModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeScheduleModal();
+            }
+        });
+
+        // Envio do formulário de agendamento
+        document.querySelector('#scheduleModal form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '⏳ Agendando...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                closeScheduleModal();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                showNotification('📅 Relatório agendado com sucesso!', 'success');
+            }, 2000);
+        });
+
+        // Atualização automática dos dados
+        function autoUpdateData() {
+            const now = new Date();
+            const minutes = now.getMinutes();
+            
+            // Atualizar a cada 5 minutos
+            if (minutes % 5 === 0) {
+                showNotification('🔄 Dados atualizados automaticamente', 'info');
+            }
+        }
+
+        // Configurar atualização automática
+        setInterval(autoUpdateData, 60000); // Verificar a cada minuto
+
+        // Funcionalidades avançadas de exportação
+        function exportToExcel() {
+            showNotification('📊 Exportando para Excel...', 'info');
+            setTimeout(() => {
+                showNotification('✅ Arquivo Excel baixado!', 'success');
+            }, 2500);
+        }
+
+        function exportToPDF() {
+            showNotification('📄 Gerando PDF...', 'info');
+            setTimeout(() => {
+                showNotification('✅ Relatório PDF gerado!', 'success');
+            }, 3000);
+        }
+
+        function sendByEmail() {
+            const email = prompt('Digite o e-mail de destino:');
+            if (email) {
+                showNotification(`📧 Relatório enviado para ${email}!`, 'success');
+            }
+        }
+
+        // Análises inteligentes
+        function showInsights() {
+            const insights = [
+                "📈 A taxa de inadimplência reduziu 2.5% este mês - tendência positiva!",
+                "🎯 Maria Clara mantém a melhor performance há 3 meses consecutivos",
+                "📱 WhatsApp apresenta 67% de conversão - melhor canal de contato",
+                "⚠️ Clientes com 60+ dias de atraso precisam de atenção urgente"
+            ];
+            
+            const randomInsight = insights[Math.floor(Math.random() * insights.length)];
+            showNotification(randomInsight, 'info');
+        }
+
+        // Comparações automáticas
+        function compareWithLastMonth() {
+            showNotification('📊 Comparando com mês anterior...', 'info');
+            
+            setTimeout(() => {
+                const comparison = document.createElement('div');
+                comparison.className = 'fixed bottom-4 right-4 bg-white border border-gray-200 rounded-lg shadow-lg p-4 z-50 max-w-sm';
+                comparison.innerHTML = `
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-900">Comparação Mensal</h4>
+                        <button onclick="this.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600">✕</button>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span>Inadimplência:</span>
+                            <span class="text-green-600">-2.5% ↓</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Recuperação:</span>
+                            <span class="text-green-600">+18.3% ↑</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Conversão:</span>
+                            <span class="text-green-600">+5.2% ↑</span>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(comparison);
+                
+                setTimeout(() => {
+                    comparison.remove();
+                }, 10000);
+            }, 1500);
+        }
+
+        // Inicialização da página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simular carregamento inicial dos dados
+            setTimeout(() => {
+                showInsights();
+            }, 2000);
+            
+            // Comparação automática após 5 segundos
+            setTimeout(() => {
+                compareWithLastMonth();
+            }, 5000);
+        });
+
+        // Atalhos de teclado
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey) {
+                switch(e.key) {
+                    case 'e':
+                        e.preventDefault();
+                        exportReport();
+                        break;
+                    case 'r':
+                        e.preventDefault();
+                        location.reload();
+                        break;
+                    case 's':
+                        e.preventDefault();
+                        scheduleReport();
+                        break;
+                }
+            }
+        });
+
+        // Dicas para o usuário
+        function showKeyboardShortcuts() {
+            const shortcuts = document.createElement('div');
+            shortcuts.className = 'fixed bottom-4 left-4 bg-gray-900 text-white p-4 rounded-lg shadow-lg z-50 max-w-xs';
+            shortcuts.innerHTML = `
+                <div class="mb-2 font-semibold">Atalhos de Teclado:</div>
+                <div class="space-y-1 text-sm">
+                    <div>Ctrl + E: Exportar</div>
+                    <div>Ctrl + R: Atualizar</div>
+                    <div>Ctrl + S: Agendar</div>
+                </div>
+                <button onclick="this.parentElement.remove()" class="mt-2 text-xs text-gray-300 hover:text-white">Fechar</button>
+            `;
+            
+            document.body.appendChild(shortcuts);
+            
+            setTimeout(() => {
+                shortcuts.remove();
+            }, 8000);
+        }
+
+        // Mostrar dicas após 10 segundos
+        setTimeout(showKeyboardShortcuts, 10000);
+    </script>
+</body>
+</html>
