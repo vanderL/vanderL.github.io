@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda de Cobrança - Sistema ForteGPS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'forte-green': '#0f5132',
+                        'forte-green-light': '#198754',
+                        'forte-green-dark': '#0a3622'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo e Título -->
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-forte-green rounded-xl flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">F</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">ForteGPS</h1>
+                        <p class="text-sm text-gray-600">Sistema de Gestão Financeira</p>
+                    </div>
+                </div>
+
+                <!-- Menu Principal -->
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Dashboard</a>
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Clientes</a>
+                    <a href="#" class="text-forte-green font-medium border-b-2 border-forte-green pb-1">Agenda de Cobrança</a>
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Relatórios</a>
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Configurações</a>
+                </nav>
+
+                <!-- Ações do Usuário -->
+                <div class="flex items-center space-x-4">
+                    <button onclick="openNewTaskModal()" class="bg-forte-green hover:bg-forte-green-dark text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2">
+                        <span>📞</span>
+                        <span>Nova Cobrança</span>
+                    </button>
+                    <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                        <span class="text-gray-600 text-sm font-medium">JD</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Título da Página -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Agenda de Cobrança</h2>
+            <p class="text-gray-600">Organize contatos, distribua clientes e evite duplicidade de cobranças</p>
+        </div>
+
+        <!-- Resumo da Agenda -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-forte-green bg-opacity-10 rounded-xl flex items-center justify-center">
+                        <span class="text-forte-green text-xl">📅</span>
+                    </div>
+                </div>
+                <div class="text-2xl font-bold text-gray-900 mb-1">47</div>
+                <div class="text-gray-600 text-sm">Contatos Agendados Hoje</div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                        <span class="text-blue-600 text-xl">✅</span>
+                    </div>
+                </div>
+                <div class="text-2xl font-bold text-gray-900 mb-1">23</div>
+                <div class="text-gray-600 text-sm">Contatos Realizados</div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
+                        <span class="text-yellow-600 text-xl">⏰</span>
+                    </div>
+                </div>
+                <div class="text-2xl font-bold text-gray-900 mb-1">24</div>
+                <div class="text-gray-600 text-sm">Pendentes</div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                        <span class="text-red-600 text-xl">🚨</span>
+                    </div>
+                </div>
+                <div class="text-2xl font-bold text-gray-900 mb-1">8</div>
+                <div class="text-gray-600 text-sm">Atrasados</div>
+            </div>
+        </div>
+
+        <!-- Filtros e Visualização -->
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-6">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+                <!-- Filtros por Cobrador e Data -->
+                <div class="flex flex-wrap items-center gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Cobrador</label>
+                        <select onchange="filterByCobrador()" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                            <option value="todos">Todos os Cobradores</option>
+                            <option value="maria">Maria Clara (23 agendados)</option>
+                            <option value="roberto">Roberto Silva (15 agendados)</option>
+                            <option value="ana">Ana Santos (9 agendados)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Data</label>
+                        <input type="date" value="2025-07-19" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                        <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                            <option>Todos</option>
+                            <option>Agendados</option>
+                            <option>Realizados</option>
+                            <option>Não Atendeu</option>
+                            <option>Reagendar</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Visualização -->
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm text-gray-600">Visualização:</span>
+                    <button onclick="changeView('timeline')" class="view-btn active px-3 py-1 rounded text-sm transition-colors">📅 Timeline</button>
+                    <button onclick="changeView('kanban')" class="view-btn px-3 py-1 rounded text-sm transition-colors">📋 Kanban</button>
+                    <button onclick="changeView('lista')" class="view-btn px-3 py-1 rounded text-sm transition-colors">📄 Lista</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visualização Timeline -->
+        <div id="timeline-view" class="view-content">
+            <div class="grid lg:grid-cols-4 gap-6">
+                <!-- Coluna: Manhã (08:00 - 12:00) -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center space-x-2">
+                            <span>🌅</span>
+                            <span>Manhã</span>
+                        </h3>
+                        <span class="text-sm text-gray-600">08:00 - 12:00</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Contato Agendado -->
+                        <div class="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer" onclick="openContactModal('João Silva')">
+                            <div class="flex items-start justify-between mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                                        <span class="text-red-600 text-xs font-medium">JS</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900 text-sm">João Silva</div>
+                                        <div class="text-xs text-gray-600">45 dias em atraso</div>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-gray-500">09:00</span>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-3">
+                                R$ 187,50 • Prioridade Alta
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
+                                    📞 Ligação
+                                </span>
+                                <div class="flex space-x-1">
+                                    <button onclick="event.stopPropagation(); markAsCompleted('João Silva')" class="text-forte-green hover:bg-forte-green hover:text-white p-1 rounded text-xs transition-colors">✓</button>
+                                    <button onclick="event.stopPropagation(); reschedule('João Silva')" class="text-yellow-600 hover:bg-yellow-100 p-1 rounded text-xs transition-colors">⏰</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contato Realizado -->
+                        <div class="p-4 border border-green-200 bg-green-50 rounded-lg">
+                            <div class="flex items-start justify-between mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 bg-forte-green bg-opacity-20 rounded-full flex items-center justify-center">
+                                        <span class="text-forte-green text-xs font-medium">MS</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900 text-sm">Maria Santos</div>
+                                        <div class="text-xs text-forte-green">✅ Acordo fechado</div>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-gray-500">10:30</span>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-2">
+                                R$ 187,50 • 3x R$ 62,50
+                            </div>
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-forte-green bg-opacity-20 text-forte-green">
+                                📱 WhatsApp
+                            </span>
+                        </div>
+
+                        <!-- Aniversário -->
+                        <div class="p-4 border border-purple-200 bg-purple-50 rounded-lg">
+                            <div class="flex items-start justify-between mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                                        <span class="text-purple-600 text-xs">🎂</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900 text-sm">Ana Costa</div>
+                                        <div class="text-xs text-purple-600">Aniversário hoje</div>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-gray-500">11:00</span>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-2">
+                                Mensagem automática enviada
+                            </div>
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-purple-100 text-purple-800">
+                                🎉 Aniversário
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna: Tarde (13:00 - 17:00) -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center space-x-2">
+                            <span>☀️</span>
+                            <span>Tarde</span>
+                        </h3>
+                        <span class="text-sm text-gray-600">13:00 - 17:00</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Contato Pendente -->
+                        <div class="p-4 border border-yellow-200 bg-yellow-50 rounded-lg">
+                            <div class="flex items-start justify-between mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
+                                        <span class="text-yellow-600 text-xs font-medium">PO</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900 text-sm">Pedro Oliveira</div>
+                                        <div class="text-xs text-yellow-600">⏰ Não atendeu - reagendar</div>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-gray-500">14:00</span>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-3">
+                                R$ 187,50 • 3ª tentativa
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-yellow-100 text-yellow-800">
+                                    📞 Reagendar
+                                </span>
+                                <div class="flex space-x-1">
+                                    <button onclick="reschedule('Pedro Oliveira')" class="text-yellow-600 hover:bg-yellow-100 p-1 rounded text-xs transition-colors">📅</button>
+                                    <button onclick="sendWhatsApp('Pedro Oliveira')" class="text-green-600 hover:bg-green-100 p-1 rounded text-xs transition-colors">📱</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contato Agendado -->
+                        <div class="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer" onclick="openContactModal('Ricardo Lima')">
+                            <div class="flex items-start justify-between mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                                        <span class="text-orange-600 text-xs font-medium">RL</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900 text-sm">Ricardo Lima</div>
+                                        <div class="text-xs text-gray-600">23 dias em atraso</div>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-gray-500">15:30</span>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-3">
+                                R$ 187,50 • Prioridade Média
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
+                                    📞 Ligação
+                                </span>
+                                <div class="flex space-x-1">
+                                    <button onclick="event.stopPropagation(); markAsCompleted('Ricardo Lima')" class="text-forte-green hover:bg-forte-green hover:text-white p-1 rounded text-xs transition-colors">✓</button>
+                                    <button onclick="event.stopPropagation(); reschedule('Ricardo Lima')" class="text-yellow-600 hover:bg-yellow-100 p-1 rounded text-xs transition-colors">⏰</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Follow-up -->
+                        <div class="p-4 border border-blue-200 bg-blue-50 rounded-lg">
+                            <div class="flex items-start justify-between mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <span class="text-blue-600 text-xs font-medium">CF</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900 text-sm">Carla Ferreira</div>
+                                        <div class="text-xs text-blue-600">Follow-up de acordo</div>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-gray-500">16:00</span>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-2">
+                                Verificar pagamento da 1ª parcela
+                            </div>
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
+                                📋 Follow-up
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna: Noite (18:00 - 20:00) -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center space-x-2">
+                            <span>🌆</span>
+                            <span>Noite</span>
+                        </h3>
+                        <span class="text-sm text-gray-600">18:00 - 20:00</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Contato WhatsApp -->
+                        <div class="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer">
+                            <div class="flex items-start justify-between mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                        <span class="text-green-600 text-xs font-medium">LM</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900 text-sm">Lucas Mendes</div>
+                                        <div class="text-xs text-gray-600">12 dias em atraso</div>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-gray-500">18:30</span>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-3">
+                                R$ 187,50 • Prefere WhatsApp
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">
+                                    📱 WhatsApp
+                                </span>
+                                <div class="flex space-x-1">
+                                    <button class="text-forte-green hover:bg-forte-green hover:text-white p-1 rounded text-xs transition-colors">✓</button>
+                                    <button class="text-yellow-600 hover:bg-yellow-100 p-1 rounded text-xs transition-colors">⏰</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lembrete -->
+                        <div class="p-4 border border-indigo-200 bg-indigo-50 rounded-lg">
+                            <div class="flex items-start justify-between mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
+                                        <span class="text-indigo-600 text-xs">📋</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900 text-sm">Relatório Diário</div>
+                                        <div class="text-xs text-indigo-600">Enviar resumo para gestão</div>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-gray-500">19:30</span>
+                            </div>
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-indigo-100 text-indigo-800">
+                                📊 Administrativo
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna: Atrasados/Pendentes -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-red-100">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-semibold text-red-700 flex items-center space-x-2">
+                            <span>🚨</span>
+                            <span>Atrasados</span>
+                        </h3>
+                        <span class="text-sm text-red-600">8 pendências</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Contato Atrasado -->
+                        <div class="p-4 border border-red-200 bg-red-50 rounded-lg">
+                            <div class="flex items-start justify-between mb-2">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                                        <span class="text-red-600 text-xs font-medium">TS</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900 text-sm">Tânia Silva</div>
+                                        <div class="text-xs text-red-600">Atrasado desde ontem</div>
+                                    </div>
+                                </div>
+                                <span class="text-xs text-red-500">16:00</span>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-3">
+                                R$ 187,50 • 4ª tentativa
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-red-100 text-red-800">
+                                    ⚠️ Urgente
+                                </span>
+                                <div class="flex space-x-1">
+                                    <button class="text-forte-green hover:bg-forte-green hover:text-white p-1 rounded text-xs transition-colors">📞</button>
+                                    <button class="text-green-600 hover:bg-green-100 p-1 rounded text-xs transition-colors">📱</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Outros Atrasados -->
+                        <div class="space-y-2">
+                            <div class="p-3 border border-red-200 rounded-lg bg-red-25">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center">
+                                            <span class="text-red-600 text-xs">AM</span>
+                                        </div>
+                                        <span class="text-sm font-medium text-gray-900">André Martins</span>
+                                    </div>
+                                    <span class="text-xs text-red-600">2 dias</span>
+                                </div>
+                            </div>
+
+                            <div class="p-3 border border-red-200 rounded-lg bg-red-25">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center">
+                                            <span class="text-red-600 text-xs">BS</span>
+                                        </div>
+                                        <span class="text-sm font-medium text-gray-900">Bruna Santos</span>
+                                    </div>
+                                    <span class="text-xs text-red-600">1 dia</span>
+                                </div>
+                            </div>
+
+                            <div class="text-center pt-2">
+                                <button class="text-sm text-red-600 hover:text-red-800 transition-colors">
+                                    Ver todos os atrasados (+5)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visualização Kanban (Oculta inicialmente) -->
+        <div id="kanban-view" class="view-content hidden">
+            <div class="grid lg:grid-cols-4 gap-6">
+                <!-- Coluna: Agendados -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center justify-between">
+                        <span>📅 Agendados</span>
+                        <span class="text-sm bg-gray-100 px-2 py-1 rounded-full">24</span>
+                    </h3>
+                    <!-- Cards de contatos agendados aqui -->
+                    <div class="text-center text-gray-500 text-sm mt-8">
+                        24 contatos agendados para hoje
+                    </div>
+                </div>
+
+                <!-- Coluna: Em Andamento -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center justify-between">
+                        <span>🔄 Em Andamento</span>
+                        <span class="text-sm bg-blue-100 px-2 py-1 rounded-full">3</span>
+                    </h3>
+                    <!-- Cards de contatos em andamento aqui -->
+                </div>
+
+                <!-- Coluna: Concluídos -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center justify-between">
+                        <span>✅ Concluídos</span>
+                        <span class="text-sm bg-forte-green bg-opacity-20 text-forte-green px-2 py-1 rounded-full">23</span>
+                    </h3>
+                    <!-- Cards de contatos concluídos aqui -->
+                </div>
+
+                <!-- Coluna: Reagendar -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center justify-between">
+                        <span>⏰ Reagendar</span>
+                        <span class="text-sm bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">8</span>
+                    </h3>
+                    <!-- Cards de contatos para reagendar aqui -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Visualização Lista (Oculta inicialmente) -->
+        <div id="lista-view" class="view-content hidden">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-900">Lista de Contatos do Dia</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Horário</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cliente</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tipo</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Valor</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <!-- Exemplo de linhas da tabela -->
+                            <tr>
+                                <td class="px-6 py-4 text-sm text-gray-900">09:00</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                                            <span class="text-red-600 text-xs">JS</span>
+                                        </div>
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-900">João Silva</div>
+                                            <div class="text-xs text-gray-600">(85) 99999-1234</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-600">📞 Ligação</td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-yellow-100 text-yellow-800">
+                                        ⏰ Agendado
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-900">R$ 187,50</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex space-x-2">
+                                        <button class="text-forte-green hover:bg-forte-green hover:text-white p-1 rounded text-xs transition-colors">✓</button>
+                                        <button class="text-yellow-600 hover:bg-yellow-100 p-1 rounded text-xs transition-colors">⏰</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: Nova Cobrança -->
+    <div id="newTaskModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-forte-green bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-forte-green text-2xl">📞</span>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Agendar Nova Cobrança</h3>
+                <p class="text-gray-600">Adicione um novo contato à agenda</p>
+            </div>
+
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Cliente</label>
+                    <input type="text" placeholder="Digite o nome ou telefone do cliente" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green focus:border-transparent">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Data</label>
+                        <input type="date" value="2025-07-19" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Horário</label>
+                        <input type="time" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green focus:border-transparent">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Contato</label>
+                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green focus:border-transparent">
+                        <option>📞 Ligação</option>
+                        <option>📱 WhatsApp</option>
+                        <option>📧 E-mail</option>
+                        <option>📋 Follow-up</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Prioridade</label>
+                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green focus:border-transparent">
+                        <option>🔴 Alta (60+ dias)</option>
+                        <option>🟡 Média (30-59 dias)</option>
+                        <option>🟢 Baixa (1-29 dias)</option>
+                        <option>🔵 Follow-up</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Observações</label>
+                    <textarea rows="3" placeholder="Ex: Cliente prefere contato após 14h..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green focus:border-transparent"></textarea>
+                </div>
+
+                <div class="flex space-x-4 pt-4">
+                    <button type="button" onclick="closeNewTaskModal()" class="flex-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="flex-1 px-4 py-2 bg-forte-green hover:bg-forte-green-dark text-white rounded-lg transition-colors">
+                        📅 Agendar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Detalhes do Contato -->
+    <div id="contactModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-lg w-full mx-4">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold text-gray-900">Detalhes do Contato</h3>
+                <button onclick="closeContactModal()" class="text-gray-400 hover:text-gray-600">✕</button>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Informações do Cliente -->
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                            <span class="text-red-600 font-medium">JS</span>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-gray-900" id="modalClientName">João Silva</div>
+                            <div class="text-sm text-gray-600">(85) 99999-1234</div>
+                            <div class="text-sm text-red-600">45 dias em atraso • R$ 187,50</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Histórico Rápido -->
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-3">Últimos Contatos</h4>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                            <span class="text-sm text-gray-700">📱 WhatsApp enviado</span>
+                            <span class="text-xs text-gray-500">Ontem</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                            <span class="text-sm text-gray-700">📞 Não atendeu</span>
+                            <span class="text-xs text-gray-500">2 dias atrás</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                            <span class="text-sm text-gray-700">📞 Prometeu pagar em 3 dias</span>
+                            <span class="text-xs text-gray-500">1 semana</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ações Rápidas -->
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="markAsCompleted('João Silva')" class="bg-forte-green hover:bg-forte-green-dark text-white p-3 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                        <span>✅</span>
+                        <span>Marcar como Feito</span>
+                    </button>
+                    <button onclick="reschedule('João Silva')" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 p-3 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                        <span>⏰</span>
+                        <span>Reagendar</span>
+                    </button>
+                </div>
+
+                <!-- Registrar Resultado -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Resultado do Contato</label>
+                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green mb-3">
+                        <option>Selecione o resultado...</option>
+                        <option>✅ Acordo fechado</option>
+                        <option>💰 Pagamento confirmado</option>
+                        <option>📞 Não atendeu</option>
+                        <option>📱 Solicitou WhatsApp</option>
+                        <option>⏰ Prometeu pagar em X dias</option>
+                        <option>❌ Recusou negociar</option>
+                        <option>📞 Reagendar para outro horário</option>
+                    </select>
+                    <textarea rows="3" placeholder="Observações sobre o contato..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green"></textarea>
+                </div>
+
+                <button class="w-full bg-forte-green hover:bg-forte-green-dark text-white p-3 rounded-lg transition-colors">
+                    💾 Salvar Resultado
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Gerenciamento de Visualizações
+        function changeView(viewType) {
+            // Esconder todas as visualizações
+            document.querySelectorAll('.view-content').forEach(view => {
+                view.classList.add('hidden');
+            });
+
+            // Mostrar visualização selecionada
+            document.getElementById(viewType + '-view').classList.remove('hidden');
+
+            // Atualizar botões
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Filtros
+        function filterByCobrador() {
+            const select = event.target;
+            const value = select.value;
+            console.log('Filtrando por cobrador:', value);
+            // Implementar lógica de filtro
+        }
+
+        // Modais
+        function openNewTaskModal() {
+            document.getElementById('newTaskModal').classList.remove('hidden');
+        }
+
+        function closeNewTaskModal() {
+            document.getElementById('newTaskModal').classList.add('hidden');
+        }
+
+        function openContactModal(clientName) {
+            document.getElementById('modalClientName').textContent = clientName;
+            document.getElementById('contactModal').classList.remove('hidden');
+        }
+
+        function closeContactModal() {
+            document.getElementById('contactModal').classList.add('hidden');
+        }
+
+        // Ações dos Contatos
+        function markAsCompleted(clientName) {
+            showNotification(`✅ Contato com ${clientName} marcado como concluído!`, 'success');
+        }
+
+        function reschedule(clientName) {
+            showNotification(`⏰ Reagendando contato com ${clientName}...`, 'info');
+        }
+
+        function sendWhatsApp(clientName) {
+            showNotification(`📱 WhatsApp enviado para ${clientName}!`, 'success');
+        }
+
+        // Sistema de Notificações
+        function showNotification(message, type = 'success') {
+            const colors = {
+                success: 'bg-forte-green',
+                info: 'bg-blue-500',
+                warning: 'bg-yellow-500',
+                error: 'bg-red-500'
+            };
+
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 ${colors[type]} text-white px-6 py-4 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform`;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Fechar modais clicando fora
+        document.getElementById('newTaskModal').addEventListener('click', function(e) {
+            if (e.target === this) closeNewTaskModal();
+        });
+
+        document.getElementById('contactModal').addEventListener('click', function(e) {
+            if (e.target === this) closeContactModal();
+        });
+
+        // Envio de formulários
+        document.querySelector('#newTaskModal form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '⏳ Agendando...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                closeNewTaskModal();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                showNotification('📅 Cobrança agendada com sucesso!', 'success');
+            }, 1500);
+        });
+
+        // Atualização automática do horário atual
+        function updateCurrentTime() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            
+            // Destacar período atual
+            document.querySelectorAll('.timeline-period').forEach(period => {
+                period.classList.remove('current-period');
+            });
+            
+            if (currentHour >= 8 && currentHour < 13) {
+                // Manhã
+                document.querySelector('[data-period="manha"]')?.classList.add('current-period');
+            } else if (currentHour >= 13 && currentHour < 18) {
+                // Tarde
+                document.querySelector('[data-period="tarde"]')?.classList.add('current-period');
+            } else if (currentHour >= 18 && currentHour < 21) {
+                // Noite
+                document.querySelector('[data-period="noite"]')?.classList.add('current-period');
+            }
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 60000); // Atualizar a cada minuto
+        });
+    </script>
+
+    <style>
+        .view-btn {
+            background-color: #f9fafb;
+            color: #6b7280;
+        }
+        
+        .view-btn:hover {
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+        
+        .view-btn.active {
+            background-color: #0f5132;
+            color: white;
+        }
+
+        .current-period {
+            box-shadow: 0 0 0 2px #0f5132;
+        }
+
+        .bg-red-25 {
+            background-color: #fef7f7;
+        }
+    </style>
+</body>
+</html>
