@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestão Financeira - ForteGPS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'forte-green': '#0f5132',
+                        'forte-green-light': '#198754',
+                        'forte-green-dark': '#0a3622'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-forte-green rounded-lg flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">F</span>
+                </div>
+                <div>
+                    <h1 class="text-xl font-semibold text-gray-900">ForteGPS</h1>
+                    <p class="text-sm text-gray-600">Sistema de Gestão Financeira</p>
+                </div>
+            </div>
+            <nav class="hidden md:flex space-x-6">
+                <button onclick="showTab('dashboard')" class="tab-btn active px-4 py-2 rounded-lg transition-colors">Dashboard</button>
+                <button onclick="showTab('architecture')" class="tab-btn px-4 py-2 rounded-lg transition-colors">Arquitetura</button>
+                <button onclick="showTab('modules')" class="tab-btn px-4 py-2 rounded-lg transition-colors">Módulos</button>
+                <button onclick="showTab('implementation')" class="tab-btn px-4 py-2 rounded-lg transition-colors">Implementação</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Dashboard Tab -->
+        <div id="dashboard-tab" class="tab-content">
+            <!-- Hero Section -->
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                    Sistema de Gestão <span class="text-forte-green">Financeira</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Automatize a conciliação bancária, reduza inadimplência e aumente a produtividade 
+                    do seu time de cobrança com nosso sistema completo.
+                </p>
+            </div>
+
+            <!-- Métricas Principais -->
+            <div class="grid md:grid-cols-4 gap-6 mb-12">
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                            <span class="text-red-600 text-xl">📊</span>
+                        </div>
+                        <span class="text-red-500 text-sm font-medium">ATUAL</span>
+                    </div>
+                    <div class="text-3xl font-bold text-gray-900 mb-1">30%</div>
+                    <div class="text-gray-600 text-sm">Taxa de Inadimplência</div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-forte-green bg-opacity-10 rounded-lg flex items-center justify-center">
+                            <span class="text-forte-green text-xl">🎯</span>
+                        </div>
+                        <span class="text-forte-green text-sm font-medium">META</span>
+                    </div>
+                    <div class="text-3xl font-bold text-gray-900 mb-1">≤20%</div>
+                    <div class="text-gray-600 text-sm">Meta de Inadimplência</div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <span class="text-blue-600 text-xl">⏱️</span>
+                        </div>
+                        <span class="text-blue-500 text-sm font-medium">ECONOMIA</span>
+                    </div>
+                    <div class="text-3xl font-bold text-gray-900 mb-1">80%</div>
+                    <div class="text-gray-600 text-sm">Redução no Tempo Manual</div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <span class="text-purple-600 text-xl">👥</span>
+                        </div>
+                        <span class="text-purple-500 text-sm font-medium">USUÁRIOS</span>
+                    </div>
+                    <div class="text-3xl font-bold text-gray-900 mb-1">1-4</div>
+                    <div class="text-gray-600 text-sm">Analistas e Cobradores</div>
+                </div>
+            </div>
+
+            <!-- Benefícios Principais -->
+            <div class="bg-white rounded-xl p-8 mb-12 shadow-sm border border-gray-100">
+                <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">O Que Você Ganha com o Sistema?</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-forte-green bg-opacity-10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <span class="text-forte-green text-2xl">🔄</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Conciliação Automática</h4>
+                        <p class="text-gray-600 text-sm">Importação e conciliação automática do extrato bancário com lista de clientes ativos.</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-forte-green bg-opacity-10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <span class="text-forte-green text-2xl">📞</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Gestão de Cobrança</h4>
+                        <p class="text-gray-600 text-sm">Alocação inteligente de clientes por cobrador, evitando duplicidade de contatos.</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-forte-green bg-opacity-10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <span class="text-forte-green text-2xl">📱</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">WhatsApp Integrado</h4>
+                        <p class="text-gray-600 text-sm">Envio automático de mensagens e lembretes de aniversário via WhatsApp.</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-forte-green bg-opacity-10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <span class="text-forte-green text-2xl">📝</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Histórico Completo</h4>
+                        <p class="text-gray-600 text-sm">Registro detalhado de cada interação: atendeu, não atendeu, acordos, pagamentos.</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-forte-green bg-opacity-10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <span class="text-forte-green text-2xl">📊</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Relatórios Inteligentes</h4>
+                        <p class="text-gray-600 text-sm">Dashboards com taxa de inadimplência, performance por cobrador e valores recuperados.</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-forte-green bg-opacity-10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <span class="text-forte-green text-2xl">⚡</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Acesso Rápido</h4>
+                        <p class="text-gray-600 text-sm">Consulta ao histórico do cliente em menos de 5 segundos para agilizar atendimentos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Architecture Tab -->
+        <div id="architecture-tab" class="tab-content hidden">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                    Arquitetura do <span class="text-forte-green">Sistema</span>
+                </h2>
+                <p class="text-xl text-gray-600">Visão técnica completa da solução</p>
+            </div>
+
+            <!-- Diagrama de Arquitetura -->
+            <div class="bg-white rounded-xl p-8 mb-8 shadow-sm border border-gray-100">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">Fluxo de Dados</h3>
+                <div class="grid lg:grid-cols-4 gap-6">
+                    <!-- Entrada de Dados -->
+                    <div class="bg-blue-50 rounded-lg p-6 border border-blue-200">
+                        <div class="text-center mb-4">
+                            <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                <span class="text-white text-xl">📥</span>
+                            </div>
+                            <h4 class="font-semibold text-blue-800">Entrada</h4>
+                        </div>
+                        <ul class="text-sm text-blue-700 space-y-2">
+                            <li>• Extrato Bancário (CSV/OFX)</li>
+                            <li>• Lista de Clientes</li>
+                            <li>• Dados de Cobrança</li>
+                        </ul>
+                    </div>
+
+                    <!-- Processamento -->
+                    <div class="bg-forte-green bg-opacity-5 rounded-lg p-6 border border-forte-green border-opacity-30">
+                        <div class="text-center mb-4">
+                            <div class="w-12 h-12 bg-forte-green rounded-lg flex items-center justify-center mx-auto mb-2">
+                                <span class="text-white text-xl">⚙️</span>
+                            </div>
+                            <h4 class="font-semibold text-forte-green-dark">Processamento</h4>
+                        </div>
+                        <ul class="text-sm text-forte-green-dark space-y-2">
+                            <li>• Conciliação Automática</li>
+                            <li>• Identificação de Inadimplentes</li>
+                            <li>• Alocação de Lotes</li>
+                        </ul>
+                    </div>
+
+                    <!-- Integração -->
+                    <div class="bg-purple-50 rounded-lg p-6 border border-purple-200">
+                        <div class="text-center mb-4">
+                            <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                <span class="text-white text-xl">🔗</span>
+                            </div>
+                            <h4 class="font-semibold text-purple-800">Integrações</h4>
+                        </div>
+                        <ul class="text-sm text-purple-700 space-y-2">
+                            <li>• API WhatsApp</li>
+                            <li>• Sistema Bancário</li>
+                            <li>• Base de Clientes</li>
+                        </ul>
+                    </div>
+
+                    <!-- Saída -->
+                    <div class="bg-green-50 rounded-lg p-6 border border-green-200">
+                        <div class="text-center mb-4">
+                            <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                <span class="text-white text-xl">📤</span>
+                            </div>
+                            <h4 class="font-semibold text-green-800">Resultados</h4>
+                        </div>
+                        <ul class="text-sm text-green-700 space-y-2">
+                            <li>• Relatórios e Dashboards</li>
+                            <li>• Notificações Automáticas</li>
+                            <li>• Histórico de Interações</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Componentes Técnicos -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Banco de Dados</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-3 h-3 bg-forte-green rounded-full"></div>
+                            <span class="text-gray-700">Clientes e Contratos</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-3 h-3 bg-forte-green rounded-full"></div>
+                            <span class="text-gray-700">Histórico de Pagamentos</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-3 h-3 bg-forte-green rounded-full"></div>
+                            <span class="text-gray-700">Log de Interações</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-3 h-3 bg-forte-green rounded-full"></div>
+                            <span class="text-gray-700">Configurações do Sistema</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">APIs Externas</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                            <span class="text-gray-700">WhatsApp Business API</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            <span class="text-gray-700">Open Banking / PIX</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <span class="text-gray-700">Sistemas Bancários</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-3 h-3 bg-purple-500 rounded-full"></div>
+                            <span class="text-gray-700">Serviços de E-mail</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modules Tab -->
+        <div id="modules-tab" class="tab-content hidden">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                    Módulos do <span class="text-forte-green">Sistema</span>
+                </h2>
+                <p class="text-xl text-gray-600">Funcionalidades detalhadas de cada componente</p>
+            </div>
+
+            <!-- Módulos Grid -->
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Módulo 1: Importação Bancária -->
+                <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <span class="text-blue-600 text-xl">🏦</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">Importação Bancária</h3>
+                            <p class="text-gray-600">Automação da conciliação</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-forte-green pl-4">
+                            <h4 class="font-medium text-gray-900">Recursos Principais</h4>
+                            <ul class="text-sm text-gray-600 mt-2 space-y-1">
+                                <li>• Leitura automática de extratos (CSV, OFX, PDF)</li>
+                                <li>• Reconhecimento de padrões de pagamento</li>
+                                <li>• Conciliação com base de clientes</li>
+                                <li>• Detecção de pagamentos duplicados</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h5 class="font-medium text-gray-800 mb-2">Formatos Suportados</h5>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-forte-green text-white text-xs rounded-full">CSV</span>
+                                <span class="px-3 py-1 bg-forte-green text-white text-xs rounded-full">OFX</span>
+                                <span class="px-3 py-1 bg-forte-green text-white text-xs rounded-full">PDF</span>
+                                <span class="px-3 py-1 bg-forte-green text-white text-xs rounded-full">TXT</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Módulo 2: Gestão de Inadimplentes -->
+                <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                            <span class="text-red-600 text-xl">⚠️</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">Gestão de Inadimplentes</h3>
+                            <p class="text-gray-600">Identificação e organização</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-forte-green pl-4">
+                            <h4 class="font-medium text-gray-900">Recursos Principais</h4>
+                            <ul class="text-sm text-gray-600 mt-2 space-y-1">
+                                <li>• Detecção automática de atrasos</li>
+                                <li>• Classificação por dias de atraso</li>
+                                <li>• Priorização por valor e histórico</li>
+                                <li>• Distribuição equilibrada entre cobradores</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h5 class="font-medium text-gray-800 mb-2">Níveis de Prioridade</h5>
+                            <div class="space-y-2">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                    <span class="text-sm text-gray-700">Alta: 30+ dias</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                    <span class="text-sm text-gray-700">Média: 15-29 dias</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                    <span class="text-sm text-gray-700">Baixa: 1-14 dias</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Módulo 3: Controle de Cobranças -->
+                <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div class="w-12 h-12 bg-forte-green bg-opacity-10 rounded-lg flex items-center justify-center">
+                            <span class="text-forte-green text-xl">📞</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">Controle de Cobranças</h3>
+                            <p class="text-gray-600">Automação de contatos</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-forte-green pl-4">
+                            <h4 class="font-medium text-gray-900">Recursos Principais</h4>
+                            <ul class="text-sm text-gray-600 mt-2 space-y-1">
+                                <li>• Agenda inteligente de ligações</li>
+                                <li>• Templates de mensagens WhatsApp</li>
+                                <li>• Lembretes de aniversário automáticos</li>
+                                <li>• Controle de tentativas de contato</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h5 class="font-medium text-gray-800 mb-2">Canais de Contato</h5>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-forte-green">📱</span>
+                                    <span class="text-sm text-gray-700">WhatsApp</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-forte-green">📞</span>
+                                    <span class="text-sm text-gray-700">Telefone</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-forte-green">📧</span>
+                                    <span class="text-sm text-gray-700">E-mail</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-forte-green">📬</span>
+                                    <span class="text-sm text-gray-700">SMS</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Módulo 4: Histórico e Relatórios -->
+                <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <span class="text-purple-600 text-xl">📊</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">Histórico e Relatórios</h3>
+                            <p class="text-gray-600">Analytics e controle</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-forte-green pl-4">
+                            <h4 class="font-medium text-gray-900">Recursos Principais</h4>
+                            <ul class="text-sm text-gray-600 mt-2 space-y-1">
+                                <li>• Log completo de todas as interações</li>
+                                <li>• Dashboards em tempo real</li>
+                                <li>• Relatórios de performance por cobrador</li>
+                                <li>• Análise de tendências de pagamento</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h5 class="font-medium text-gray-800 mb-2">Tipos de Relatório</h5>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-sm text-gray-700">Taxa de Inadimplência</span>
+                                    <span class="text-sm text-forte-green">Diário/Mensal</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm text-gray-700">Performance por Cobrador</span>
+                                    <span class="text-sm text-forte-green">Semanal</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm text-gray-700">Valores Recuperados</span>
+                                    <span class="text-sm text-forte-green">Real Time</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Implementation Tab -->
+        <div id="implementation-tab" class="tab-content hidden">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                    Plano de <span class="text-forte-green">Implementação</span>
+                </h2>
+                <p class="text-xl text-gray-600">Roadmap detalhado para colocar o sistema em produção</p>
+            </div>
+
+            <!-- Timeline de Implementação -->
+            <div class="bg-white rounded-xl p-8 mb-8 shadow-sm border border-gray-100">
+                <h3 class="text-xl font-semibold text-gray-900 mb-8">Cronograma de Desenvolvimento</h3>
+                
+                <div class="relative">
+                    <!-- Linha do tempo -->
+                    <div class="absolute left-6 top-0 bottom-0 w-0.5 bg-forte-green"></div>
+                    
+                    <!-- Fase 1 -->
+                    <div class="relative flex items-start mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-forte-green rounded-full flex items-center justify-center z-10">
+                            <span class="text-white font-bold">1</span>
+                        </div>
+                        <div class="ml-6 bg-gray-50 rounded-lg p-6 flex-1">
+                            <div class="flex justify-between items-start mb-3">
+                                <h4 class="text-lg font-semibold text-gray-900">Fase 1: Fundação</h4>
+                                <span class="bg-forte-green text-white px-3 py-1 rounded-full text-sm">Semanas 1-2</span>
+                            </div>
+                            <p class="text-gray-600 mb-3">Estrutura básica e importação de dados</p>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• Configuração do banco de dados</li>
+                                <li>• Desenvolvimento do módulo de importação bancária</li>
+                                <li>• Interface básica de usuário</li>
+                                <li>• Sistema de autenticação e permissões</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Fase 2 -->
+                    <div class="relative flex items-start mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-forte-green rounded-full flex items-center justify-center z-10">
+                            <span class="text-white font-bold">2</span>
+                        </div>
+                        <div class="ml-6 bg-gray-50 rounded-lg p-6 flex-1">
+                            <div class="flex justify-between items-start mb-3">
+                                <h4 class="text-lg font-semibold text-gray-900">Fase 2: Gestão de Inadimplentes</h4>
+                                <span class="bg-forte-green text-white px-3 py-1 rounded-full text-sm">Semanas 3-4</span>
+                            </div>
+                            <p class="text-gray-600 mb-3">Identificação e organização de clientes em atraso</p>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• Algoritmo de detecção de inadimplência</li>
+                                <li>• Sistema de classificação e priorização</li>
+                                <li>• Distribuição automática entre cobradores</li>
+                                <li>• Dashboard inicial de inadimplência</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Fase 3 -->
+                    <div class="relative flex items-start mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-forte-green rounded-full flex items-center justify-center z-10">
+                            <span class="text-white font-bold">3</span>
+                        </div>
+                        <div class="ml-6 bg-gray-50 rounded-lg p-6 flex-1">
+                            <div class="flex justify-between items-start mb-3">
+                                <h4 class="text-lg font-semibold text-gray-900">Fase 3: Automação de Cobrança</h4>
+                                <span class="bg-forte-green text-white px-3 py-1 rounded-full text-sm">Semanas 5-7</span>
+                            </div>
+                            <p class="text-gray-600 mb-3">Integração WhatsApp e automação de contatos</p>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• Integração com WhatsApp Business API</li>
+                                <li>• Templates de mensagens automáticas</li>
+                                <li>• Agenda de ligações e follow-ups</li>
+                                <li>• Sistema de lembretes de aniversário</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Fase 4 -->
+                    <div class="relative flex items-start mb-8">
+                        <div class="flex-shrink-0 w-12 h-12 bg-forte-green rounded-full flex items-center justify-center z-10">
+                            <span class="text-white font-bold">4</span>
+                        </div>
+                        <div class="ml-6 bg-gray-50 rounded-lg p-6 flex-1">
+                            <div class="flex justify-between items-start mb-3">
+                                <h4 class="text-lg font-semibold text-gray-900">Fase 4: Relatórios e Analytics</h4>
+                                <span class="bg-forte-green text-white px-3 py-1 rounded-full text-sm">Semanas 8-9</span>
+                            </div>
+                            <p class="text-gray-600 mb-3">Dashboards completos e sistema de relatórios</p>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• Dashboards em tempo real</li>
+                                <li>• Relatórios de performance por cobrador</li>
+                                <li>• Analytics de tendências de pagamento</li>
+                                <li>• Exportação de dados e relatórios</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Fase 5 -->
+                    <div class="relative flex items-start">
+                        <div class="flex-shrink-0 w-12 h-12 bg-forte-green rounded-full flex items-center justify-center z-10">
+                            <span class="text-white font-bold">5</span>
+                        </div>
+                        <div class="ml-6 bg-gray-50 rounded-lg p-6 flex-1">
+                            <div class="flex justify-between items-start mb-3">
+                                <h4 class="text-lg font-semibold text-gray-900">Fase 5: Testes e Deploy</h4>
+                                <span class="bg-forte-green text-white px-3 py-1 rounded-full text-sm">Semanas 10-12</span>
+                            </div>
+                            <p class="text-gray-600 mb-3">Testes finais, treinamento e produção</p>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>• Testes de integração e performance</li>
+                                <li>• Treinamento da equipe</li>
+                                <li>• Migração de dados históricos</li>
+                                <li>• Deploy em produção e monitoramento</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tecnologias e Custos -->
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <!-- Stack Tecnológico -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-6">Stack Tecnológico Recomendado</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-medium text-gray-800 mb-2">Frontend</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">React</span>
+                                <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Tailwind CSS</span>
+                                <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Chart.js</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium text-gray-800 mb-2">Backend</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">Node.js</span>
+                                <span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">Express</span>
+                                <span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">PostgreSQL</span>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-medium text-gray-800 mb-2">Integrações</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">WhatsApp API</span>
+                                <span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">Open Banking</span>
+                                <span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">Redis</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estimativa de Custos -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-6">Estimativa de Investimento</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span class="text-gray-700">Desenvolvimento (12 semanas)</span>
+                            <span class="font-semibold text-gray-900">R$ 45.000</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span class="text-gray-700">Infraestrutura (setup inicial)</span>
+                            <span class="font-semibold text-gray-900">R$ 3.000</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span class="text-gray-700">Licenças e APIs (anual)</span>
+                            <span class="font-semibold text-gray-900">R$ 8.400</span>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span class="text-gray-700">Treinamento da equipe</span>
+                            <span class="font-semibold text-gray-900">R$ 2.000</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 bg-forte-green bg-opacity-10 rounded-lg px-3">
+                            <span class="font-semibold text-forte-green-dark">Investimento Total (Ano 1)</span>
+                            <span class="font-bold text-forte-green-dark text-lg">R$ 58.400</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+                        <h4 class="font-medium text-gray-800 mb-2">ROI Esperado</h4>
+                        <p class="text-sm text-gray-600">Com redução de 10% na inadimplência, economia estimada de <span class="font-semibold text-forte-green">R$ 120.000+ por ano</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Critérios de Sucesso -->
+            <div class="bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">Critérios de Sucesso</h3>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-forte-green bg-opacity-10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <span class="text-forte-green text-2xl">⏱️</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Eficiência</h4>
+                        <p class="text-gray-600 text-sm">Redução de 80% no tempo de conciliação manual</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-forte-green bg-opacity-10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <span class="text-forte-green text-2xl">📉</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Inadimplência</h4>
+                        <p class="text-gray-600 text-sm">Redução de 30% para ≤20% em 3 meses</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-forte-green bg-opacity-10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <span class="text-forte-green text-2xl">🚀</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Performance</h4>
+                        <p class="text-gray-600 text-sm">Consulta de histórico ≤5 segundos</p>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-forte-green bg-opacity-10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <span class="text-forte-green text-2xl">🎯</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Duplicidade</h4>
+                        <p class="text-gray-600 text-sm">Zero casos de dupla cobrança</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Botão de Ação -->
+    <div class="fixed bottom-8 right-8">
+        <button class="bg-forte-green hover:bg-forte-green-dark text-white px-6 py-3 rounded-full shadow-lg transition-colors flex items-center space-x-2">
+            <span>💬</span>
+            <span>Fale com um Consultor</span>
+        </button>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.add('hidden'));
+            
+            // Remove active class from all buttons
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+        
+        // Initialize with first tab active
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstTab = document.querySelector('.tab-btn');
+            if (firstTab) firstTab.classList.add('active');
+        });
+    </script>
+
+    <style>
+        .tab-btn {
+            color: #6b7280;
+        }
+        
+        .tab-btn:hover {
+            background-color: rgba(15, 81, 50, 0.1);
+            color: #0f5132;
+        }
+        
+        .tab-btn.active {
+            background-color: #0f5132;
+            color: white;
+        }
+    </style>
+</body>
+</html>
