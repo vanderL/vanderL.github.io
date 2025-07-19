@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envio de Mensagens - Sistema ForteGPS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'forte-green': '#0f5132',
+                        'forte-green-light': '#198754',
+                        'forte-green-dark': '#0a3622'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo e Título -->
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-forte-green rounded-xl flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">F</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">ForteGPS</h1>
+                        <p class="text-sm text-gray-600">Sistema de Gestão Financeira</p>
+                    </div>
+                </div>
+
+                <!-- Menu Principal -->
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Dashboard</a>
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Clientes</a>
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Cobrança</a>
+                    <a href="#" class="text-forte-green font-medium border-b-2 border-forte-green pb-1">Mensagens</a>
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Relatórios</a>
+                </nav>
+
+                <!-- Status WhatsApp -->
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2 bg-green-50 px-3 py-1 rounded-full">
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        <span class="text-green-700 text-sm font-medium">WhatsApp Conectado</span>
+                    </div>
+                    <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                        <span class="text-gray-600 text-sm font-medium">JD</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Título da Página -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Central de Mensagens</h2>
+            <p class="text-gray-600">Envie mensagens automáticas e personalizadas via WhatsApp, SMS e E-mail</p>
+        </div>
+
+        <!-- Estatísticas de Mensagens -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                        <span class="text-green-600 text-xl">📱</span>
+                    </div>
+                </div>
+                <div class="text-2xl font-bold text-gray-900 mb-1">234</div>
+                <div class="text-gray-600 text-sm">Mensagens Enviadas Hoje</div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                        <span class="text-blue-600 text-xl">👁️</span>
+                    </div>
+                </div>
+                <div class="text-2xl font-bold text-gray-900 mb-1">89%</div>
+                <div class="text-gray-600 text-sm">Taxa de Visualização</div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-forte-green bg-opacity-10 rounded-xl flex items-center justify-center">
+                        <span class="text-forte-green text-xl">💬</span>
+                    </div>
+                </div>
+                <div class="text-2xl font-bold text-gray-900 mb-1">67%</div>
+                <div class="text-gray-600 text-sm">Taxa de Resposta</div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                        <span class="text-purple-600 text-xl">🎂</span>
+                    </div>
+                </div>
+                <div class="text-2xl font-bold text-gray-900 mb-1">15</div>
+                <div class="text-gray-600 text-sm">Aniversários Hoje</div>
+            </div>
+        </div>
+
+        <!-- Interface Principal -->
+        <div class="grid lg:grid-cols-4 gap-8">
+            <!-- Área de Composição -->
+            <div class="lg:col-span-3">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+                    <!-- Tabs de Tipos de Mensagem -->
+                    <div class="border-b border-gray-200">
+                        <nav class="flex space-x-8 px-6 pt-6">
+                            <button onclick="switchTab('whatsapp')" class="message-tab active pb-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                                📱 WhatsApp
+                            </button>
+                            <button onclick="switchTab('sms')" class="message-tab pb-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                                📬 SMS
+                            </button>
+                            <button onclick="switchTab('email')" class="message-tab pb-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                                📧 E-mail
+                            </button>
+                            <button onclick="switchTab('aniversario')" class="message-tab pb-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                                🎂 Aniversário
+                            </button>
+                        </nav>
+                    </div>
+
+                    <!-- Conteúdo WhatsApp -->
+                    <div id="whatsapp-tab" class="tab-content p-6">
+                        <!-- Seleção de Destinatários -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Destinatários</label>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <select onchange="updateRecipients()" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                        <option value="">Selecionar grupo...</option>
+                                        <option value="inadimplentes">Inadimplentes (471 clientes)</option>
+                                        <option value="alta-prioridade">Alta Prioridade (89 clientes)</option>
+                                        <option value="vence-hoje">Vencem Hoje (23 clientes)</option>
+                                        <option value="aniversariantes">Aniversariantes (15 clientes)</option>
+                                        <option value="custom">Seleção personalizada</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <input type="text" placeholder="🔍 Buscar cliente específico..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                </div>
+                            </div>
+                            
+                            <!-- Lista de Destinatários Selecionados -->
+                            <div id="recipients-list" class="mt-4 hidden">
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="text-sm font-medium text-gray-700">Destinatários selecionados:</span>
+                                        <span class="text-sm text-gray-600">471 clientes</span>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs bg-red-100 text-red-800">
+                                            João Silva • 45 dias
+                                            <button class="ml-2 text-red-600 hover:text-red-800">×</button>
+                                        </span>
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs bg-orange-100 text-orange-800">
+                                            Maria Santos • 23 dias
+                                            <button class="ml-2 text-orange-600 hover:text-orange-800">×</button>
+                                        </span>
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs bg-gray-100 text-gray-800">
+                                            +469 outros clientes
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Templates de Mensagem -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Template de Mensagem</label>
+                            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                <select onchange="loadTemplate()" id="template-select" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                    <option value="">Selecionar template...</option>
+                                    <option value="cobranca-simples">Cobrança Simples</option>
+                                    <option value="cobranca-urgente">Cobrança Urgente</option>
+                                    <option value="lembrete-vencimento">Lembrete de Vencimento</option>
+                                    <option value="acordo-proposta">Proposta de Acordo</option>
+                                    <option value="aniversario">Feliz Aniversário</option>
+                                    <option value="custom">Mensagem Personalizada</option>
+                                </select>
+                                <button onclick="openTemplateManager()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">
+                                    ⚙️ Gerenciar Templates
+                                </button>
+                            </div>
+
+                            <!-- Preview do Template -->
+                            <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+                                <div class="flex items-start space-x-3">
+                                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                        <span class="text-white text-sm">📱</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="bg-white rounded-lg p-3 shadow-sm">
+                                            <div class="text-sm text-gray-900" id="message-preview">
+                                                Selecione um template para visualizar a mensagem...
+                                            </div>
+                                        </div>
+                                        <div class="text-xs text-gray-500 mt-1">Preview da mensagem WhatsApp</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Editor de Mensagem -->
+                            <div>
+                                <textarea id="message-editor" rows="6" placeholder="Digite sua mensagem aqui..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green resize-none"></textarea>
+                                
+                                <!-- Variáveis Disponíveis -->
+                                <div class="mt-3 flex flex-wrap gap-2">
+                                    <span class="text-sm text-gray-600">Variáveis disponíveis:</span>
+                                    <button onclick="insertVariable('{nome}')" class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs hover:bg-blue-200 transition-colors">{nome}</button>
+                                    <button onclick="insertVariable('{valor}')" class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs hover:bg-blue-200 transition-colors">{valor}</button>
+                                    <button onclick="insertVariable('{dias_atraso}')" class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs hover:bg-blue-200 transition-colors">{dias_atraso}</button>
+                                    <button onclick="insertVariable('{vencimento}')" class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs hover:bg-blue-200 transition-colors">{vencimento}</button>
+                                    <button onclick="insertVariable('{empresa}')" class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs hover:bg-blue-200 transition-colors">{empresa}</button>
+                                </div>
+
+                                <!-- Contadores -->
+                                <div class="mt-3 flex items-center justify-between text-sm text-gray-500">
+                                    <span>💬 <span id="char-count">0</span>/1000 caracteres</span>
+                                    <span>📱 Máximo recomendado para WhatsApp</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Opções de Envio -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Opções de Envio</label>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <!-- Agendamento -->
+                                <div class="space-y-4">
+                                    <div class="flex items-center space-x-2">
+                                        <input type="radio" name="send-option" value="now" checked class="w-4 h-4 text-forte-green border-gray-300">
+                                        <label class="text-sm text-gray-700">Enviar agora</label>
+                                    </div>
+                                    
+                                    <div class="flex items-center space-x-2">
+                                        <input type="radio" name="send-option" value="schedule" class="w-4 h-4 text-forte-green border-gray-300">
+                                        <label class="text-sm text-gray-700">Agendar envio</label>
+                                    </div>
+                                    
+                                    <div id="schedule-options" class="hidden ml-6 grid grid-cols-2 gap-3">
+                                        <input type="date" class="px-3 py-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-forte-green">
+                                        <input type="time" class="px-3 py-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-forte-green">
+                                    </div>
+                                </div>
+
+                                <!-- Configurações -->
+                                <div class="space-y-4">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" checked class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                                        <span class="text-sm text-gray-700">Incluir link de pagamento</span>
+                                    </label>
+                                    
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                                        <span class="text-sm text-gray-700">Notificar quando visualizada</span>
+                                    </label>
+                                    
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                                        <span class="text-sm text-gray-700">Agendar follow-up automático</span>
+                                    </label>
+                                    
+                                    <div class="hidden ml-6">
+                                        <select class="px-3 py-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-forte-green">
+                                            <option>Em 1 dia</option>
+                                            <option>Em 3 dias</option>
+                                            <option>Em 1 semana</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botões de Ação -->
+                        <div class="flex items-center justify-between pt-6 border-t border-gray-200">
+                            <div class="flex items-center space-x-4">
+                                <button onclick="saveAsDraft()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">
+                                    💾 Salvar Rascunho
+                                </button>
+                                <button onclick="testMessage()" class="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors">
+                                    🧪 Teste (enviar para mim)
+                                </button>
+                            </div>
+                            
+                            <div class="flex items-center space-x-4">
+                                <div class="text-sm text-gray-600">
+                                    📊 Estimativa: <span class="font-medium text-forte-green">471 mensagens</span>
+                                </div>
+                                <button onclick="sendMessages()" class="px-6 py-2 bg-forte-green hover:bg-forte-green-dark text-white rounded-lg transition-colors flex items-center space-x-2">
+                                    <span>📱</span>
+                                    <span>Enviar Mensagens</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Conteúdo SMS (Oculto por padrão) -->
+                    <div id="sms-tab" class="tab-content hidden p-6">
+                        <div class="text-center py-12">
+                            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-blue-600 text-2xl">📬</span>
+                            </div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">Envio de SMS</h3>
+                            <p class="text-gray-600 mb-6">Interface similar ao WhatsApp, otimizada para SMS</p>
+                            <button class="px-6 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition-colors">
+                                Em breve - SMS Integration
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Conteúdo E-mail (Oculto por padrão) -->
+                    <div id="email-tab" class="tab-content hidden p-6">
+                        <div class="text-center py-12">
+                            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-purple-600 text-2xl">📧</span>
+                            </div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-2">Envio de E-mail</h3>
+                            <p class="text-gray-600 mb-6">Sistema completo de e-mail marketing</p>
+                            <button class="px-6 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-lg transition-colors">
+                                Em breve - Email Integration
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Conteúdo Aniversário (Oculto por padrão) -->
+                    <div id="aniversario-tab" class="tab-content hidden p-6">
+                        <div class="space-y-6">
+                            <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <span class="text-purple-600 text-xl">🎂</span>
+                                    <h3 class="font-medium text-purple-900">Mensagens de Aniversário Automáticas</h3>
+                                </div>
+                                <p class="text-sm text-purple-700">
+                                    Sistema detecta automaticamente aniversários e envia mensagens personalizadas.
+                                    Hoje temos <strong>15 aniversariantes</strong> que receberão mensagens automáticas.
+                                </p>
+                            </div>
+
+                            <!-- Lista de Aniversariantes -->
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-4">Aniversariantes de Hoje (15)</h4>
+                                <div class="space-y-3">
+                                    <div class="flex items-center justify-between p-3 bg-purple-50 rounded-lg border border-purple-200">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                                <span class="text-purple-600 font-medium text-sm">AC</span>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-gray-900">Ana Costa</div>
+                                                <div class="text-sm text-gray-600">(85) 91234-5678 • Cliente há 2 anos</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-sm text-purple-600 bg-purple-100 px-2 py-1 rounded">✅ Enviado às 08:00</span>
+                                            <button class="text-purple-600 hover:text-purple-800">👁️</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
+                                                <span class="text-gray-600 font-medium text-sm">CF</span>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-gray-900">Carlos Ferreira</div>
+                                                <div class="text-sm text-gray-600">(85) 92222-3333 • Cliente há 1 ano</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <span class="text-sm text-yellow-600 bg-yellow-100 px-2 py-1 rounded">⏰ Agendado 14:00</span>
+                                            <button class="text-gray-600 hover:text-gray-800">⚙️</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center py-2">
+                                        <button class="text-sm text-purple-600 hover:text-purple-800">
+                                            Ver todos os 15 aniversariantes
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Template de Aniversário -->
+                            <div>
+                                <h4 class="font-medium text-gray-900 mb-4">Template de Aniversário</h4>
+                                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                                    <div class="flex items-start space-x-3">
+                                        <span class="text-green-600 text-xl">🎂</span>
+                                        <div>
+                                            <div class="bg-white rounded-lg p-3 shadow-sm">
+                                                <div class="text-sm text-gray-900">
+                                                    🎉 <strong>Parabéns, {nome}!</strong><br><br>
+                                                    Hoje é um dia especial! A equipe ForteGPS deseja um feliz aniversário e muito sucesso! 🎂✨<br><br>
+                                                    Que este novo ano seja repleto de realizações e conquistas!<br><br>
+                                                    Atenciosamente,<br>
+                                                    <strong>Equipe ForteGPS</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4 flex items-center justify-between">
+                                    <button class="px-4 py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-lg transition-colors">
+                                        ✏️ Editar Template
+                                    </button>
+                                    <div class="text-sm text-gray-600">
+                                        Enviado automaticamente às 08:00 do dia do aniversário
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar: Histórico e Ações -->
+            <div class="space-y-6">
+                <!-- Status de Envios -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Status dos Envios</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                            <div>
+                                <div class="font-medium text-green-800">Mensagens Enviadas</div>
+                                <div class="text-sm text-green-600">Últimas 24h</div>
+                            </div>
+                            <div class="text-2xl font-bold text-green-600">234</div>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                            <div>
+                                <div class="font-medium text-blue-800">Entregues</div>
+                                <div class="text-sm text-blue-600">Taxa de entrega</div>
+                            </div>
+                            <div class="text-2xl font-bold text-blue-600">97%</div>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                            <div>
+                                <div class="font-medium text-yellow-800">Pendentes</div>
+                                <div class="text-sm text-yellow-600">Na fila de envio</div>
+                            </div>
+                            <div class="text-2xl font-bold text-yellow-600">12</div>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                            <div>
+                                <div class="font-medium text-red-800">Falhas</div>
+                                <div class="text-sm text-red-600">Não entregues</div>
+                            </div>
+                            <div class="text-2xl font-bold text-red-600">3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mensagens Recentes -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Envios Recentes</h3>
+                    <div class="space-y-4">
+                        <div class="p-3 border border-gray-200 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-medium text-gray-900 text-sm">Cobrança Urgente</span>
+                                <span class="text-xs text-gray-500">14:30</span>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-2">Para: 89 clientes (alta prioridade)</div>
+                            <div class="flex items-center space-x-4 text-xs">
+                                <span class="text-green-600">✅ 85 entregues</span>
+                                <span class="text-blue-600">👁️ 67 visualizadas</span>
+                                <span class="text-purple-600">💬 23 respostas</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 border border-gray-200 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-medium text-gray-900 text-sm">Lembrete Vencimento</span>
+                                <span class="text-xs text-gray-500">12:15</span>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-2">Para: 23 clientes (vencem hoje)</div>
+                            <div class="flex items-center space-x-4 text-xs">
+                                <span class="text-green-600">✅ 23 entregues</span>
+                                <span class="text-blue-600">👁️ 19 visualizadas</span>
+                                <span class="text-purple-600">💬 8 respostas</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 border border-purple-200 bg-purple-50 rounded-lg">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-medium text-purple-900 text-sm">🎂 Aniversários</span>
+                                <span class="text-xs text-purple-600">08:00</span>
+                            </div>
+                            <div class="text-xs text-purple-700 mb-2">Para: 15 aniversariantes</div>
+                            <div class="flex items-center space-x-4 text-xs">
+                                <span class="text-green-600">✅ 15 entregues</span>
+                                <span class="text-blue-600">👁️ 12 visualizadas</span>
+                                <span class="text-purple-600">💬 9 agradecimentos</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="w-full mt-4 text-sm text-forte-green hover:text-forte-green-dark transition-colors">
+                        📜 Ver histórico completo
+                    </button>
+                </div>
+
+                <!-- Ações Rápidas -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Ações Rápidas</h3>
+                    <div class="space-y-3">
+                        <button onclick="quickSend('inadimplentes')" class="w-full bg-red-50 hover:bg-red-100 text-red-700 p-3 rounded-lg transition-colors flex items-center space-x-3">
+                            <span>⚠️</span>
+                            <div class="text-left">
+                                <div class="font-medium">Cobrar Inadimplentes</div>
+                                <div class="text-xs">471 clientes em atraso</div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="quickSend('vencimento')" class="w-full bg-yellow-50 hover:bg-yellow-100 text-yellow-700 p-3 rounded-lg transition-colors flex items-center space-x-3">
+                            <span>📅</span>
+                            <div class="text-left">
+                                <div class="font-medium">Lembrete Vencimento</div>
+                                <div class="text-xs">23 vencem hoje</div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="quickSend('promocao')" class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 p-3 rounded-lg transition-colors flex items-center space-x-3">
+                            <span>🎉</span>
+                            <div class="text-left">
+                                <div class="font-medium">Oferta Especial</div>
+                                <div class="text-xs">Todos os clientes</div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="quickSend('satisfacao')" class="w-full bg-green-50 hover:bg-green-100 text-green-700 p-3 rounded-lg transition-colors flex items-center space-x-3">
+                            <span>⭐</span>
+                            <div class="text-left">
+                                <div class="font-medium">Pesquisa Satisfação</div>
+                                <div class="text-xs">Clientes em dia</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Configurações Rápidas -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Configurações</h3>
+                    <div class="space-y-4">
+                        <label class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">Mensagens automáticas</span>
+                            <input type="checkbox" checked class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                        </label>
+                        
+                        <label class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">Aniversários automáticos</span>
+                            <input type="checkbox" checked class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                        </label>
+                        
+                        <label class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">Notificações de entrega</span>
+                            <input type="checkbox" class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                        </label>
+                        
+                        <label class="flex items-center justify-between">
+                            <span class="text-sm text-gray-700">Modo não perturbe</span>
+                            <input type="checkbox" class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                        </label>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <div class="text-sm text-gray-600 mb-2">Horário de funcionamento:</div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="time" value="08:00" class="px-2 py-1 text-xs border border-gray-300 rounded">
+                            <input type="time" value="18:00" class="px-2 py-1 text-xs border border-gray-300 rounded">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: Gerenciador de Templates -->
+    <div id="templateModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-2xl w-full mx-4 max-h-screen overflow-y-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold text-gray-900">Gerenciar Templates</h3>
+                <button onclick="closeTemplateManager()" class="text-gray-400 hover:text-gray-600">✕</button>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Lista de Templates -->
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-4">Templates Disponíveis</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                            <div>
+                                <div class="font-medium text-gray-900">Cobrança Simples</div>
+                                <div class="text-sm text-gray-600">Mensagem padrão para cobrança</div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm">✏️ Editar</button>
+                                <button class="px-3 py-1 bg-red-100 text-red-700 rounded text-sm">🗑️</button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                            <div>
+                                <div class="font-medium text-gray-900">Cobrança Urgente</div>
+                                <div class="text-sm text-gray-600">Para clientes com alta prioridade</div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm">✏️ Editar</button>
+                                <button class="px-3 py-1 bg-red-100 text-red-700 rounded text-sm">🗑️</button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                            <div>
+                                <div class="font-medium text-gray-900">Proposta de Acordo</div>
+                                <div class="text-sm text-gray-600">Oferecer parcelamento</div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded text-sm">✏️ Editar</button>
+                                <button class="px-3 py-1 bg-red-100 text-red-700 rounded text-sm">🗑️</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Criar Novo Template -->
+                <div class="pt-6 border-t border-gray-200">
+                    <h4 class="font-medium text-gray-900 mb-4">Criar Novo Template</h4>
+                    <form class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nome do Template</label>
+                            <input type="text" placeholder="Ex: Acordo Especial" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Categoria</label>
+                            <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                                <option>Cobrança</option>
+                                <option>Lembrete</option>
+                                <option>Acordo</option>
+                                <option>Aniversário</option>
+                                <option>Promoção</option>
+                                <option>Satisfação</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Mensagem</label>
+                            <textarea rows="6" placeholder="Digite o template da mensagem..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green"></textarea>
+                        </div>
+
+                        <div class="flex space-x-4">
+                            <button type="button" onclick="closeTemplateManager()" class="flex-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="flex-1 px-4 py-2 bg-forte-green hover:bg-forte-green-dark text-white rounded-lg transition-colors">
+                                💾 Salvar Template
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Progresso de Envio -->
+    <div id="sendingModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-forte-green bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-forte-green text-2xl">📱</span>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Enviando Mensagens</h3>
+                
+                <div class="mb-6">
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div id="progress-bar" class="bg-forte-green h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                    <div class="mt-2 text-sm text-gray-600">
+                        <span id="progress-text">0 de 471 mensagens enviadas</span>
+                    </div>
+                </div>
+
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span>Enviadas:</span>
+                        <span id="sent-count" class="text-green-600 font-medium">0</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Entregues:</span>
+                        <span id="delivered-count" class="text-blue-600 font-medium">0</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Falhas:</span>
+                        <span id="failed-count" class="text-red-600 font-medium">0</span>
+                    </div>
+                </div>
+
+                <button id="cancel-sending" onclick="cancelSending()" class="mt-6 px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition-colors">
+                    ❌ Cancelar Envio
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Gerenciamento de Tabs
+        function switchTab(tabName) {
+            // Esconder todos os conteúdos
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Mostrar conteúdo selecionado
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+            
+            // Atualizar aparência dos botões
+            document.querySelectorAll('.message-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        // Gerenciamento de Destinatários
+        function updateRecipients() {
+            const select = event.target;
+            const listDiv = document.getElementById('recipients-list');
+            
+            if (select.value) {
+                listDiv.classList.remove('hidden');
+            } else {
+                listDiv.classList.add('hidden');
+            }
+        }
+
+        // Templates
+        function loadTemplate() {
+            const select = document.getElementById('template-select');
+            const preview = document.getElementById('message-preview');
+            const editor = document.getElementById('message-editor');
+            
+            const templates = {
+                'cobranca-simples': `Olá {nome}! 
+
+Identificamos que sua mensalidade do rastreador está em atraso há {dias_atraso} dias no valor de {valor}.
+
+Para regularizar, clique no link: [LINK DE PAGAMENTO]
+
+Dúvidas? Responda esta mensagem.
+
+Atenciosamente,
+Equipe ForteGPS`,
+
+                'cobranca-urgente': `🚨 URGENTE - {nome}
+
+Sua mensalidade está {dias_atraso} dias em atraso: {valor}
+
+⚠️ Risco de suspensão do serviço!
+
+👆 Clique para pagar agora: [LINK]
+
+📞 Ou ligue: (85) 3333-4444
+
+ForteGPS`,
+
+                'lembrete-vencimento': `📅 Lembrete - {nome}
+
+Sua mensalidade vence hoje: {valor}
+
+💳 Pague pelo link: [LINK DE PAGAMENTO]
+
+📱 Ou via PIX: (85) 99999-9999
+
+Obrigado!
+ForteGPS`,
+
+                'acordo-proposta': `💡 Proposta Especial - {nome}
+
+Temos uma oferta para regularizar sua situação:
+
+💰 {valor} em até 3x sem juros
+📅 1ª parcela: R$ XX,XX
+📅 2ª parcela: R$ XX,XX  
+📅 3ª parcela: R$ XX,XX
+
+Aceita? Responda SIM.
+
+ForteGPS`,
+
+                'aniversario': `🎉 PARABÉNS, {nome}! 🎂
+
+Hoje é seu dia especial!
+
+A equipe ForteGPS deseja um feliz aniversário e muito sucesso! ✨
+
+Que este novo ano seja repleto de realizações!
+
+Com carinho,
+Equipe ForteGPS 💚`
+            };
+            
+            if (templates[select.value]) {
+                preview.innerHTML = templates[select.value].replace(/\n/g, '<br>');
+                editor.value = templates[select.value];
+                updateCharCount();
+            } else {
+                preview.innerHTML = 'Selecione um template para visualizar a mensagem...';
+                editor.value = '';
+                updateCharCount();
+            }
+        }
+
+        // Inserir Variáveis
+        function insertVariable(variable) {
+            const editor = document.getElementById('message-editor');
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const text = editor.value;
+            
+            editor.value = text.substring(0, start) + variable + text.substring(end);
+            editor.focus();
+            editor.selectionStart = editor.selectionEnd = start + variable.length;
+            
+            updateCharCount();
+        }
+
+        // Contador de Caracteres
+        function updateCharCount() {
+            const editor = document.getElementById('message-editor');
+            const counter = document.getElementById('char-count');
+            counter.textContent = editor.value.length;
+            
+            // Atualizar preview em tempo real
+            const preview = document.getElementById('message-preview');
+            if (editor.value) {
+                preview.innerHTML = editor.value.replace(/\n/g, '<br>');
+            }
+        }
+
+        // Event listener para contador
+        document.getElementById('message-editor').addEventListener('input', updateCharCount);
+
+        // Gerenciamento de Modais
+        function openTemplateManager() {
+            document.getElementById('templateModal').classList.remove('hidden');
+        }
+
+        function closeTemplateManager() {
+            document.getElementById('templateModal').classList.add('hidden');
+        }
+
+        // Ações Principais
+        function saveAsDraft() {
+            showNotification('💾 Rascunho salvo com sucesso!', 'success');
+        }
+
+        function testMessage() {
+            showNotification('🧪 Mensagem de teste enviada para seu WhatsApp!', 'info');
+        }
+
+        function sendMessages() {
+            const recipientSelect = document.querySelector('select');
+            if (!recipientSelect.value) {
+                showNotification('⚠️ Selecione os destinatários primeiro!', 'warning');
+                return;
+            }
+
+            const message = document.getElementById('message-editor').value;
+            if (!message.trim()) {
+                showNotification('⚠️ Digite a mensagem primeiro!', 'warning');
+                return;
+            }
+
+            // Mostrar modal de progresso
+            document.getElementById('sendingModal').classList.remove('hidden');
+            
+            // Simular envio
+            simulateSending();
+        }
+
+        function simulateSending() {
+            const totalMessages = 471;
+            let sent = 0;
+            let delivered = 0;
+            let failed = 0;
+
+            const interval = setInterval(() => {
+                sent += Math.floor(Math.random() * 10) + 5;
+                delivered += Math.floor(Math.random() * 8) + 3;
+                failed += Math.floor(Math.random() * 2);
+
+                if (sent > totalMessages) sent = totalMessages;
+                if (delivered > sent - 10) delivered = sent - 10;
+
+                const progress = (sent / totalMessages) * 100;
+                
+                document.getElementById('progress-bar').style.width = progress + '%';
+                document.getElementById('progress-text').textContent = `${sent} de ${totalMessages} mensagens enviadas`;
+                document.getElementById('sent-count').textContent = sent;
+                document.getElementById('delivered-count').textContent = delivered;
+                document.getElementById('failed-count').textContent = failed;
+
+                if (sent >= totalMessages) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('sendingModal').classList.add('hidden');
+                        showNotification('✅ Todas as mensagens foram enviadas com sucesso!', 'success');
+                    }, 1000);
+                }
+            }, 200);
+        }
+
+        function cancelSending() {
+            document.getElementById('sendingModal').classList.add('hidden');
+            showNotification('❌ Envio cancelado pelo usuário', 'info');
+        }
+
+        // Ações Rápidas
+        function quickSend(type) {
+            const messages = {
+                'inadimplentes': 'Cobrança para clientes inadimplentes',
+                'vencimento': 'Lembrete de vencimento',
+                'promocao': 'Oferta especial',
+                'satisfacao': 'Pesquisa de satisfação'
+            };
+            
+            showNotification(`📱 Iniciando envio: ${messages[type]}...`, 'info');
+            
+            setTimeout(() => {
+                showNotification(`✅ ${messages[type]} enviada com sucesso!`, 'success');
+            }, 2000);
+        }
+
+        // Sistema de Notificações
+        function showNotification(message, type = 'success') {
+            const colors = {
+                success: 'bg-forte-green',
+                info: 'bg-blue-500',
+                warning: 'bg-yellow-500',
+                error: 'bg-red-500'
+            };
+
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 ${colors[type]} text-white px-6 py-4 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform max-w-sm`;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 4000);
+        }
+
+        // Fechar modais clicando fora
+        document.getElementById('templateModal').addEventListener('click', function(e) {
+            if (e.target === this) closeTemplateManager();
+        });
+
+        // Gerenciamento de opções de agendamento
+        document.addEventListener('change', function(e) {
+            if (e.target.name === 'send-option') {
+                const scheduleOptions = document.getElementById('schedule-options');
+                if (e.target.value === 'schedule') {
+                    scheduleOptions.classList.remove('hidden');
+                } else {
+                    scheduleOptions.classList.add('hidden');
+                }
+            }
+        });
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simular estatísticas em tempo real
+            setTimeout(() => {
+                showNotification('📊 Central de mensagens carregada - WhatsApp conectado!', 'success');
+            }, 1000);
+        });
+    </script>
+
+    <style>
+        .message-tab {
+            color: #6b7280;
+            border-bottom-color: transparent;
+        }
+        
+        .message-tab:hover {
+            color: #374151;
+            border-bottom-color: #d1d5db;
+        }
+        
+        .message-tab.active {
+            color: #0f5132;
+            border-bottom-color: #0f5132;
+        }
+    </style>
+</body>
+</html>
