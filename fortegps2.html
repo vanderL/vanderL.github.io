@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Clientes - Sistema ForteGPS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'forte-green': '#0f5132',
+                        'forte-green-light': '#198754',
+                        'forte-green-dark': '#0a3622'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo e Título -->
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-forte-green rounded-xl flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">F</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">ForteGPS</h1>
+                        <p class="text-sm text-gray-600">Sistema de Gestão Financeira</p>
+                    </div>
+                </div>
+
+                <!-- Menu Principal -->
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Dashboard</a>
+                    <a href="#" class="text-forte-green font-medium border-b-2 border-forte-green pb-1">Clientes</a>
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Cobrança</a>
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Relatórios</a>
+                    <a href="#" class="text-gray-600 hover:text-forte-green transition-colors">Configurações</a>
+                </nav>
+
+                <!-- Ações do Usuário -->
+                <div class="flex items-center space-x-4">
+                    <button onclick="openPaymentModal()" class="bg-forte-green hover:bg-forte-green-dark text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2">
+                        <span>✅</span>
+                        <span>Confirmar Pagamento</span>
+                    </button>
+                    <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                        <span class="text-gray-600 text-sm font-medium">JD</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Título da Página -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">Gestão de Clientes</h2>
+            <p class="text-gray-600">Controle completo de pagamentos, inadimplência e cobranças</p>
+        </div>
+
+        <!-- Cards de Resumo -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-forte-green bg-opacity-10 rounded-xl flex items-center justify-center">
+                        <span class="text-forte-green text-xl">✅</span>
+                    </div>
+                </div>
+                <div class="text-2xl font-bold text-gray-900 mb-1">1.247</div>
+                <div class="text-gray-600 text-sm">Clientes em Dia</div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                        <span class="text-red-600 text-xl">⚠️</span>
+                    </div>
+                </div>
+                <div class="text-2xl font-bold text-gray-900 mb-1">471</div>
+                <div class="text-gray-600 text-sm">Inadimplentes</div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                        <span class="text-blue-600 text-xl">📅</span>
+                    </div>
+                </div>
+                <div class="text-2xl font-bold text-gray-900 mb-1">23</div>
+                <div class="text-gray-600 text-sm">Vencem Hoje</div>
+            </div>
+
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
+                        <span class="text-yellow-600 text-xl">💰</span>
+                    </div>
+                </div>
+                <div class="text-2xl font-bold text-gray-900 mb-1">R$ 187k</div>
+                <div class="text-gray-600 text-sm">Valor em Atraso</div>
+            </div>
+        </div>
+
+        <!-- Filtros e Busca -->
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-6">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+                <!-- Filtros por Status -->
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="filterStatus('todos')" class="filter-btn active px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        Todos (1.718)
+                    </button>
+                    <button onclick="filterStatus('adiantado')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        <span class="w-2 h-2 bg-forte-green rounded-full inline-block mr-2"></span>
+                        Pagou Adiantado (184)
+                    </button>
+                    <button onclick="filterStatus('no-dia')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        <span class="w-2 h-2 bg-blue-500 rounded-full inline-block mr-2"></span>
+                        Pagou no Dia (312)
+                    </button>
+                    <button onclick="filterStatus('atrasado-pago')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        <span class="w-2 h-2 bg-yellow-500 rounded-full inline-block mr-2"></span>
+                        Pagou Atrasado (97)
+                    </button>
+                    <button onclick="filterStatus('inadimplente')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        <span class="w-2 h-2 bg-red-500 rounded-full inline-block mr-2"></span>
+                        Inadimplentes (471)
+                    </button>
+                    <button onclick="filterStatus('vencem-hoje')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        <span class="w-2 h-2 bg-orange-500 rounded-full inline-block mr-2"></span>
+                        Vencem Hoje (23)
+                    </button>
+                </div>
+
+                <!-- Busca -->
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Buscar por nome ou telefone..." class="w-80 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green focus:border-transparent">
+                        <span class="absolute left-3 top-2.5 text-gray-400">🔍</span>
+                    </div>
+                    <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green">
+                        <option>Ordenar por</option>
+                        <option>Dias de atraso</option>
+                        <option>Valor (maior)</option>
+                        <option>Valor (menor)</option>
+                        <option>Nome A-Z</option>
+                        <option>Data vencimento</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lista de Clientes -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <!-- Header da Tabela -->
+            <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-900">Lista de Clientes</h3>
+                    <div class="flex items-center space-x-4">
+                        <label class="flex items-center space-x-2">
+                            <input type="checkbox" class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                            <span class="text-sm text-gray-600">Selecionar todos</span>
+                        </label>
+                        <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm transition-colors">
+                            Ações em lote
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela -->
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <input type="checkbox" class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valor</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vencimento</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Últio Contato</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <!-- Cliente Inadimplente (Alta Prioridade) -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">
+                                <input type="checkbox" class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                        <span class="text-red-600 text-sm font-medium">JS</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900">João Silva</div>
+                                        <div class="text-sm text-gray-600">(85) 99999-1234</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                    <span class="w-1.5 h-1.5 bg-red-500 rounded-full mr-1.5"></span>
+                                    45 dias em atraso
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm font-medium text-gray-900">R$ 187,50</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">04/06/2025</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">Ontem - WhatsApp</td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center space-x-2">
+                                    <button onclick="confirmPayment('João Silva', 187.50)" class="bg-forte-green hover:bg-forte-green-dark text-white px-3 py-1 rounded text-xs transition-colors">
+                                        ✅ Confirmar Pagto
+                                    </button>
+                                    <button class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded text-xs transition-colors">
+                                        📱 WhatsApp
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Cliente que Pagou Adiantado -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">
+                                <input type="checkbox" class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-forte-green bg-opacity-10 rounded-full flex items-center justify-center">
+                                        <span class="text-forte-green text-sm font-medium">MS</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900">Maria Santos</div>
+                                        <div class="text-sm text-gray-600">(85) 98765-4321</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-forte-green bg-opacity-10 text-forte-green">
+                                    <span class="w-1.5 h-1.5 bg-forte-green rounded-full mr-1.5"></span>
+                                    Pagou 3 dias adiantado
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm font-medium text-gray-900">R$ 187,50</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">19/07/2025</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">16/07 - Pagamento</td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center space-x-2">
+                                    <button class="bg-gray-100 text-gray-700 px-3 py-1 rounded text-xs cursor-not-allowed">
+                                        ✅ Pago
+                                    </button>
+                                    <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded text-xs transition-colors">
+                                        👁️ Ver
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Cliente que Pagou no Dia -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">
+                                <input type="checkbox" class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <span class="text-blue-600 text-sm font-medium">AC</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900">Ana Costa</div>
+                                        <div class="text-sm text-gray-600">(85) 91234-5678</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-1.5"></span>
+                                    Pagou no vencimento
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm font-medium text-gray-900">R$ 187,50</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">18/07/2025</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">18/07 - Pagamento</td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center space-x-2">
+                                    <button class="bg-gray-100 text-gray-700 px-3 py-1 rounded text-xs cursor-not-allowed">
+                                        ✅ Pago
+                                    </button>
+                                    <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded text-xs transition-colors">
+                                        👁️ Ver
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Cliente que Pagou Atrasado -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">
+                                <input type="checkbox" class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                                        <span class="text-yellow-600 text-sm font-medium">PO</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900">Pedro Oliveira</div>
+                                        <div class="text-sm text-gray-600">(85) 95555-1111</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                    <span class="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-1.5"></span>
+                                    Pagou com 12 dias de atraso
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm font-medium text-gray-900">R$ 187,50</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">05/07/2025</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">17/07 - Pagamento</td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center space-x-2">
+                                    <button class="bg-gray-100 text-gray-700 px-3 py-1 rounded text-xs cursor-not-allowed">
+                                        ✅ Pago
+                                    </button>
+                                    <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded text-xs transition-colors">
+                                        👁️ Ver
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Cliente Inadimplente (Média Prioridade) -->
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">
+                                <input type="checkbox" class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                                        <span class="text-orange-600 text-sm font-medium">RL</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900">Ricardo Lima</div>
+                                        <div class="text-sm text-gray-600">(85) 98888-7777</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                                    <span class="w-1.5 h-1.5 bg-orange-500 rounded-full mr-1.5"></span>
+                                    23 dias em atraso
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm font-medium text-gray-900">R$ 187,50</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">26/06/2025</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">2 dias - Ligação</td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center space-x-2">
+                                    <button onclick="confirmPayment('Ricardo Lima', 187.50)" class="bg-forte-green hover:bg-forte-green-dark text-white px-3 py-1 rounded text-xs transition-colors">
+                                        ✅ Confirmar Pagto
+                                    </button>
+                                    <button class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded text-xs transition-colors">
+                                        📞 Ligar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Cliente que Vence Hoje -->
+                        <tr class="hover:bg-gray-50 bg-orange-50">
+                            <td class="px-6 py-4">
+                                <input type="checkbox" class="w-4 h-4 text-forte-green border-gray-300 rounded">
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-orange-200 rounded-full flex items-center justify-center">
+                                        <span class="text-orange-700 text-sm font-medium">CF</span>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900">Carla Ferreira</div>
+                                        <div class="text-sm text-gray-600">(85) 92222-3333</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-200 text-orange-800">
+                                    <span class="w-1.5 h-1.5 bg-orange-600 rounded-full mr-1.5"></span>
+                                    Vence hoje
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm font-medium text-gray-900">R$ 187,50</td>
+                            <td class="px-6 py-4 text-sm font-medium text-orange-700">19/07/2025</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">1 sem - WhatsApp</td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center space-x-2">
+                                    <button onclick="confirmPayment('Carla Ferreira', 187.50)" class="bg-forte-green hover:bg-forte-green-dark text-white px-3 py-1 rounded text-xs transition-colors">
+                                        ✅ Confirmar Pagto
+                                    </button>
+                                    <button class="bg-orange-100 hover:bg-orange-200 text-orange-700 px-3 py-1 rounded text-xs transition-colors">
+                                        🔔 Lembrete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginação -->
+            <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="text-sm text-gray-700">
+                        Mostrando <span class="font-medium">1</span> a <span class="font-medium">10</span> de <span class="font-medium">1.718</span> clientes
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button class="px-3 py-1 bg-white border border-gray-300 rounded text-sm hover:bg-gray-50">Anterior</button>
+                        <button class="px-3 py-1 bg-forte-green text-white rounded text-sm">1</button>
+                        <button class="px-3 py-1 bg-white border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                        <button class="px-3 py-1 bg-white border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                        <span class="px-2 text-gray-500">...</span>
+                        <button class="px-3 py-1 bg-white border border-gray-300 rounded text-sm hover:bg-gray-50">172</button>
+                        <button class="px-3 py-1 bg-white border border-gray-300 rounded text-sm hover:bg-gray-50">Próximo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Confirmação de Pagamento -->
+    <div id="paymentModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-forte-green bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-forte-green text-2xl">✅</span>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Confirmar Pagamento</h3>
+                <p class="text-gray-600" id="paymentClientName">Cliente: João Silva</p>
+            </div>
+
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Valor Pago</label>
+                    <input type="text" id="paymentAmount" value="R$ 187,50" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green focus:border-transparent">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Data do Pagamento</label>
+                    <input type="date" id="paymentDate" value="2025-07-19" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green focus:border-transparent">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Método de Pagamento</label>
+                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green focus:border-transparent">
+                        <option>PIX</option>
+                        <option>Cartão de Débito</option>
+                        <option>Cartão de Crédito</option>
+                        <option>Transferência Bancária</option>
+                        <option>Dinheiro</option>
+                        <option>Boleto</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Observações (opcional)</label>
+                    <textarea rows="3" placeholder="Ex: Cliente enviou comprovante via WhatsApp..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-forte-green focus:border-transparent"></textarea>
+                </div>
+
+                <!-- Opção de Upload de Comprovante -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Comprovante (opcional)</label>
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-forte-green transition-colors">
+                        <span class="text-gray-500 text-sm">📎 Clique ou arraste o arquivo aqui</span>
+                        <input type="file" class="hidden" accept="image/*,application/pdf">
+                    </div>
+                </div>
+
+                <div class="flex space-x-4 pt-4">
+                    <button type="button" onclick="closePaymentModal()" class="flex-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="flex-1 px-4 py-2 bg-forte-green hover:bg-forte-green-dark text-white rounded-lg transition-colors">
+                        ✅ Confirmar Pagamento
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Gerenciamento de Filtros
+        function filterStatus(status) {
+            // Remove active de todos os botões
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Adiciona active no botão clicado
+            event.target.classList.add('active');
+            
+            // Aqui você implementaria a lógica de filtro real
+            console.log('Filtrando por:', status);
+        }
+
+        // Modal de Pagamento
+        function openPaymentModal() {
+            document.getElementById('paymentModal').classList.remove('hidden');
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').classList.add('hidden');
+        }
+
+        function confirmPayment(clientName, amount) {
+            document.getElementById('paymentClientName').textContent = `Cliente: ${clientName}`;
+            document.getElementById('paymentAmount').value = `R$ ${amount.toFixed(2).replace('.', ',')}`;
+            openPaymentModal();
+        }
+
+        // Fechar modal clicando fora
+        document.getElementById('paymentModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePaymentModal();
+            }
+        });
+
+        // Simular envio do formulário
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simular processo de confirmação
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '⏳ Processando...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                submitBtn.innerHTML = '✅ Pagamento Confirmado!';
+                setTimeout(() => {
+                    closePaymentModal();
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    
+                    // Aqui você mostraria uma notificação de sucesso
+                    showSuccessNotification();
+                }, 1500);
+            }, 2000);
+        });
+
+        function showSuccessNotification() {
+            // Criar notificação de sucesso
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-forte-green text-white px-6 py-4 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform';
+            notification.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <span class="text-xl">✅</span>
+                    <div>
+                        <div class="font-medium">Pagamento Confirmado!</div>
+                        <div class="text-sm opacity-90">Cliente removido da lista de inadimplentes</div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animar entrada
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Remover após 4 segundos
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 4000);
+        }
+
+        // Upload de arquivo
+        document.querySelector('input[type="file"]').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const uploadArea = e.target.closest('.border-dashed');
+                uploadArea.innerHTML = `
+                    <div class="flex items-center justify-center space-x-2">
+                        <span class="text-forte-green">📎</span>
+                        <span class="text-sm text-forte-green font-medium">${file.name}</span>
+                        <button type="button" onclick="this.closest('.border-dashed').innerHTML='<span class=&quot;text-gray-500 text-sm&quot;>📎 Clique ou arraste o arquivo aqui</span><input type=&quot;file&quot; class=&quot;hidden&quot; accept=&quot;image/*,application/pdf&quot;>'; this.closest('.border-dashed').querySelector('input').addEventListener('change', arguments.callee);" class="text-red-500 hover:text-red-700">✕</button>
+                    </div>
+                `;
+            }
+        });
+    </script>
+
+    <style>
+        .filter-btn {
+            background-color: #f9fafb;
+            color: #6b7280;
+        }
+        
+        .filter-btn:hover {
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+        
+        .filter-btn.active {
+            background-color: #0f5132;
+            color: white;
+        }
+    </style>
+</body>
+</html>
