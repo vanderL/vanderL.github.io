@@ -464,74 +464,74 @@
     </div>
 
     <script>
-        // Gráfico de Volume Coletado
-        const volumeCtx = document.getElementById('volumeChart').getContext('2d');
-        new Chart(volumeCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
-                datasets: [{
-                    label: '2024',
-                    data: [45, 67, 89, 112, 134, 156, 180],
-                    borderColor: '#2D5D3D',
-                    backgroundColor: 'rgba(45, 93, 61, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }, {
-                    label: '2023',
-                    data: [32, 48, 65, 82, 98, 115, 132],
-                    borderColor: '#6B8F47',
-                    backgroundColor: 'rgba(107, 143, 71, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0,0,0,0.1)'
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
+        // // Gráfico de Volume Coletado
+        // const volumeCtx = document.getElementById('volumeChart').getContext('2d');
+        // new Chart(volumeCtx, {
+        //     type: 'line',
+        //     data: {
+        //         labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
+        //         datasets: [{
+        //             label: '2024',
+        //             data: [45, 67, 89, 112, 134, 156, 180],
+        //             borderColor: '#2D5D3D',
+        //             backgroundColor: 'rgba(45, 93, 61, 0.1)',
+        //             tension: 0.4,
+        //             fill: true
+        //         }, {
+        //             label: '2023',
+        //             data: [32, 48, 65, 82, 98, 115, 132],
+        //             borderColor: '#6B8F47',
+        //             backgroundColor: 'rgba(107, 143, 71, 0.1)',
+        //             tension: 0.4,
+        //             fill: true
+        //         }]
+        //     },
+        //     options: {
+        //         responsive: true,
+        //         maintainAspectRatio: false,
+        //         plugins: {
+        //             legend: {
+        //                 display: false
+        //             }
+        //         },
+        //         scales: {
+        //             y: {
+        //                 beginAtZero: true,
+        //                 grid: {
+        //                     color: 'rgba(0,0,0,0.1)'
+        //                 }
+        //             },
+        //             x: {
+        //                 grid: {
+        //                     display: false
+        //                 }
+        //             }
+        //         }
+        //     }
+        // });
 
-        // Gráfico de Status dos Projetos
-        const statusCtx = document.getElementById('statusChart').getContext('2d');
-        new Chart(statusCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Em Andamento', 'Finalizados', 'Pausados'],
-                datasets: [{
-                    data: [6, 3, 1],
-                    backgroundColor: ['#2D5D3D', '#6B8F47', '#FFA500'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
+        // // Gráfico de Status dos Projetos
+        // const statusCtx = document.getElementById('statusChart').getContext('2d');
+        // new Chart(statusCtx, {
+        //     type: 'doughnut',
+        //     data: {
+        //         labels: ['Em Andamento', 'Finalizados', 'Pausados'],
+        //         datasets: [{
+        //             data: [6, 3, 1],
+        //             backgroundColor: ['#2D5D3D', '#6B8F47', '#FFA500'],
+        //             borderWidth: 0
+        //         }]
+        //     },
+        //     options: {
+        //         responsive: true,
+        //         maintainAspectRatio: false,
+        //         plugins: {
+        //             legend: {
+        //                 position: 'bottom'
+        //             }
+        //         }
+        //     }
+        // });
     </script>
 </body>
 </html>
