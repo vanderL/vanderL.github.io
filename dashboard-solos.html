@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOLOS - Dashboard de Performance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'solos-green': '#2D5D3D',
+                        'solos-light-green': '#4A7A5A',
+                        'solos-accent': '#6B8F47',
+                        'solos-bg': '#F8FAF6',
+                        'solos-card': '#FFFFFF',
+                        'solos-text': '#1F2937',
+                        'solos-muted': '#6B7280'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #2D5D3D 0%, #4A7A5A 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(45, 93, 61, 0.1), 0 2px 4px -1px rgba(45, 93, 61, 0.06);
+        }
+        .metric-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8faf6 100%);
+            border: 1px solid rgba(45, 93, 61, 0.1);
+        }
+        .trend-up {
+            color: #10b981;
+        }
+        .trend-down {
+            color: #ef4444;
+        }
+        .trend-neutral {
+            color: #6b7280;
+        }
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        .gauge-bg {
+            stroke: #e5e7eb;
+        }
+        .gauge-fill {
+            stroke: #6B8F47;
+            stroke-linecap: round;
+            transition: stroke-dasharray 0.5s ease;
+        }
+    </style>
+</head>
+<body class="bg-solos-bg font-sans">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <button onclick="history.back()" class="text-white hover:text-green-200 transition-colors">
+                        ← Voltar
+                    </button>
+                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                        <span class="text-solos-green font-bold text-xl">📊</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">Dashboard de Performance</h1>
+                        <p class="text-green-100 text-sm">Análise Consolidada • Todos os Projetos</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2 bg-white bg-opacity-20 rounded-lg px-3 py-2">
+                        <span class="text-sm">Período:</span>
+                        <select class="bg-transparent text-white text-sm border-none outline-none">
+                            <option value="30d" class="text-black">Últimos 30 dias</option>
+                            <option value="90d" class="text-black">Últimos 3 meses</option>
+                            <option value="1y" class="text-black">Último ano</option>
+                        </select>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-green-100">Atualizado em</p>
+                        <p class="text-xs text-green-200">17/07/2024 14:32</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- KPIs Principais -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Eficiência Geral -->
+            <div class="metric-card rounded-xl p-6 card-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <p class="text-solos-muted text-sm font-medium">Eficiência Geral</p>
+                        <p class="text-3xl font-bold text-solos-green">87%</p>
+                    </div>
+                    <div class="relative w-16 h-16">
+                        <svg class="w-16 h-16 progress-ring">
+                            <circle cx="32" cy="32" r="28" class="gauge-bg" stroke-width="6" fill="none"/>
+                            <circle cx="32" cy="32" r="28" class="gauge-fill" stroke-width="6" fill="none"
+                                    stroke-dasharray="153.9 175.9"/>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-lg font-bold text-solos-green">87%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center text-sm">
+                    <span class="trend-up font-medium">+5%</span>
+                    <span class="text-solos-muted ml-1">vs mês anterior</span>
+                </div>
+            </div>
+
+            <!-- Taxa de Coleta -->
+            <div class="metric-card rounded-xl p-6 card-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <p class="text-solos-muted text-sm font-medium">Taxa de Coleta</p>
+                        <p class="text-3xl font-bold text-solos-green">94%</p>
+                    </div>
+                    <div class="relative w-16 h-16">
+                        <svg class="w-16 h-16 progress-ring">
+                            <circle cx="32" cy="32" r="28" class="gauge-bg" stroke-width="6" fill="none"/>
+                            <circle cx="32" cy="32" r="28" class="gauge-fill" stroke-width="6" fill="none"
+                                    stroke-dasharray="165.4 175.9"/>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-lg font-bold text-solos-green">94%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center text-sm">
+                    <span class="trend-up font-medium">+2%</span>
+                    <span class="text-solos-muted ml-1">vs mês anterior</span>
+                </div>
+            </div>
+
+            <!-- Satisfação Clientes -->
+            <div class="metric-card rounded-xl p-6 card-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <p class="text-solos-muted text-sm font-medium">Satisfação Clientes</p>
+                        <p class="text-3xl font-bold text-solos-green">96%</p>
+                    </div>
+                    <div class="relative w-16 h-16">
+                        <svg class="w-16 h-16 progress-ring">
+                            <circle cx="32" cy="32" r="28" class="gauge-bg" stroke-width="6" fill="none"/>
+                            <circle cx="32" cy="32" r="28" class="gauge-fill" stroke-width="6" fill="none"
+                                    stroke-dasharray="168.9 175.9"/>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-lg font-bold text-solos-green">96%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center text-sm">
+                    <span class="trend-up font-medium">+1%</span>
+                    <span class="text-solos-muted ml-1">estável</span>
+                </div>
+            </div>
+
+            <!-- ROI Médio -->
+            <div class="metric-card rounded-xl p-6 card-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <p class="text-solos-muted text-sm font-medium">ROI Médio</p>
+                        <p class="text-3xl font-bold text-solos-green">340%</p>
+                    </div>
+                    <div class="relative w-16 h-16">
+                        <svg class="w-16 h-16 progress-ring">
+                            <circle cx="32" cy="32" r="28" class="gauge-bg" stroke-width="6" fill="none"/>
+                            <circle cx="32" cy="32" r="28" class="gauge-fill" stroke-width="6" fill="none"
+                                    stroke-dasharray="175.9 175.9"/>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-lg font-bold text-solos-green">340%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center text-sm">
+                    <span class="trend-up font-medium">+12%</span>
+                    <span class="text-solos-muted ml-1">crescimento</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráficos de Performance -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Volume Coletado por Mês -->
+            <div class="bg-solos-card rounded-xl p-6 card-shadow">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-bold text-solos-text">Volume Coletado (Toneladas)</h3>
+                    <div class="flex items-center space-x-2 text-sm text-solos-muted">
+                        <div class="flex items-center space-x-1">
+                            <div class="w-3 h-3 bg-solos-green rounded-full"></div>
+                            <span>2024</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <div class="w-3 h-3 bg-solos-accent rounded-full"></div>
+                            <span>2023</span>
+                        </div>
+                    </div>
+                </div>
+                <canvas id="volumeChart" height="200"></canvas>
+            </div>
+
+            <!-- Projetos por Status -->
+            <div class="bg-solos-card rounded-xl p-6 card-shadow">
+                <h3 class="text-lg font-bold text-solos-text mb-6">Projetos por Status</h3>
+                <div class="relative">
+                    <canvas id="statusChart" height="200"></canvas>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mt-6">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-green-600">6</div>
+                        <div class="text-sm text-solos-muted">Em Andamento</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-blue-600">3</div>
+                        <div class="text-sm text-solos-muted">Finalizados</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance por Projeto -->
+        <div class="bg-solos-card rounded-xl p-6 card-shadow mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-bold text-solos-text">Performance por Projeto</h3>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 text-xs bg-solos-green text-white rounded-full">Todos</button>
+                    <button class="px-3 py-1 text-xs border border-solos-green text-solos-green rounded-full hover:bg-solos-green hover:text-white transition-colors">Em Andamento</button>
+                    <button class="px-3 py-1 text-xs border border-solos-green text-solos-green rounded-full hover:bg-solos-green hover:text-white transition-colors">Finalizados</button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="text-left py-3 px-4 font-medium text-solos-text">Projeto</th>
+                            <th class="text-left py-3 px-4 font-medium text-solos-text">Cliente</th>
+                            <th class="text-left py-3 px-4 font-medium text-solos-text">Meta vs Realizado</th>
+                            <th class="text-left py-3 px-4 font-medium text-solos-text">Eficiência</th>
+                            <th class="text-left py-3 px-4 font-medium text-solos-text">Renda Gerada</th>
+                            <th class="text-left py-3 px-4 font-medium text-solos-text">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Vidrado -->
+                        <tr class="border-b border-gray-100 hover:bg-solos-bg transition-colors">
+                            <td class="py-4 px-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                                        <span class="text-green-600 font-bold text-sm">V</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-solos-text">Vidrado</p>
+                                        <p class="text-xs text-solos-muted">Caraíva, BA</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-4">
+                                <p class="text-sm font-medium text-solos-text">Heineken</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <div class="flex items-center space-x-2">
+                                    <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-red-500 h-2 rounded-full" style="width: 13.5%"></div>
+                                    </div>
+                                    <span class="text-sm font-medium text-red-600">13.5%</span>
+                                </div>
+                                <p class="text-xs text-solos-muted mt-1">5.4t / 40t</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <span class="px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">Baixa</span>
+                            </td>
+                            <td class="py-4 px-4">
+                                <p class="text-sm font-medium text-solos-text">R$ 162k</p>
+                                <p class="text-xs text-solos-muted">Meta: R$ 1.2M</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full">⚠️ Crítico</span>
+                            </td>
+                        </tr>
+
+                        <!-- Re-ciclo -->
+                        <tr class="border-b border-gray-100 hover:bg-solos-bg transition-colors">
+                            <td class="py-4 px-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                        <span class="text-blue-600 font-bold text-sm">R</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-solos-text">Re-ciclo</p>
+                                        <p class="text-xs text-solos-muted">Fortaleza, CE</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-4">
+                                <p class="text-sm font-medium text-solos-text">Prefeitura CE</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <div class="flex items-center space-x-2">
+                                    <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: 78%"></div>
+                                    </div>
+                                    <span class="text-sm font-medium text-green-600">78%</span>
+                                </div>
+                                <p class="text-xs text-solos-muted mt-1">234t / 300t</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">Alta</span>
+                            </td>
+                            <td class="py-4 px-4">
+                                <p class="text-sm font-medium text-solos-text">R$ 701k</p>
+                                <p class="text-xs text-solos-muted">Meta: R$ 900k</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">✅ No prazo</span>
+                            </td>
+                        </tr>
+
+                        <!-- Carnaval Salvador -->
+                        <tr class="border-b border-gray-100 hover:bg-solos-bg transition-colors">
+                            <td class="py-4 px-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                        <span class="text-yellow-600 font-bold text-sm">C</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-solos-text">Carnaval Salvador</p>
+                                        <p class="text-xs text-solos-muted">Salvador, BA</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-4">
+                                <p class="text-sm font-medium text-solos-text">Ambev</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <div class="flex items-center space-x-2">
+                                    <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-green-500 h-2 rounded-full" style="width: 100%"></div>
+                                    </div>
+                                    <span class="text-sm font-medium text-green-600">109%</span>
+                                </div>
+                                <p class="text-xs text-solos-muted mt-1">657t / 600t</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">Excelente</span>
+                            </td>
+                            <td class="py-4 px-4">
+                                <p class="text-sm font-medium text-solos-text">R$ 1.3M</p>
+                                <p class="text-xs text-green-600">+109% da meta</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">🏆 Finalizado</span>
+                            </td>
+                        </tr>
+
+                        <!-- Braskem Recicla -->
+                        <tr class="hover:bg-solos-bg transition-colors">
+                            <td class="py-4 px-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                                        <span class="text-purple-600 font-bold text-sm">B</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-solos-text">Braskem Recicla</p>
+                                        <p class="text-xs text-solos-muted">Múltiplas cidades</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4 px-4">
+                                <p class="text-sm font-medium text-solos-text">Braskem</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <div class="flex items-center space-x-2">
+                                    <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 73%"></div>
+                                    </div>
+                                    <span class="text-sm font-medium text-yellow-600">73%</span>
+                                </div>
+                                <p class="text-xs text-solos-muted mt-1">11 / 15 eventos</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full">Média</span>
+                            </td>
+                            <td class="py-4 px-4">
+                                <p class="text-sm font-medium text-solos-text">R$ 215k</p>
+                                <p class="text-xs text-solos-muted">Meta parcial</p>
+                            </td>
+                            <td class="py-4 px-4">
+                                <span class="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full">⏸️ Pausado</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Insights e Recomendações -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Insights -->
+            <div class="bg-solos-card rounded-xl p-6 card-shadow">
+                <h3 class="text-lg font-bold text-solos-text mb-4">💡 Insights Inteligentes</h3>
+                <div class="space-y-4">
+                    <div class="p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
+                        <h4 class="font-medium text-red-800">Projeto Vidrado Precisa de Atenção</h4>
+                        <p class="text-sm text-red-600 mt-1">Performance 67% abaixo da média. Revisar estratégia de mobilização.</p>
+                    </div>
+                    <div class="p-4 bg-green-50 border-l-4 border-green-500 rounded-r-lg">
+                        <h4 class="font-medium text-green-800">Re-ciclo Superando Expectativas</h4>
+                        <p class="text-sm text-green-600 mt-1">Crescimento consistente. Pode servir de modelo para outros projetos.</p>
+                    </div>
+                    <div class="p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg">
+                        <h4 class="font-medium text-blue-800">Sazonalidade Identificada</h4>
+                        <p class="text-sm text-blue-600 mt-1">Aumento de 40% na coleta durante alta temporada turística.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recomendações -->
+            <div class="bg-solos-card rounded-xl p-6 card-shadow">
+                <h3 class="text-lg font-bold text-solos-text mb-4">🎯 Recomendações</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span class="text-red-600 text-xs font-bold">1</span>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-solos-text">Ação Imediata - Vidrado</h4>
+                            <p class="text-sm text-solos-muted">Intensificar mobilização e revisar rotas em Caraíva</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span class="text-yellow-600 text-xs font-bold">2</span>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-solos-text">Replicar Sucesso</h4>
+                            <p class="text-sm text-solos-muted">Aplicar metodologia do Re-ciclo em novos projetos</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span class="text-green-600 text-xs font-bold">3</span>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-solos-text">Expandir Parcerias</h4>
+                            <p class="text-sm text-solos-muted">Prospectar 2 novos clientes baseado no sucesso atual</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Gráfico de Volume Coletado
+        const volumeCtx = document.getElementById('volumeChart').getContext('2d');
+        new Chart(volumeCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
+                datasets: [{
+                    label: '2024',
+                    data: [45, 67, 89, 112, 134, 156, 180],
+                    borderColor: '#2D5D3D',
+                    backgroundColor: 'rgba(45, 93, 61, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: '2023',
+                    data: [32, 48, 65, 82, 98, 115, 132],
+                    borderColor: '#6B8F47',
+                    backgroundColor: 'rgba(107, 143, 71, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0,0,0,0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfico de Status dos Projetos
+        const statusCtx = document.getElementById('statusChart').getContext('2d');
+        new Chart(statusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Em Andamento', 'Finalizados', 'Pausados'],
+                datasets: [{
+                    data: [6, 3, 1],
+                    backgroundColor: ['#2D5D3D', '#6B8F47', '#FFA500'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
