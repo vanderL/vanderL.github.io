@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOLOS - Configuração do Projeto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'solos-green': '#2D5D3D',
+                        'solos-light-green': '#4A7A5A',
+                        'solos-accent': '#6B8F47',
+                        'solos-bg': '#F8FAF6',
+                        'solos-card': '#FFFFFF',
+                        'solos-text': '#1F2937',
+                        'solos-muted': '#6B7280'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #2D5D3D 0%, #4A7A5A 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(45, 93, 61, 0.1), 0 2px 4px -1px rgba(45, 93, 61, 0.06);
+        }
+        .field-item {
+            transition: all 0.2s ease;
+        }
+        .field-item:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(45, 93, 61, 0.15);
+        }
+        .drag-handle {
+            cursor: grab;
+        }
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .toggle-slider {
+            background-color: #2D5D3D;
+        }
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+    </style>
+</head>
+<body class="bg-solos-bg font-sans">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <button onclick="history.back()" class="text-white hover:text-green-200 transition-colors">
+                        ← Voltar
+                    </button>
+                    <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                        <span class="text-solos-green font-bold text-xl">⚙️</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">Configuração do Projeto</h1>
+                        <p class="text-green-100 text-sm">Personalize campos e informações</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-right">
+                        <p class="text-sm text-green-100">Projeto:</p>
+                        <p class="text-xs text-green-200">Vidrado - Heineken</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Seletor de Projeto -->
+        <div class="bg-solos-card rounded-xl p-6 card-shadow mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-xl font-bold text-solos-text">Selecionar Projeto</h2>
+                    <p class="text-solos-muted">Escolha o projeto para configurar campos personalizados</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <select id="projectSelect" class="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-solos-green focus:border-solos-green min-w-48">
+                        <option value="vidrado" selected>Vidrado - Heineken</option>
+                        <option value="reciclo">Re-ciclo - Prefeitura CE</option>
+                        <option value="carnaval">Carnaval Salvador - Ambev</option>
+                        <option value="braskem">Braskem Recicla</option>
+                    </select>
+                    <button class="px-4 py-2 bg-solos-green text-white rounded-lg hover:bg-solos-light-green transition-colors">
+                        📋 Aplicar Template
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Configuração de Campos -->
+            <div class="lg:col-span-2">
+                <!-- Campos de Participante/Estabelecimento -->
+                <div class="bg-solos-card rounded-xl p-6 card-shadow mb-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-bold text-solos-text">👥 Campos de Participante/Estabelecimento</h3>
+                        <button class="px-3 py-1 text-sm bg-solos-accent text-white rounded-lg hover:bg-solos-light-green transition-colors">
+                            + Novo Campo
+                        </button>
+                    </div>
+
+                    <div id="participantFields" class="space-y-3">
+                        <!-- Campo Nome -->
+                        <div class="field-item bg-white border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="drag-handle text-solos-muted cursor-grab">⋮⋮</div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-3">
+                                            <input type="text" value="Nome do Estabelecimento" class="font-medium text-solos-text bg-transparent border-none outline-none">
+                                            <span class="px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">Obrigatório</span>
+                                        </div>
+                                        <p class="text-xs text-solos-muted mt-1">Tipo: Texto • Máximo: 100 caracteres</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <button class="text-solos-muted hover:text-red-500 transition-colors">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campo Zona -->
+                        <div class="field-item bg-white border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="drag-handle text-solos-muted cursor-grab">⋮⋮</div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-3">
+                                            <input type="text" value="Zona" class="font-medium text-solos-text bg-transparent border-none outline-none">
+                                            <span class="px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">Obrigatório</span>
+                                        </div>
+                                        <p class="text-xs text-solos-muted mt-1">Tipo: Seleção • Opções: ZONA 1, ZONA 2, ZONA 3</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <button class="text-solos-muted hover:text-red-500 transition-colors">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campo Tamanho -->
+                        <div class="field-item bg-white border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="drag-handle text-solos-muted cursor-grab">⋮⋮</div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-3">
+                                            <input type="text" value="Tamanho do Gerador" class="font-medium text-solos-text bg-transparent border-none outline-none">
+                                            <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full">Opcional</span>
+                                        </div>
+                                        <p class="text-xs text-solos-muted mt-1">Tipo: Seleção • Opções: P, M, G</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <button class="text-solos-muted hover:text-red-500 transition-colors">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campo Específico do Vidrado -->
+                        <div class="field-item bg-green-50 border border-green-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="drag-handle text-solos-muted cursor-grab">⋮⋮</div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-3">
+                                            <input type="text" value="Consumo Heineken (garrafas/semana)" class="font-medium text-solos-text bg-transparent border-none outline-none">
+                                            <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">Específico</span>
+                                        </div>
+                                        <p class="text-xs text-solos-muted mt-1">Tipo: Número • Campo específico do projeto Vidrado</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <button class="text-solos-muted hover:text-red-500 transition-colors">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Subárea -->
+                        <div class="field-item bg-white border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="drag-handle text-solos-muted cursor-grab">⋮⋮</div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-3">
+                                            <input type="text" value="Subárea" class="font-medium text-solos-text bg-transparent border-none outline-none">
+                                            <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full">Opcional</span>
+                                        </div>
+                                        <p class="text-xs text-solos-muted mt-1">Tipo: Texto • Ex: Beira Rio, Beco da Lua, Caramuru</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <button class="text-solos-muted hover:text-red-500 transition-colors">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Campos de Coleta -->
+                <div class="bg-solos-card rounded-xl p-6 card-shadow mb-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-bold text-solos-text">📦 Campos de Coleta</h3>
+                        <button class="px-3 py-1 text-sm bg-solos-accent text-white rounded-lg hover:bg-solos-light-green transition-colors">
+                            + Novo Campo
+                        </button>
+                    </div>
+
+                    <div class="space-y-3">
+                        <!-- Quantidade de Sacos -->
+                        <div class="field-item bg-white border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="drag-handle text-solos-muted cursor-grab">⋮⋮</div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-3">
+                                            <input type="text" value="Quantidade de Sacos" class="font-medium text-solos-text bg-transparent border-none outline-none">
+                                            <span class="px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">Obrigatório</span>
+                                        </div>
+                                        <p class="text-xs text-solos-muted mt-1">Tipo: Número • Unidade: sacos</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <button class="text-solos-muted hover:text-red-500 transition-colors">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Peso -->
+                        <div class="field-item bg-white border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="drag-handle text-solos-muted cursor-grab">⋮⋮</div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-3">
+                                            <input type="text" value="Peso Coletado" class="font-medium text-solos-text bg-transparent border-none outline-none">
+                                            <span class="px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">Obrigatório</span>
+                                        </div>
+                                        <p class="text-xs text-solos-muted mt-1">Tipo: Decimal • Unidade: kg</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <button class="text-solos-muted hover:text-red-500 transition-colors">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campo Específico Vidrado -->
+                        <div class="field-item bg-green-50 border border-green-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="drag-handle text-solos-muted cursor-grab">⋮⋮</div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-3">
+                                            <input type="text" value="Garrafas Heineken Coletadas" class="font-medium text-solos-text bg-transparent border-none outline-none">
+                                            <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">Específico</span>
+                                        </div>
+                                        <p class="text-xs text-solos-muted mt-1">Tipo: Número • Unidade: unidades • Específico Heineken</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <button class="text-solos-muted hover:text-red-500 transition-colors">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Métricas do Dashboard -->
+                <div class="bg-solos-card rounded-xl p-6 card-shadow">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-bold text-solos-text">📊 Métricas do Dashboard</h3>
+                        <button class="px-3 py-1 text-sm bg-solos-accent text-white rounded-lg hover:bg-solos-light-green transition-colors">
+                            + Nova Métrica
+                        </button>
+                    </div>
+
+                    <div class="space-y-3">
+                        <!-- Meta Principal -->
+                        <div class="field-item bg-white border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="drag-handle text-solos-muted cursor-grab">⋮⋮</div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-3">
+                                            <input type="text" value="Meta de Coleta (toneladas)" class="font-medium text-solos-text bg-transparent border-none outline-none">
+                                            <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">KPI Principal</span>
+                                        </div>
+                                        <p class="text-xs text-solos-muted mt-1">Meta: 40 toneladas • Atual: 5.4t (13.5%)</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <button class="text-solos-muted hover:text-red-500 transition-colors">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Meta Secundária -->
+                        <div class="field-item bg-white border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="drag-handle text-solos-muted cursor-grab">⋮⋮</div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-3">
+                                            <input type="text" value="Estabelecimentos Ativos" class="font-medium text-solos-text bg-transparent border-none outline-none">
+                                            <span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">KPI Secundário</span>
+                                        </div>
+                                        <p class="text-xs text-solos-muted mt-1">Meta: 75 estabelecimentos • Atual: 30 (40%)</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <button class="text-solos-muted hover:text-red-500 transition-colors">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Métrica Específica -->
+                        <div class="field-item bg-green-50 border border-green-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="drag-handle text-solos-muted cursor-grab">⋮⋮</div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-3">
+                                            <input type="text" value="Garrafas por Estabelecimento (média)" class="font-medium text-solos-text bg-transparent border-none outline-none">
+                                            <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">Específico</span>
+                                        </div>
+                                        <p class="text-xs text-solos-muted mt-1">Métrica específica para relatórios Heineken</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <button class="text-solos-muted hover:text-red-500 transition-colors">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview e Templates -->
+            <div class="lg:col-span-1">
+                <!-- Preview -->
+                <div class="bg-solos-card rounded-xl p-6 card-shadow mb-6 sticky top-8">
+                    <h3 class="text-lg font-bold text-solos-text mb-4">👁️ Preview</h3>
+                    <div class="bg-solos-bg rounded-lg p-4">
+                        <p class="text-sm text-solos-muted mb-3">Como aparecerá no formulário:</p>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-solos-text">Nome do Estabelecimento *</span>
+                                <input type="text" class="border rounded px-2 py-1 text-xs w-32" placeholder="Casa Deck...">
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-solos-text">Zona *</span>
+                                <select class="border rounded px-2 py-1 text-xs w-32">
+                                    <option>ZONA 1</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-solos-text">Tamanho</span>
+                                <select class="border rounded px-2 py-1 text-xs w-32">
+                                    <option>P</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-green-700 font-medium">Consumo Heineken</span>
+                                <input type="number" class="border rounded px-2 py-1 text-xs w-32" placeholder="50">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Templates -->
+                <div class="bg-solos-card rounded-xl p-6 card-shadow">
+                    <h3 class="text-lg font-bold text-solos-text mb-4">📋 Templates Prontos</h3>
+                    <div class="space-y-3">
+                        <button class="w-full text-left p-3 border border-gray-200 rounded-lg hover:border-solos-green hover:bg-solos-bg transition-colors">
+                            <div class="font-medium text-solos-text">Projeto Vidrado</div>
+                            <div class="text-xs text-solos-muted">Zonas, estabelecimentos, garrafas</div>
+                        </button>
+                        <button class="w-full text-left p-3 border border-gray-200 rounded-lg hover:border-solos-green hover:bg-solos-bg transition-colors">
+                            <div class="font-medium text-solos-text">Projeto Re-ciclo</div>
+                            <div class="text-xs text-solos-muted">Usuários, endereços, triciclos</div>
+                        </button>
+                        <button class="w-full text-left p-3 border border-gray-200 rounded-lg hover:border-solos-green hover:bg-solos-bg transition-colors">
+                            <div class="font-medium text-solos-text">Projeto Carnaval</div>
+                            <div class="text-xs text-solos-muted">Blocos, catadores, eventos</div>
+                        </button>
+                        <button class="w-full text-left p-3 border border-gray-200 rounded-lg hover:border-solos-green hover:bg-solos-bg transition-colors">
+                            <div class="font-medium text-solos-text">Projeto Braskem</div>
+                            <div class="text-xs text-solos-muted">Eventos, visitantes, experiências</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="mt-8 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <button class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                    Cancelar
+                </button>
+                <button class="px-4 py-2 bg-solos-accent text-white rounded-lg hover:bg-solos-light-green transition-colors">
+                    💾 Salvar como Template
+                </button>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="px-4 py-2 border border-solos-green text-solos-green rounded-lg hover:bg-solos-green hover:text-white transition-colors">
+                    🧪 Testar Configuração
+                </button>
+                <button class="px-6 py-2 bg-solos-green text-white rounded-lg hover:bg-solos-light-green transition-colors">
+                    ✅ Aplicar Configuração
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mudar projeto
+        document.getElementById('projectSelect').addEventListener('change', function() {
+            const project = this.value;
+            // Aqui carregaria a configuração específica do projeto selecionado
+            console.log('Carregando configuração do projeto:', project);
+        });
+
+        // Drag and drop (simplificado)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Implementação básica de drag and drop
+            const fieldItems = document.querySelectorAll('.field-item');
+            let draggedElement = null;
+
+            fieldItems.forEach(item => {
+                const dragHandle = item.querySelector('.drag-handle');
+                
+                dragHandle.addEventListener('mousedown', function() {
+                    item.draggable = true;
+                });
+
+                item.addEventListener('dragstart', function(e) {
+                    draggedElement = this;
+                    this.style.opacity = '0.5';
+                });
+
+                item.addEventListener('dragend', function(e) {
+                    this.style.opacity = '1';
+                    item.draggable = false;
+                });
+
+                item.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                });
+
+                item.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    if (this !== draggedElement) {
+                        const parent = this.parentNode;
+                        const draggedIndex = Array.prototype.indexOf.call(parent.children, draggedElement);
+                        const targetIndex = Array.prototype.indexOf.call(parent.children, this);
+                        
+                        if (draggedIndex < targetIndex) {
+                            parent.insertBefore(draggedElement, this.nextSibling);
+                        } else {
+                            parent.insertBefore(draggedElement, this);
+                        }
+                    }
+                });
+            });
+        });
+
+        // Toggle switches
+        document.querySelectorAll('.toggle-switch input').forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                const fieldItem = this.closest('.field-item');
+                if (this.checked) {
+                    fieldItem.style.opacity = '1';
+                } else {
+                    fieldItem.style.opacity = '0.5';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
