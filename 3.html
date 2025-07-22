@@ -1,488 +1,225 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LabStart Architecture View - meu-projeto</title>
+  <title>API Docs - Arquitetura</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            labstart: {
-              50: '#f0f9ff',
-              500: '#0ea5e9',
-              600: '#0284c7',
-              700: '#0369a1',
-              900: '#0c4a6e'
-            }
+            sidebar: '#1e293b',
+            primary: '#3b82f6',
+            success: '#10b981',
+            warning: '#f59e0b',
+            danger: '#ef4444',
+            info: '#06b6d4'
           }
         }
       }
     }
   </script>
-  <style>
-    .gradient-bg {
-      background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%);
-    }
-    .glass {
-      backdrop-filter: blur(16px);
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    .architecture-flow {
-      position: relative;
-    }
-    .flow-arrow {
-      position: absolute;
-      color: #0ea5e9;
-      font-size: 24px;
-      animation: pulse 2s infinite;
-    }
-    .layer-card {
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
-    }
-    .layer-card:hover {
-      border-color: #0ea5e9;
-      transform: scale(1.02);
-    }
-    .dependency-line {
-      position: absolute;
-      height: 2px;
-      background: linear-gradient(90deg, #0ea5e9 0%, #10b981 100%);
-      opacity: 0.6;
-    }
-    .file-tree {
-      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-    }
-  </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen">
-  <!-- Navigation -->
-  <nav class="gradient-bg border-b border-gray-700">
-    <div class="container mx-auto px-6 py-4">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-4">
-          <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-            <span class="text-labstart-700 font-bold text-xl">L</span>
-          </div>
-          <div>
-            <h1 class="text-xl font-bold">LabStart Architecture</h1>
-            <p class="text-blue-200 text-sm">meu-projeto-api</p>
-          </div>
-        </div>
-        
-        <div class="flex items-center space-x-6">
-          <nav class="hidden md:flex space-x-6">
-            <a href="https://vanderl.github.io/1" class="text-white hover:text-blue-200 transition-colors border-b-2 border-white">📊 Overview</a>
-            <a href="https://vanderl.github.io/2" class="text-blue-200 hover:text-white transition-colors">📚 API Docs</a>
-            <a href="https://vanderl.github.io/3" class="text-blue-200 hover:text-white transition-colors">🧪 Tester</a>
-            <a href="https://vanderl.github.io/4" class="text-blue-200 hover:text-white transition-colors">🏗️ Architecture</a>
-            <a href="https://vanderl.github.io/5" class="text-blue-200 hover:text-white transition-colors">📈 Metrics</a>
-          </nav>
-          
-          <div class="flex items-center space-x-2">
-            <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-            <span class="text-sm text-green-200">Online</span>
-          </div>
-        </div>
+<body class="bg-gray-50 text-gray-900">
+  <!-- Layout Principal -->
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <div class="w-64 bg-sidebar text-white flex flex-col">
+      <!-- Header -->
+      <div class="p-6 border-b border-gray-700">
+        <h1 class="text-xl font-bold">API Docs</h1>
+        <p class="text-sm text-gray-400 mt-1">Clean Architecture</p>
       </div>
+      
+      <!-- Navigation -->
+      <nav class="flex-1 p-4">
+        <ul class="space-y-2">
+          <li>
+            <a href="#" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 rounded-lg transition-colors">
+              <span class="mr-3">📊</span>
+              Visão Geral
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 rounded-lg transition-colors">
+              <span class="mr-3">🔐</span>
+              Autenticação
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 rounded-lg transition-colors">
+              <span class="mr-3">👥</span>
+              Usuários
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center px-4 py-3 bg-primary rounded-lg text-white">
+              <span class="mr-3">🏗️</span>
+              Arquitetura
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 rounded-lg transition-colors">
+              <span class="mr-3">🧪</span>
+              Testador
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
-  </nav>
 
-  <!-- Main Content -->
-  <div class="container mx-auto px-6 py-8">
-    <!-- Architecture Score -->
-    <div class="glass rounded-xl p-6 mb-8">
-      <div class="flex items-center justify-between">
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col">
+      <!-- Header -->
+      <header class="bg-white border-b border-gray-200 p-6">
         <div>
-          <h2 class="text-2xl font-bold mb-2">🏛️ Clean Architecture Analysis</h2>
-          <p class="text-gray-300">Análise automática da conformidade com Clean Architecture</p>
+          <h2 class="text-2xl font-bold text-gray-900">Arquitetura Clean</h2>
+          <p class="text-gray-600 mt-1">Separação clara de responsabilidades em camadas</p>
         </div>
-        <div class="text-right">
-          <div class="text-4xl font-bold text-green-400 mb-1">98%</div>
-          <div class="text-sm text-green-200">Excellent Compliance</div>
-          <div class="flex items-center mt-2 space-x-2">
-            <div class="w-4 h-4 bg-green-400 rounded-full"></div>
-            <span class="text-xs text-gray-300">All layers implemented</span>
-          </div>
-        </div>
-      </div>
-    </div>
+      </header>
 
-    <!-- View Toggle -->
-    <div class="mb-6">
-      <div class="flex space-x-2">
-        <button class="bg-labstart-600 text-white px-4 py-2 rounded">🏗️ Layer View</button>
-        <button class="bg-gray-700 text-gray-300 hover:bg-gray-600 px-4 py-2 rounded transition-colors">📁 File Tree</button>
-        <button class="bg-gray-700 text-gray-300 hover:bg-gray-600 px-4 py-2 rounded transition-colors">🔄 Flow Diagram</button>
-        <button class="bg-gray-700 text-gray-300 hover:bg-gray-600 px-4 py-2 rounded transition-colors">🔍 Dependencies</button>
-      </div>
-    </div>
-
-    <!-- Clean Architecture Layers -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 architecture-flow">
-      <!-- Presentation Layer -->
-      <div class="layer-card glass rounded-xl p-6">
-        <div class="text-center mb-4">
-          <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
-            <span class="text-2xl">🌐</span>
-          </div>
-          <h3 class="text-xl font-bold text-blue-400">Presentation Layer</h3>
-          <p class="text-sm text-gray-300">Controllers & HTTP Handlers</p>
-        </div>
-        
-        <div class="space-y-3">
-          <div class="bg-gray-800 rounded p-3">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-bold text-sm">Controllers</span>
-              <span class="bg-blue-500 text-white px-2 py-1 rounded text-xs">8 files</span>
-            </div>
-            <div class="space-y-1 text-xs text-gray-300">
-              <div>📂 users/ (3 controllers)</div>
-              <div>📂 auth/ (1 controller)</div>
-              <div>📂 health/ (1 controller)</div>
-            </div>
-          </div>
+      <!-- Content -->
+      <main class="flex-1 p-6 overflow-y-auto">
+        <!-- Fluxo de Dados -->
+        <div class="bg-white rounded-lg border border-gray-200 p-8 mb-8">
+          <h3 class="text-xl font-semibold text-gray-900 mb-6 text-center">Fluxo de Dados</h3>
           
-          <div class="bg-gray-800 rounded p-3">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-bold text-sm">Middlewares</span>
-              <span class="bg-purple-500 text-white px-2 py-1 rounded text-xs">3 files</span>
-            </div>
-            <div class="space-y-1 text-xs text-gray-300">
-              <div>🔐 JWT Authentication</div>
-              <div>👑 Role Authorization</div>
-              <div>⚡ Rate Limiting</div>
-            </div>
-          </div>
-
-          <div class="bg-gray-800 rounded p-3">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-bold text-sm">Routes</span>
-              <span class="bg-green-500 text-white px-2 py-1 rounded text-xs">12 endpoints</span>
-            </div>
-            <div class="space-y-1 text-xs text-gray-300">
-              <div>🔓 2 public</div>
-              <div>🔐 7 authenticated</div>
-              <div>👑 3 admin-only</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Business Layer -->
-      <div class="layer-card glass rounded-xl p-6">
-        <div class="text-center mb-4">
-          <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-3">
-            <span class="text-2xl">🧠</span>
-          </div>
-          <h3 class="text-xl font-bold text-green-400">Business Layer</h3>
-          <p class="text-sm text-gray-300">Use Cases & Business Logic</p>
-        </div>
-        
-        <div class="space-y-3">
-          <div class="bg-gray-800 rounded p-3">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-bold text-sm">Services</span>
-              <span class="bg-green-500 text-white px-2 py-1 rounded text-xs">8 services</span>
-            </div>
-            <div class="space-y-1 text-xs text-gray-300">
-              <div>👤 CreateUserService</div>
-              <div>📋 FetchUsersService</div>
-              <div>🔍 GetUserService</div>
-              <div>🔐 AuthenticateService</div>
-            </div>
-          </div>
-          
-          <div class="bg-gray-800 rounded p-3">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-bold text-sm">Factories</span>
-              <span class="bg-yellow-500 text-white px-2 py-1 rounded text-xs">4 factories</span>
-            </div>
-            <div class="space-y-1 text-xs text-gray-300">
-              <div>🏭 makeUserServices</div>
-              <div>🏭 makeAuthServices</div>
-            </div>
-          </div>
-
-          <div class="bg-gray-800 rounded p-3">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-bold text-sm">Errors</span>
-              <span class="bg-red-500 text-white px-2 py-1 rounded text-xs">5 types</span>
-            </div>
-            <div class="space-y-1 text-xs text-gray-300">
-              <div>❌ UserAlreadyExistsError</div>
-              <div>❌ UserNotFoundError</div>
-              <div>❌ InvalidCredentialsError</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Data Layer -->
-      <div class="layer-card glass rounded-xl p-6">
-        <div class="text-center mb-4">
-          <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-3">
-            <span class="text-2xl">💾</span>
-          </div>
-          <h3 class="text-xl font-bold text-purple-400">Data Layer</h3>
-          <p class="text-sm text-gray-300">Repositories & Data Access</p>
-        </div>
-        
-        <div class="space-y-3">
-          <div class="bg-gray-800 rounded p-3">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-bold text-sm">Repositories</span>
-              <span class="bg-purple-500 text-white px-2 py-1 rounded text-xs">4 repos</span>
-            </div>
-            <div class="space-y-1 text-xs text-gray-300">
-              <div>📄 UsersRepository (interface)</div>
-              <div>🔧 PrismaUsersRepository</div>
-              <div>🧪 FakeUsersRepository</div>
-            </div>
-          </div>
-          
-          <div class="bg-gray-800 rounded p-3">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-bold text-sm">Database</span>
-              <span class="bg-blue-500 text-white px-2 py-1 rounded text-xs">Prisma</span>
-            </div>
-            <div class="space-y-1 text-xs text-gray-300">
-              <div>🗄️ PostgreSQL</div>
-              <div>📋 2 models (User, Role)</div>
-              <div>🔄 3 migrations</div>
-            </div>
-          </div>
-
-          <div class="bg-gray-800 rounded p-3">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-bold text-sm">External</span>
-              <span class="bg-orange-500 text-white px-2 py-1 rounded text-xs">2 libs</span>
-            </div>
-            <div class="space-y-1 text-xs text-gray-300">
-              <div>🔐 bcryptjs (hashing)</div>
-              <div>🎫 jsonwebtoken (JWT)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Flow Arrows -->
-      <div class="flow-arrow" style="top: 50%; left: 25%; transform: translateY(-50%);">→</div>
-      <div class="flow-arrow" style="top: 50%; right: 25%; transform: translateY(-50%);">→</div>
-    </div>
-
-    <!-- Dependency Flow -->
-    <div class="glass rounded-xl p-6 mb-8">
-      <h3 class="text-xl font-bold mb-6">🔄 Dependency Flow</h3>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="text-center">
-          <div class="bg-blue-500 rounded p-4 mb-3">
-            <span class="text-2xl">📤</span>
-          </div>
-          <h4 class="font-bold mb-2">HTTP Request</h4>
-          <p class="text-sm text-gray-300">Client sends request to controller</p>
-        </div>
-        <div class="text-center">
-          <div class="bg-green-500 rounded p-4 mb-3">
-            <span class="text-2xl">⚙️</span>
-          </div>
-          <h4 class="font-bold mb-2">Business Logic</h4>
-          <p class="text-sm text-gray-300">Service processes business rules</p>
-        </div>
-        <div class="text-center">
-          <div class="bg-purple-500 rounded p-4 mb-3">
-            <span class="text-2xl">💽</span>
-          </div>
-          <h4 class="font-bold mb-2">Data Persistence</h4>
-          <p class="text-sm text-gray-300">Repository handles data access</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- File Tree View -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div class="glass rounded-xl p-6">
-        <h3 class="text-xl font-bold mb-4">📁 Project Structure</h3>
-        <div class="file-tree text-sm space-y-1">
-          <div class="text-gray-300">
-            <div class="flex items-center space-x-2">
-              <span class="text-yellow-400">📂</span>
-              <span class="font-bold">src/</span>
-            </div>
-            <div class="ml-6 space-y-1">
-              <div class="flex items-center space-x-2">
-                <span class="text-blue-400">📂</span>
-                <span>http/</span>
+          <div class="flex items-center justify-center space-x-8">
+            <!-- Controllers -->
+            <div class="text-center">
+              <div class="w-24 h-24 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                <span class="text-3xl">🌐</span>
               </div>
-              <div class="ml-6 space-y-1">
-                <div class="flex items-center space-x-2">
-                  <span class="text-blue-400">📂</span>
-                  <span>controllers/</span>
-                </div>
-                <div class="ml-6 space-y-1">
-                  <div class="flex items-center space-x-2">
-                    <span class="text-green-400">📄</span>
-                    <span>users/create-user.ts</span>
+              <h4 class="font-bold text-blue-600 mb-2">Controllers</h4>
+              <p class="text-sm text-gray-600">Camada de Apresentação</p>
+            </div>
+            
+            <!-- Arrow -->
+            <div class="text-blue-500 text-2xl">→</div>
+            
+            <!-- Services -->
+            <div class="text-center">
+              <div class="w-24 h-24 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                <span class="text-3xl">⚙️</span>
+              </div>
+              <h4 class="font-bold text-green-600 mb-2">Services</h4>
+              <p class="text-sm text-gray-600">Camada de Aplicação</p>
+            </div>
+            
+            <!-- Arrow -->
+            <div class="text-green-500 text-2xl">→</div>
+            
+            <!-- Repositories -->
+            <div class="text-center">
+              <div class="w-24 h-24 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
+                <span class="text-3xl">💾</span>
+              </div>
+              <h4 class="font-bold text-yellow-600 mb-2">Repositories</h4>
+              <p class="text-sm text-gray-600">Camada de Infraestrutura</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <!-- Controllers -->
+          <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <div class="flex items-center mb-4">
+              <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                <span class="text-blue-600">🌐</span>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900">Controllers</h3>
+            </div>
+            <ul class="text-sm text-gray-600 space-y-2">
+              <li>• Receber requests HTTP</li>
+              <li>• Validar entrada com Zod</li>
+              <li>• Retornar responses</li>
+              <li>• Tratar erros específicos</li>
+            </ul>
+          </div>
+
+          <!-- Services -->
+          <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <div class="flex items-center mb-4">
+              <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                <span class="text-green-600">⚙️</span>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900">Services</h3>
+            </div>
+            <ul class="text-sm text-gray-600 space-y-2">
+              <li>• Regras de negócio</li>
+              <li>• Orquestrar repositories</li>
+              <li>• Validar autorização</li>
+              <li>• Processar dados</li>
+            </ul>
+          </div>
+
+          <!-- Repositories -->
+          <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <div class="flex items-center mb-4">
+              <div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
+                <span class="text-yellow-600">💾</span>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900">Repositories</h3>
+            </div>
+            <ul class="text-sm text-gray-600 space-y-2">
+              <li>• Acesso aos dados</li>
+              <li>• Queries do banco</li>
+              <li>• Abstração de dados</li>
+              <li>• Interface padronizada</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Estrutura de Pastas -->
+        <div class="bg-white rounded-lg border border-gray-200 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Estrutura de Pastas</h3>
+          
+          <div class="bg-gray-900 rounded-lg p-6 font-mono text-sm text-gray-300">
+            <div class="space-y-1">
+              <div><span class="text-yellow-400">src/</span></div>
+              <div class="ml-4">
+                <div><span class="text-blue-400">├── @types/</span><span class="text-gray-500 ml-8"># Tipos TypeScript customizados</span></div>
+                <div><span class="text-blue-400">├── app.ts</span><span class="text-gray-500 ml-16"># Configuração principal do Fastify</span></div>
+                <div><span class="text-blue-400">├── env/</span><span class="text-gray-500 ml-16"># Validação de variáveis de ambiente</span></div>
+                <div><span class="text-blue-400">├── http/</span><span class="text-gray-500 ml-14"># 🌐 Camada de Apresentação</span></div>
+                <div class="ml-4">
+                  <div><span class="text-green-400">│   ├── controllers/</span><span class="text-gray-500 ml-4"># Controllers organizados por funcionalidade</span></div>
+                  <div class="ml-4">
+                    <div><span class="text-green-400">│   │   ├── auth/</span></div>
+                    <div><span class="text-green-400">│   │   ├── users/</span></div>
+                    <div><span class="text-green-400">│   │   └── health/</span></div>
                   </div>
-                  <div class="flex items-center space-x-2">
-                    <span class="text-green-400">📄</span>
-                    <span>users/fetch-users.ts</span>
-                  </div>
-                  <div class="flex items-center space-x-2">
-                    <span class="text-green-400">📄</span>
-                    <span>auth/authenticate.ts</span>
-                  </div>
+                  <div><span class="text-green-400">│   └── middlewares/</span><span class="text-gray-500 ml-4"># Middlewares (auth, cors, etc)</span></div>
                 </div>
-                <div class="flex items-center space-x-2">
-                  <span class="text-blue-400">📂</span>
-                  <span>middlewares/</span>
+                <div><span class="text-blue-400">├── lib/</span><span class="text-gray-500 ml-16"># Configurações (Prisma, JWT, etc)</span></div>
+                <div><span class="text-blue-400">├── repositories/</span><span class="text-gray-500 ml-8"># 💾 Camada de Infraestrutura</span></div>
+                <div class="ml-4">
+                  <div><span class="text-purple-400">│   ├── fakes/</span><span class="text-gray-500 ml-8"># Implementações em memória (testes)</span></div>
+                  <div><span class="text-purple-400">│   └── prisma/</span><span class="text-gray-500 ml-7"># Implementações com Prisma</span></div>
                 </div>
-              </div>
-              <div class="flex items-center space-x-2">
-                <span class="text-green-400">📂</span>
-                <span>services/</span>
-              </div>
-              <div class="ml-6 space-y-1">
-                <div class="flex items-center space-x-2">
-                  <span class="text-green-400">📄</span>
-                  <span>users/create-user-service.ts</span>
+                <div><span class="text-blue-400">├── server.ts</span><span class="text-gray-500 ml-12"># Ponto de entrada</span></div>
+                <div><span class="text-blue-400">├── services/</span><span class="text-gray-500 ml-12"># ⚙️ Camada de Aplicação</span></div>
+                <div class="ml-4">
+                  <div><span class="text-green-400">│   ├── auth/</span><span class="text-gray-500 ml-8"># Services organizados por domínio</span></div>
+                  <div><span class="text-green-400">│   ├── errors/</span><span class="text-gray-500 ml-7"># Classes de erro customizadas</span></div>
+                  <div><span class="text-green-400">│   ├── factories/</span><span class="text-gray-500 ml-5"># Factory pattern para DI</span></div>
+                  <div><span class="text-green-400">│   └── users/</span><span class="text-gray-500 ml-7"># Services organizados por domínio</span></div>
                 </div>
-                <div class="flex items-center space-x-2">
-                  <span class="text-green-400">📄</span>
-                  <span>auth/authenticate-service.ts</span>
-                </div>
-              </div>
-              <div class="flex items-center space-x-2">
-                <span class="text-purple-400">📂</span>
-                <span>repositories/</span>
-              </div>
-              <div class="ml-6 space-y-1">
-                <div class="flex items-center space-x-2">
-                  <span class="text-purple-400">📄</span>
-                  <span>users-repository.ts</span>
-                </div>
-                <div class="flex items-center space-x-2">
-                  <span class="text-purple-400">📄</span>
-                  <span>prisma/prisma-users-repository.ts</span>
-                </div>
+                <div><span class="text-blue-400">└── utils/</span><span class="text-gray-500 ml-14"># Utilitários gerais</span></div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- Architecture Principles -->
-      <div class="glass rounded-xl p-6">
-        <h3 class="text-xl font-bold mb-4">✅ Architecture Principles</h3>
-        <div class="space-y-4">
-          <div class="flex items-center space-x-3">
-            <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-              <span class="text-white text-xs">✓</span>
-            </div>
-            <div>
-              <div class="font-bold text-sm">Dependency Inversion</div>
-              <div class="text-xs text-gray-300">High-level modules don't depend on low-level</div>
-            </div>
-          </div>
-          
-          <div class="flex items-center space-x-3">
-            <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-              <span class="text-white text-xs">✓</span>
-            </div>
-            <div>
-              <div class="font-bold text-sm">Single Responsibility</div>
-              <div class="text-xs text-gray-300">Each class has one reason to change</div>
-            </div>
-          </div>
-          
-          <div class="flex items-center space-x-3">
-            <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-              <span class="text-white text-xs">✓</span>
-            </div>
-            <div>
-              <div class="font-bold text-sm">Interface Segregation</div>
-              <div class="text-xs text-gray-300">Clients depend only on used interfaces</div>
-            </div>
-          </div>
-          
-          <div class="flex items-center space-x-3">
-            <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-              <span class="text-white text-xs">✓</span>
-            </div>
-            <div>
-              <div class="font-bold text-sm">Open/Closed Principle</div>
-              <div class="text-xs text-gray-300">Open for extension, closed for modification</div>
-            </div>
-          </div>
-          
-          <div class="flex items-center space-x-3">
-            <div class="w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center">
-              <span class="text-white text-xs">!</span>
-            </div>
-            <div>
-              <div class="font-bold text-sm">Liskov Substitution</div>
-              <div class="text-xs text-gray-300">Partially implemented - needs improvement</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-6 pt-4 border-t border-gray-700">
-          <div class="text-center">
-            <div class="text-2xl font-bold text-green-400 mb-1">4/5</div>
-            <div class="text-sm text-gray-300">SOLID Principles Implemented</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Code Quality Metrics -->
-    <div class="glass rounded-xl p-6 mt-6">
-      <h3 class="text-xl font-bold mb-4">📊 Code Quality Metrics</h3>
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div class="text-center">
-          <div class="text-3xl font-bold text-blue-400 mb-2">92%</div>
-          <div class="text-sm text-gray-300">Type Coverage</div>
-          <div class="w-full bg-gray-700 rounded-full h-2 mt-2">
-            <div class="bg-blue-500 h-2 rounded-full" style="width: 92%"></div>
-          </div>
-        </div>
-        
-        <div class="text-center">
-          <div class="text-3xl font-bold text-green-400 mb-2">85%</div>
-          <div class="text-sm text-gray-300">Test Coverage</div>
-          <div class="w-full bg-gray-700 rounded-full h-2 mt-2">
-            <div class="bg-green-500 h-2 rounded-full" style="width: 85%"></div>
-          </div>
-        </div>
-        
-        <div class="text-center">
-          <div class="text-3xl font-bold text-purple-400 mb-2">A</div>
-          <div class="text-sm text-gray-300">Code Grade</div>
-          <div class="w-full bg-gray-700 rounded-full h-2 mt-2">
-            <div class="bg-purple-500 h-2 rounded-full" style="width: 90%"></div>
-          </div>
-        </div>
-        
-        <div class="text-center">
-          <div class="text-3xl font-bold text-yellow-400 mb-2">12</div>
-          <div class="text-sm text-gray-300">Complexity Score</div>
-          <div class="w-full bg-gray-700 rounded-full h-2 mt-2">
-            <div class="bg-yellow-500 h-2 rounded-full" style="width: 70%"></div>
-          </div>
-        </div>
-      </div>
+      </main>
     </div>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Animate layer cards on load
-      const cards = document.querySelectorAll('.layer-card');
+      // Animate architecture cards on load
+      const cards = document.querySelectorAll('.grid-cols-1.lg\\:grid-cols-3 > div');
       cards.forEach((card, index) => {
         card.style.opacity = '0';
         card.style.transform = 'translateY(20px)';
@@ -491,20 +228,6 @@
           card.style.opacity = '1';
           card.style.transform = 'translateY(0)';
         }, index * 200);
-      });
-
-      // View toggle functionality
-      const buttons = document.querySelectorAll('button');
-      buttons.forEach(btn => {
-        btn.addEventListener('click', function() {
-          if (this.textContent.includes('📁 File Tree')) {
-            alert('File Tree view would show detailed project structure');
-          } else if (this.textContent.includes('🔄 Flow Diagram')) {
-            alert('Flow Diagram would show interactive dependency flow');
-          } else if (this.textContent.includes('🔍 Dependencies')) {
-            alert('Dependencies view would show module relationships');
-          }
-        });
       });
     });
   </script>

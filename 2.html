@@ -1,341 +1,331 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LabStart Docs - meu-projeto</title>
+  <title>API Docs - Testador</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            labstart: {
-              50: '#f0f9ff',
-              500: '#0ea5e9',
-              600: '#0284c7',
-              700: '#0369a1',
-              900: '#0c4a6e'
-            }
+            sidebar: '#1e293b',
+            primary: '#3b82f6',
+            success: '#10b981',
+            warning: '#f59e0b',
+            danger: '#ef4444',
+            info: '#06b6d4'
           }
         }
       }
     }
   </script>
-  <style>
-    .gradient-bg {
-      background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%);
-    }
-    .glass {
-      backdrop-filter: blur(16px);
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    .card-hover {
-      transition: all 0.3s ease;
-    }
-    .card-hover:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    }
-  </style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen">
-  <!-- Navigation -->
-  <nav class="gradient-bg border-b border-gray-700">
-    <div class="container mx-auto px-6 py-4">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-4">
-          <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-            <span class="text-labstart-700 font-bold text-xl">L</span>
-          </div>
-          <div>
-            <h1 class="text-xl font-bold">LabStart Docs</h1>
-            <p class="text-blue-200 text-sm">meu-projeto-api</p>
-          </div>
-        </div>
-        
-        <div class="flex items-center space-x-6">
-          <nav class="hidden md:flex space-x-6">
-            <a href="https://vanderl.github.io/1" class="text-white hover:text-blue-200 transition-colors border-b-2 border-white">📊 Overview</a>
-            <a href="https://vanderl.github.io/2" class="text-blue-200 hover:text-white transition-colors">📚 API Docs</a>
-            <a href="https://vanderl.github.io/3" class="text-blue-200 hover:text-white transition-colors">🧪 Tester</a>
-            <a href="https://vanderl.github.io/4" class="text-blue-200 hover:text-white transition-colors">🏗️ Architecture</a>
-            <a href="https://vanderl.github.io/5" class="text-blue-200 hover:text-white transition-colors">📈 Metrics</a>
-          </nav>
-          
-          <div class="flex items-center space-x-2">
-            <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-            <span class="text-sm text-green-200">Online</span>
-          </div>
-        </div>
+<body class="bg-gray-50 text-gray-900">
+  <!-- Layout Principal -->
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <div class="w-64 bg-sidebar text-white flex flex-col">
+      <!-- Header -->
+      <div class="p-6 border-b border-gray-700">
+        <h1 class="text-xl font-bold">API Docs</h1>
+        <p class="text-sm text-gray-400 mt-1">Clean Architecture</p>
       </div>
-    </div>
-  </nav>
-
-  <!-- Main Content -->
-  <div class="container mx-auto px-6 py-8">
-    <!-- Project Header -->
-    <div class="mb-8">
-      <div class="glass rounded-xl p-6 card-hover">
-        <div class="flex items-center justify-between mb-4">
-          <div>
-            <h2 class="text-3xl font-bold mb-2">📋 Projeto: meu-projeto</h2>
-            <div class="flex items-center space-x-4">
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-500 text-white">
-                🎯 100% LabStart Compliant
-              </span>
-              <span class="text-gray-300">📅 Analisado: 20/01/2025 15:30</span>
-            </div>
-          </div>
-          <button class="bg-labstart-600 hover:bg-labstart-700 px-4 py-2 rounded-lg transition-colors">
-            🔄 Reanalizar
-          </button>
-        </div>
-      </div>
+      
+      <!-- Navigation -->
+      <nav class="flex-1 p-4">
+        <ul class="space-y-2">
+          <li>
+            <a href="#" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 rounded-lg transition-colors">
+              <span class="mr-3">📊</span>
+              Visão Geral
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 rounded-lg transition-colors">
+              <span class="mr-3">🔐</span>
+              Autenticação
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 rounded-lg transition-colors">
+              <span class="mr-3">👥</span>
+              Usuários
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-700 rounded-lg transition-colors">
+              <span class="mr-3">🏗️</span>
+              Arquitetura
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center px-4 py-3 bg-primary rounded-lg text-white">
+              <span class="mr-3">🧪</span>
+              Testador
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
 
-    <!-- Stats Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      <div class="glass rounded-xl p-6 card-hover">
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col">
+      <!-- Header -->
+      <header class="bg-white border-b border-gray-200 p-6">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-gray-300 text-sm">Endpoints</p>
-            <p class="text-3xl font-bold text-blue-400">12</p>
+            <h2 class="text-2xl font-bold text-gray-900">Testador de API</h2>
+            <p class="text-gray-600 mt-1">Teste seus endpoints diretamente no navegador</p>
           </div>
-          <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
-            <span class="text-xl">🔗</span>
+          <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-2">
+              <div class="w-3 h-3 bg-success rounded-full"></div>
+              <span class="text-sm text-gray-600">API Online</span>
+            </div>
+            <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+              <option>Produção</option>
+              <option>Staging</option>
+              <option>Local</option>
+            </select>
           </div>
         </div>
-      </div>
+      </header>
 
-      <div class="glass rounded-xl p-6 card-hover">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-gray-300 text-sm">Services</p>
-            <p class="text-3xl font-bold text-green-400">5</p>
+      <!-- Content -->
+      <main class="flex-1 p-6 overflow-y-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Request Panel -->
+          <div class="space-y-6">
+            <!-- Quick Actions -->
+            <div class="bg-white rounded-lg border border-gray-200 p-6">
+              <h3 class="text-lg font-semibold text-gray-900 mb-4">Ações Rápidas</h3>
+              <div class="grid grid-cols-2 gap-3">
+                <button class="flex items-center justify-center p-3 bg-success hover:bg-green-600 text-white rounded-lg transition-colors">
+                  <span class="mr-2">🔓</span>
+                  Login
+                </button>
+                <button class="flex items-center justify-center p-3 bg-primary hover:bg-blue-600 text-white rounded-lg transition-colors">
+                  <span class="mr-2">👥</span>
+                  Listar Usuários
+                </button>
+                <button class="flex items-center justify-center p-3 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors">
+                  <span class="mr-2">➕</span>
+                  Criar Usuário
+                </button>
+                <button class="flex items-center justify-center p-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors">
+                  <span class="mr-2">💚</span>
+                  Health Check
+                </button>
+              </div>
+            </div>
+
+            <!-- Request Builder -->
+            <div class="bg-white rounded-lg border border-gray-200 p-6">
+              <h3 class="text-lg font-semibold text-gray-900 mb-4">Request</h3>
+              
+              <!-- Method & URL -->
+              <div class="flex items-center space-x-3 mb-4">
+                <select class="border border-gray-300 rounded-lg px-3 py-2 w-24">
+                  <option value="GET" class="text-success">GET</option>
+                  <option value="POST" class="text-primary" selected>POST</option>
+                  <option value="PUT" class="text-warning">PUT</option>
+                  <option value="DELETE" class="text-danger">DELETE</option>
+                </select>
+                <input 
+                  type="text" 
+                  value="/users" 
+                  class="flex-1 border border-gray-300 rounded-lg px-3 py-2 font-mono text-sm"
+                  placeholder="Digite o endpoint..."
+                >
+                <button class="bg-success hover:bg-green-600 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                  Enviar
+                </button>
+              </div>
+
+              <!-- Auth -->
+              <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Autenticação</label>
+                <div class="flex items-center space-x-2">
+                  <input type="checkbox" id="useAuth" class="rounded">
+                  <label for="useAuth" class="text-sm text-gray-600">Usar JWT Token</label>
+                  <div class="flex-1 ml-4">
+                    <input 
+                      type="text" 
+                      placeholder="Bearer token será adicionado automaticamente"
+                      class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono"
+                      disabled
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Body -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Body (JSON)</label>
+                <textarea 
+                  class="w-full h-40 border border-gray-300 rounded-lg px-3 py-2 font-mono text-sm"
+                  placeholder="Cole seu JSON aqui..."
+                >{
+  "name": "João Silva",
+  "email": "joao@exemplo.com",
+  "password": "123456"
+}</textarea>
+              </div>
+            </div>
           </div>
-          <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
-            <span class="text-xl">🧠</span>
+
+          <!-- Response Panel -->
+          <div class="space-y-6">
+            <!-- Response -->
+            <div class="bg-white rounded-lg border border-gray-200 p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">Response</h3>
+                <div class="flex items-center space-x-3">
+                  <span class="px-2 py-1 bg-success text-white rounded text-sm font-medium">201 Created</span>
+                  <span class="text-sm text-gray-500">234ms</span>
+                </div>
+              </div>
+
+              <!-- Response Headers -->
+              <div class="mb-4">
+                <h4 class="text-sm font-medium text-gray-700 mb-2">Headers</h4>
+                <div class="bg-gray-50 rounded-lg p-3 text-sm font-mono space-y-1">
+                  <div><span class="text-gray-500">content-type:</span> application/json</div>
+                  <div><span class="text-gray-500">content-length:</span> 156</div>
+                  <div><span class="text-gray-500">x-response-time:</span> 234ms</div>
+                </div>
+              </div>
+
+              <!-- Response Body -->
+              <div>
+                <h4 class="text-sm font-medium text-gray-700 mb-2">Body</h4>
+                <div class="bg-gray-900 rounded-lg p-4 border-l-4 border-success">
+                  <pre class="text-green-400 text-sm font-mono overflow-x-auto"><code>{
+  "user": {
+    "id": 1,
+    "name": "João Silva",
+    "email": "joao@exemplo.com",
+    "role": "USER",
+    "createdAt": "2025-01-20T18:30:00Z"
+  }
+}</code></pre>
+                </div>
+                <div class="flex justify-end mt-2">
+                  <button class="text-primary hover:text-blue-600 text-sm transition-colors">
+                    📋 Copiar Response
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Request History -->
+            <div class="bg-white rounded-lg border border-gray-200 p-6">
+              <h3 class="text-lg font-semibold text-gray-900 mb-4">Histórico</h3>
+              <div class="space-y-3 max-h-64 overflow-y-auto">
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                  <div class="flex items-center space-x-3">
+                    <span class="px-2 py-1 bg-primary text-white rounded text-xs font-medium">POST</span>
+                    <span class="font-mono text-sm">/users</span>
+                  </div>
+                  <span class="text-success text-sm">201</span>
+                </div>
+                
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                  <div class="flex items-center space-x-3">
+                    <span class="px-2 py-1 bg-success text-white rounded text-xs font-medium">GET</span>
+                    <span class="font-mono text-sm">/users</span>
+                  </div>
+                  <span class="text-success text-sm">200</span>
+                </div>
+                
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                  <div class="flex items-center space-x-3">
+                    <span class="px-2 py-1 bg-success text-white rounded text-xs font-medium">POST</span>
+                    <span class="font-mono text-sm">/sessions</span>
+                  </div>
+                  <span class="text-success text-sm">200</span>
+                </div>
+                
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                  <div class="flex items-center space-x-3">
+                    <span class="px-2 py-1 bg-danger text-white rounded text-xs font-medium">DELETE</span>
+                    <span class="font-mono text-sm">/users/1</span>
+                  </div>
+                  <span class="text-danger text-sm">404</span>
+                </div>
+              </div>
+              
+              <div class="mt-4 pt-4 border-t border-gray-200">
+                <button class="w-full text-center text-gray-500 hover:text-gray-700 text-sm transition-colors">
+                  Limpar Histórico
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="glass rounded-xl p-6 card-hover">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-gray-300 text-sm">Repositories</p>
-            <p class="text-3xl font-bold text-purple-400">3</p>
-          </div>
-          <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
-            <span class="text-xl">💾</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="glass rounded-xl p-6 card-hover">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-gray-300 text-sm">Middlewares</p>
-            <p class="text-3xl font-bold text-orange-400">2</p>
-          </div>
-          <div class="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center">
-            <span class="text-xl">🛡️</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Endpoints by Category -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-      <div class="glass rounded-xl p-6 card-hover">
-        <h3 class="text-xl font-bold mb-4">🔥 Endpoints por Categoria</h3>
-        <div class="space-y-3">
-          <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
-            <div class="flex items-center space-x-3">
-              <span class="text-green-400">🔓</span>
-              <span>Públicos</span>
-            </div>
-            <span class="bg-green-500 text-white px-2 py-1 rounded text-sm">2</span>
-          </div>
-          <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
-            <div class="flex items-center space-x-3">
-              <span class="text-blue-400">🔐</span>
-              <span>Autenticados</span>
-            </div>
-            <span class="bg-blue-500 text-white px-2 py-1 rounded text-sm">7</span>
-          </div>
-          <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
-            <div class="flex items-center space-x-3">
-              <span class="text-yellow-400">👑</span>
-              <span>Admin only</span>
-            </div>
-            <span class="bg-yellow-500 text-black px-2 py-1 rounded text-sm">3</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="glass rounded-xl p-6 card-hover">
-        <h3 class="text-xl font-bold mb-4">📊 Quick Stats</h3>
-        <div class="space-y-4">
-          <div>
-            <div class="flex justify-between text-sm mb-1">
-              <span>Clean Architecture Score</span>
-              <span>100%</span>
-            </div>
-            <div class="w-full bg-gray-700 rounded-full h-2">
-              <div class="bg-green-500 h-2 rounded-full" style="width: 100%"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex justify-between text-sm mb-1">
-              <span>Code Coverage</span>
-              <span>85%</span>
-            </div>
-            <div class="w-full bg-gray-700 rounded-full h-2">
-              <div class="bg-blue-500 h-2 rounded-full" style="width: 85%"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex justify-between text-sm mb-1">
-              <span>Documentation</span>
-              <span>92%</span>
-            </div>
-            <div class="w-full bg-gray-700 rounded-full h-2">
-              <div class="bg-purple-500 h-2 rounded-full" style="width: 92%"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Recent Endpoints -->
-    <div class="glass rounded-xl p-6 card-hover">
-      <div class="flex items-center justify-between mb-6">
-        <h3 class="text-xl font-bold">📋 API Endpoints</h3>
-        <div class="flex space-x-2">
-          <button class="px-3 py-1 bg-gray-700 text-gray-300 rounded text-sm hover:bg-gray-600 transition-colors">Todos</button>
-          <button class="px-3 py-1 bg-labstart-600 text-white rounded text-sm">Públicos</button>
-          <button class="px-3 py-1 bg-gray-700 text-gray-300 rounded text-sm hover:bg-gray-600 transition-colors">Auth</button>
-        </div>
-      </div>
-
-      <div class="space-y-4">
-        <!-- Endpoint Item -->
-        <div class="border border-gray-700 rounded-lg p-4 hover:border-gray-600 transition-colors">
-          <div class="flex items-center justify-between mb-2">
-            <div class="flex items-center space-x-3">
-              <span class="bg-green-500 text-white px-2 py-1 rounded text-xs font-mono">POST</span>
-              <span class="font-mono text-lg">/sessions</span>
-              <span class="text-green-400">🔓</span>
-            </div>
-            <button class="bg-labstart-600 hover:bg-labstart-700 px-3 py-1 rounded text-sm transition-colors">
-              🧪 Testar
-            </button>
-          </div>
-          <p class="text-gray-300 mb-2">📝 Fazer login no sistema</p>
-          <div class="flex items-center space-x-4 text-sm text-gray-400">
-            <span>📨 Body: { email, password }</span>
-            <span>✅ 200: { user, token }</span>
-            <span>❌ 401: { message }</span>
-          </div>
-        </div>
-
-        <!-- Endpoint Item -->
-        <div class="border border-gray-700 rounded-lg p-4 hover:border-gray-600 transition-colors">
-          <div class="flex items-center justify-between mb-2">
-            <div class="flex items-center space-x-3">
-              <span class="bg-blue-500 text-white px-2 py-1 rounded text-xs font-mono">GET</span>
-              <span class="font-mono text-lg">/users</span>
-              <span class="text-blue-400">🔐</span>
-            </div>
-            <button class="bg-labstart-600 hover:bg-labstart-700 px-3 py-1 rounded text-sm transition-colors">
-              🧪 Testar
-            </button>
-          </div>
-          <p class="text-gray-300 mb-2">📝 Listar usuários (paginado)</p>
-          <div class="flex items-center space-x-4 text-sm text-gray-400">
-            <span>🔑 Auth: JWT required</span>
-            <span>📨 Query: ?page=1&limit=20</span>
-            <span>✅ 200: { users[], pagination }</span>
-          </div>
-        </div>
-
-        <!-- Endpoint Item -->
-        <div class="border border-gray-700 rounded-lg p-4 hover:border-gray-600 transition-colors">
-          <div class="flex items-center justify-between mb-2">
-            <div class="flex items-center space-x-3">
-              <span class="bg-green-500 text-white px-2 py-1 rounded text-xs font-mono">POST</span>
-              <span class="font-mono text-lg">/users</span>
-              <span class="text-yellow-400">👑</span>
-            </div>
-            <button class="bg-labstart-600 hover:bg-labstart-700 px-3 py-1 rounded text-sm transition-colors">
-              🧪 Testar
-            </button>
-          </div>
-          <p class="text-gray-300 mb-2">📝 Criar novo usuário</p>
-          <div class="flex items-center space-x-4 text-sm text-gray-400">
-            <span>🔑 Auth: JWT + ADMIN role</span>
-            <span>📨 Body: { name, email, password }</span>
-            <span>✅ 201: { user }</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-6 flex justify-center">
-        <button class="text-labstart-400 hover:text-labstart-300 transition-colors">
-          Ver todos os endpoints →
-        </button>
-      </div>
+      </main>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="gradient-bg border-t border-gray-700 mt-12">
-    <div class="container mx-auto px-6 py-6">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-4">
-          <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-            <span class="text-labstart-700 font-bold">L</span>
-          </div>
-          <div>
-            <p class="text-sm">Gerado por <strong>LabStart Documentation Engine</strong></p>
-            <p class="text-xs text-blue-200">Atualizado automaticamente • v3.0.0</p>
-          </div>
-        </div>
-        
-        <div class="flex items-center space-x-4 text-sm text-blue-200">
-          <a href="#" class="hover:text-white transition-colors">📖 Docs LabStart</a>
-          <a href="#" class="hover:text-white transition-colors">🚀 GitHub</a>
-          <a href="#" class="hover:text-white transition-colors">💬 Discord</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
   <script>
-    // Simple interactivity for demo
     document.addEventListener('DOMContentLoaded', function() {
-      // Animate stats on load
-      const stats = document.querySelectorAll('.card-hover');
-      stats.forEach((stat, index) => {
-        stat.style.opacity = '0';
-        stat.style.transform = 'translateY(20px)';
-        setTimeout(() => {
-          stat.style.transition = 'all 0.6s ease';
-          stat.style.opacity = '1';
-          stat.style.transform = 'translateY(0)';
-        }, index * 100);
+      // Auto-format JSON in textarea
+      const textarea = document.querySelector('textarea');
+      textarea.addEventListener('blur', function() {
+        try {
+          const json = JSON.parse(this.value);
+          this.value = JSON.stringify(json, null, 2);
+        } catch (e) {
+          // Invalid JSON, don't format
+        }
       });
 
-      // Add click handlers for test buttons
-      document.querySelectorAll('button').forEach(btn => {
-        if (btn.textContent.includes('🧪 Testar')) {
-          btn.addEventListener('click', () => {
-            alert('🚀 Abrindo API Tester...\n\nEssa funcionalidade será implementada na versão real!');
-          });
-        }
+      // Send request simulation
+      const sendButton = document.querySelector('button:contains("Enviar")');
+      sendButton.addEventListener('click', function() {
+        // Simulate sending request
+        this.textContent = 'Enviando...';
+        this.disabled = true;
+        
+        setTimeout(() => {
+          this.textContent = 'Enviar';
+          this.disabled = false;
+          
+          // Update response with new data
+          const responseCode = document.querySelector('.bg-success');
+          responseCode.textContent = '201 Created';
+          
+          // Add to history
+          const history = document.querySelector('.space-y-3');
+          const newItem = document.createElement('div');
+          newItem.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors';
+          newItem.innerHTML = `
+            <div class="flex items-center space-x-3">
+              <span class="px-2 py-1 bg-primary text-white rounded text-xs font-medium">POST</span>
+              <span class="font-mono text-sm">/users</span>
+            </div>
+            <span class="text-success text-sm">201</span>
+          `;
+          history.insertBefore(newItem, history.firstChild);
+        }, 1000);
+      });
+
+      // Quick actions
+      const quickButtons = document.querySelectorAll('.grid-cols-2 button');
+      quickButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const action = this.textContent.trim();
+          if (action.includes('Login')) {
+            document.querySelector('input[type="text"]').value = '/sessions';
+            textarea.value = '{\n  "email": "admin@exemplo.com",\n  "password": "admin123"\n}';
+          } else if (action.includes('Listar Usuários')) {
+            document.querySelector('select').value = 'GET';
+            document.querySelector('input[type="text"]').value = '/users';
+            textarea.value = '';
+          }
+        });
       });
     });
   </script>
