@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LabStart Docs - meu-projeto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            labstart: {
+              50: '#f0f9ff',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              900: '#0c4a6e'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%);
+    }
+    .glass {
+      backdrop-filter: blur(16px);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+  <!-- Navigation -->
+  <nav class="gradient-bg border-b border-gray-700">
+    <div class="container mx-auto px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+            <span class="text-labstart-700 font-bold text-xl">L</span>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold">LabStart Docs</h1>
+            <p class="text-blue-200 text-sm">meu-projeto-api</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center space-x-6">
+          <nav class="hidden md:flex space-x-6">
+            <a href="#overview" class="text-white hover:text-blue-200 transition-colors border-b-2 border-white">📊 Overview</a>
+            <a href="#docs" class="text-blue-200 hover:text-white transition-colors">📚 API Docs</a>
+            <a href="#tester" class="text-blue-200 hover:text-white transition-colors">🧪 Tester</a>
+            <a href="#architecture" class="text-blue-200 hover:text-white transition-colors">🏗️ Architecture</a>
+            <a href="#metrics" class="text-blue-200 hover:text-white transition-colors">📈 Metrics</a>
+          </nav>
+          
+          <div class="flex items-center space-x-2">
+            <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+            <span class="text-sm text-green-200">Online</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mx-auto px-6 py-8">
+    <!-- Project Header -->
+    <div class="mb-8">
+      <div class="glass rounded-xl p-6 card-hover">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-3xl font-bold mb-2">📋 Projeto: meu-projeto</h2>
+            <div class="flex items-center space-x-4">
+              <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-500 text-white">
+                🎯 100% LabStart Compliant
+              </span>
+              <span class="text-gray-300">📅 Analisado: 20/01/2025 15:30</span>
+            </div>
+          </div>
+          <button class="bg-labstart-600 hover:bg-labstart-700 px-4 py-2 rounded-lg transition-colors">
+            🔄 Reanalizar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div class="glass rounded-xl p-6 card-hover">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-300 text-sm">Endpoints</p>
+            <p class="text-3xl font-bold text-blue-400">12</p>
+          </div>
+          <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+            <span class="text-xl">🔗</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass rounded-xl p-6 card-hover">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-300 text-sm">Services</p>
+            <p class="text-3xl font-bold text-green-400">5</p>
+          </div>
+          <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+            <span class="text-xl">🧠</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass rounded-xl p-6 card-hover">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-300 text-sm">Repositories</p>
+            <p class="text-3xl font-bold text-purple-400">3</p>
+          </div>
+          <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
+            <span class="text-xl">💾</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass rounded-xl p-6 card-hover">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-300 text-sm">Middlewares</p>
+            <p class="text-3xl font-bold text-orange-400">2</p>
+          </div>
+          <div class="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center">
+            <span class="text-xl">🛡️</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Endpoints by Category -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div class="glass rounded-xl p-6 card-hover">
+        <h3 class="text-xl font-bold mb-4">🔥 Endpoints por Categoria</h3>
+        <div class="space-y-3">
+          <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+            <div class="flex items-center space-x-3">
+              <span class="text-green-400">🔓</span>
+              <span>Públicos</span>
+            </div>
+            <span class="bg-green-500 text-white px-2 py-1 rounded text-sm">2</span>
+          </div>
+          <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+            <div class="flex items-center space-x-3">
+              <span class="text-blue-400">🔐</span>
+              <span>Autenticados</span>
+            </div>
+            <span class="bg-blue-500 text-white px-2 py-1 rounded text-sm">7</span>
+          </div>
+          <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+            <div class="flex items-center space-x-3">
+              <span class="text-yellow-400">👑</span>
+              <span>Admin only</span>
+            </div>
+            <span class="bg-yellow-500 text-black px-2 py-1 rounded text-sm">3</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass rounded-xl p-6 card-hover">
+        <h3 class="text-xl font-bold mb-4">📊 Quick Stats</h3>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span>Clean Architecture Score</span>
+              <span>100%</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-500 h-2 rounded-full" style="width: 100%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span>Code Coverage</span>
+              <span>85%</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-blue-500 h-2 rounded-full" style="width: 85%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span>Documentation</span>
+              <span>92%</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-purple-500 h-2 rounded-full" style="width: 92%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Endpoints -->
+    <div class="glass rounded-xl p-6 card-hover">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-xl font-bold">📋 API Endpoints</h3>
+        <div class="flex space-x-2">
+          <button class="px-3 py-1 bg-gray-700 text-gray-300 rounded text-sm hover:bg-gray-600 transition-colors">Todos</button>
+          <button class="px-3 py-1 bg-labstart-600 text-white rounded text-sm">Públicos</button>
+          <button class="px-3 py-1 bg-gray-700 text-gray-300 rounded text-sm hover:bg-gray-600 transition-colors">Auth</button>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Endpoint Item -->
+        <div class="border border-gray-700 rounded-lg p-4 hover:border-gray-600 transition-colors">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center space-x-3">
+              <span class="bg-green-500 text-white px-2 py-1 rounded text-xs font-mono">POST</span>
+              <span class="font-mono text-lg">/sessions</span>
+              <span class="text-green-400">🔓</span>
+            </div>
+            <button class="bg-labstart-600 hover:bg-labstart-700 px-3 py-1 rounded text-sm transition-colors">
+              🧪 Testar
+            </button>
+          </div>
+          <p class="text-gray-300 mb-2">📝 Fazer login no sistema</p>
+          <div class="flex items-center space-x-4 text-sm text-gray-400">
+            <span>📨 Body: { email, password }</span>
+            <span>✅ 200: { user, token }</span>
+            <span>❌ 401: { message }</span>
+          </div>
+        </div>
+
+        <!-- Endpoint Item -->
+        <div class="border border-gray-700 rounded-lg p-4 hover:border-gray-600 transition-colors">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center space-x-3">
+              <span class="bg-blue-500 text-white px-2 py-1 rounded text-xs font-mono">GET</span>
+              <span class="font-mono text-lg">/users</span>
+              <span class="text-blue-400">🔐</span>
+            </div>
+            <button class="bg-labstart-600 hover:bg-labstart-700 px-3 py-1 rounded text-sm transition-colors">
+              🧪 Testar
+            </button>
+          </div>
+          <p class="text-gray-300 mb-2">📝 Listar usuários (paginado)</p>
+          <div class="flex items-center space-x-4 text-sm text-gray-400">
+            <span>🔑 Auth: JWT required</span>
+            <span>📨 Query: ?page=1&limit=20</span>
+            <span>✅ 200: { users[], pagination }</span>
+          </div>
+        </div>
+
+        <!-- Endpoint Item -->
+        <div class="border border-gray-700 rounded-lg p-4 hover:border-gray-600 transition-colors">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center space-x-3">
+              <span class="bg-green-500 text-white px-2 py-1 rounded text-xs font-mono">POST</span>
+              <span class="font-mono text-lg">/users</span>
+              <span class="text-yellow-400">👑</span>
+            </div>
+            <button class="bg-labstart-600 hover:bg-labstart-700 px-3 py-1 rounded text-sm transition-colors">
+              🧪 Testar
+            </button>
+          </div>
+          <p class="text-gray-300 mb-2">📝 Criar novo usuário</p>
+          <div class="flex items-center space-x-4 text-sm text-gray-400">
+            <span>🔑 Auth: JWT + ADMIN role</span>
+            <span>📨 Body: { name, email, password }</span>
+            <span>✅ 201: { user }</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-center">
+        <button class="text-labstart-400 hover:text-labstart-300 transition-colors">
+          Ver todos os endpoints →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="gradient-bg border-t border-gray-700 mt-12">
+    <div class="container mx-auto px-6 py-6">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+            <span class="text-labstart-700 font-bold">L</span>
+          </div>
+          <div>
+            <p class="text-sm">Gerado por <strong>LabStart Documentation Engine</strong></p>
+            <p class="text-xs text-blue-200">Atualizado automaticamente • v3.0.0</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center space-x-4 text-sm text-blue-200">
+          <a href="#" class="hover:text-white transition-colors">📖 Docs LabStart</a>
+          <a href="#" class="hover:text-white transition-colors">🚀 GitHub</a>
+          <a href="#" class="hover:text-white transition-colors">💬 Discord</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Simple interactivity for demo
+    document.addEventListener('DOMContentLoaded', function() {
+      // Animate stats on load
+      const stats = document.querySelectorAll('.card-hover');
+      stats.forEach((stat, index) => {
+        stat.style.opacity = '0';
+        stat.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+          stat.style.transition = 'all 0.6s ease';
+          stat.style.opacity = '1';
+          stat.style.transform = 'translateY(0)';
+        }, index * 100);
+      });
+
+      // Add click handlers for test buttons
+      document.querySelectorAll('button').forEach(btn => {
+        if (btn.textContent.includes('🧪 Testar')) {
+          btn.addEventListener('click', () => {
+            alert('🚀 Abrindo API Tester...\n\nEssa funcionalidade será implementada na versão real!');
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
