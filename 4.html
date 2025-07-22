@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LabStart Metrics Dashboard - meu-projeto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            labstart: {
+              50: '#f0f9ff',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              900: '#0c4a6e'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%);
+    }
+    .glass {
+      backdrop-filter: blur(16px);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .metric-card {
+      transition: all 0.3s ease;
+    }
+    .metric-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    .trending-up {
+      color: #10b981;
+    }
+    .trending-down {
+      color: #ef4444;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+  <!-- Navigation -->
+  <nav class="gradient-bg border-b border-gray-700">
+    <div class="container mx-auto px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+            <span class="text-labstart-700 font-bold text-xl">L</span>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold">LabStart Metrics</h1>
+            <p class="text-blue-200 text-sm">meu-projeto-api</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center space-x-6">
+          <nav class="hidden md:flex space-x-6">
+            <a href="https://vanderl.github.io/1" class="text-white hover:text-blue-200 transition-colors border-b-2 border-white">📊 Overview</a>
+            <a href="https://vanderl.github.io/2" class="text-blue-200 hover:text-white transition-colors">📚 API Docs</a>
+            <a href="https://vanderl.github.io/3" class="text-blue-200 hover:text-white transition-colors">🧪 Tester</a>
+            <a href="https://vanderl.github.io/4" class="text-blue-200 hover:text-white transition-colors">🏗️ Architecture</a>
+            <a href="https://vanderl.github.io/5" class="text-blue-200 hover:text-white transition-colors">📈 Metrics</a>
+          </nav>
+          
+          <div class="flex items-center space-x-4">
+            <select class="bg-gray-800 border border-gray-600 rounded px-3 py-1 text-sm">
+              <option>Last 7 days</option>
+              <option>Last 30 days</option>
+              <option>Last 90 days</option>
+            </select>
+            <div class="flex items-center space-x-2">
+              <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+              <span class="text-sm text-green-200">Live</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mx-auto px-6 py-8">
+    <!-- Time Range & Refresh -->
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h2 class="text-2xl font-bold">📊 Project Metrics Dashboard</h2>
+        <p class="text-gray-300">Real-time analytics and performance monitoring</p>
+      </div>
+      <div class="flex items-center space-x-3">
+        <span class="text-sm text-gray-300">📅 Last updated: 2 min ago</span>
+        <button class="bg-labstart-600 hover:bg-labstart-700 px-4 py-2 rounded transition-colors">
+          🔄 Refresh
+        </button>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div class="metric-card glass rounded-xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+            <span class="text-xl">🚀</span>
+          </div>
+          <span class="trending-up text-sm">+12.5%</span>
+        </div>
+        <div>
+          <p class="text-gray-300 text-sm">Total Requests</p>
+          <p class="text-3xl font-bold text-blue-400">12,847</p>
+          <p class="text-xs text-gray-400 mt-1">vs last week</p>
+        </div>
+      </div>
+
+      <div class="metric-card glass rounded-xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+            <span class="text-xl">⚡</span>
+          </div>
+          <span class="trending-up text-sm">+3.2%</span>
+        </div>
+        <div>
+          <p class="text-gray-300 text-sm">Avg Response Time</p>
+          <p class="text-3xl font-bold text-green-400">145ms</p>
+          <p class="text-xs text-gray-400 mt-1">vs last week</p>
+        </div>
+      </div>
+
+      <div class="metric-card glass rounded-xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center">
+            <span class="text-xl">❌</span>
+          </div>
+          <span class="trending-down text-sm">-2.1%</span>
+        </div>
+        <div>
+          <p class="text-gray-300 text-sm">Error Rate</p>
+          <p class="text-3xl font-bold text-yellow-400">2.3%</p>
+          <p class="text-xs text-gray-400 mt-1">vs last week</p>
+        </div>
+      </div>
+
+      <div class="metric-card glass rounded-xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
+            <span class="text-xl">👥</span>
+          </div>
+          <span class="trending-up text-sm">+8.7%</span>
+        </div>
+        <div>
+          <p class="text-gray-300 text-sm">Active Users</p>
+          <p class="text-3xl font-bold text-purple-400">1,234</p>
+          <p class="text-xs text-gray-400 mt-1">vs last week</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <!-- Response Time Chart -->
+      <div class="glass rounded-xl p-6">
+        <h3 class="text-xl font-bold mb-4">⚡ Response Time Trends</h3>
+        <canvas id="responseTimeChart" width="400" height="200"></canvas>
+        <div class="mt-4 grid grid-cols-3 gap-4 text-center">
+          <div>
+            <div class="text-lg font-bold text-green-400">12ms</div>
+            <div class="text-xs text-gray-400">Fastest</div>
+          </div>
+          <div>
+            <div class="text-lg font-bold text-blue-400">145ms</div>
+            <div class="text-xs text-gray-400">Average</div>
+          </div>
+          <div>
+            <div class="text-lg font-bold text-red-400">890ms</div>
+            <div class="text-xs text-gray-400">Slowest</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Endpoint Usage -->
+      <div class="glass rounded-xl p-6">
+        <h3 class="text-xl font-bold mb-4">📊 Endpoint Usage</h3>
+        <canvas id="endpointChart" width="400" height="200"></canvas>
+        <div class="mt-4 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-sm">GET /users</span>
+            <span class="text-sm text-blue-400">34%</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm">POST /sessions</span>
+            <span class="text-sm text-green-400">28%</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-sm">GET /health</span>
+            <span class="text-sm text-purple-400">22%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Performance & Security -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <!-- Performance Metrics -->
+      <div class="glass rounded-xl p-6">
+        <h3 class="text-xl font-bold mb-4">🚀 Performance</h3>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span>CPU Usage</span>
+              <span>23%</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-blue-500 h-2 rounded-full" style="width: 23%"></div>
+            </div>
+          </div>
+          
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span>Memory Usage</span>
+              <span>67%</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-yellow-500 h-2 rounded-full" style="width: 67%"></div>
+            </div>
+          </div>
+          
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span>Database Connections</span>
+              <span>12/50</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-500 h-2 rounded-full" style="width: 24%"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span>Request Queue</span>
+              <span>3</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-500 h-2 rounded-full" style="width: 6%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security Metrics -->
+      <div class="glass rounded-xl p-6">
+        <h3 class="text-xl font-bold mb-4">🛡️ Security</h3>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between p-3 bg-gray-800 rounded">
+            <div class="flex items-center space-x-3">
+              <span class="text-green-400">✅</span>
+              <span class="text-sm">JWT Auth</span>
+            </div>
+            <span class="text-green-400 text-sm">87% success</span>
+          </div>
+          
+          <div class="flex items-center justify-between p-3 bg-gray-800 rounded">
+            <div class="flex items-center space-x-3">
+              <span class="text-yellow-400">⚠️</span>
+              <span class="text-sm">Rate Limiting</span>
+            </div>
+            <span class="text-yellow-400 text-sm">12 blocked</span>
+          </div>
+          
+          <div class="flex items-center justify-between p-3 bg-gray-800 rounded">
+            <div class="flex items-center space-x-3">
+              <span class="text-red-400">🚫</span>
+              <span class="text-sm">Failed Logins</span>
+            </div>
+            <span class="text-red-400 text-sm">23 attempts</span>
+          </div>
+
+          <div class="flex items-center justify-between p-3 bg-gray-800 rounded">
+            <div class="flex items-center space-x-3">
+              <span class="text-blue-400">🔐</span>
+              <span class="text-sm">SSL/TLS</span>
+            </div>
+            <span class="text-green-400 text-sm">Enabled</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Database Metrics -->
+      <div class="glass rounded-xl p-6">
+        <h3 class="text-xl font-bold mb-4">🗄️ Database</h3>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-gray-300">Connection Status</span>
+            <span class="text-green-400 text-sm">✅ Connected</span>
+          </div>
+          
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-gray-300">Query Time (avg)</span>
+            <span class="text-blue-400 text-sm">45ms</span>
+          </div>
+          
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-gray-300">Active Queries</span>
+            <span class="text-yellow-400 text-sm">7</span>
+          </div>
+          
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-gray-300">Cache Hit Rate</span>
+            <span class="text-green-400 text-sm">89%</span>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-gray-700">
+            <div class="text-center">
+              <div class="text-2xl font-bold text-purple-400 mb-1">1,247</div>
+              <div class="text-sm text-gray-300">Total Records</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error Analysis -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <!-- Error Breakdown -->
+      <div class="glass rounded-xl p-6">
+        <h3 class="text-xl font-bold mb-4">❌ Error Analysis</h3>
+        <div class="space-y-3">
+          <div class="flex items-center justify-between p-3 bg-gray-800 rounded hover:bg-gray-700 transition-colors">
+            <div class="flex items-center space-x-3">
+              <span class="bg-red-500 text-white px-2 py-1 rounded text-xs">401</span>
+              <span class="text-sm">Unauthorized</span>
+            </div>
+            <span class="text-red-400 text-sm">45%</span>
+          </div>
+          
+          <div class="flex items-center justify-between p-3 bg-gray-800 rounded hover:bg-gray-700 transition-colors">
+            <div class="flex items-center space-x-3">
+              <span class="bg-orange-500 text-white px-2 py-1 rounded text-xs">404</span>
+              <span class="text-sm">Not Found</span>
+            </div>
+            <span class="text-orange-400 text-sm">32%</span>
+          </div>
+          
+          <div class="flex items-center justify-between p-3 bg-gray-800 rounded hover:bg-gray-700 transition-colors">
+            <div class="flex items-center space-x-3">
+              <span class="bg-yellow-500 text-white px-2 py-1 rounded text-xs">400</span>
+              <span class="text-sm">Bad Request</span>
+            </div>
+            <span class="text-yellow-400 text-sm">15%</span>
+          </div>
+          
+          <div class="flex items-center justify-between p-3 bg-gray-800 rounded hover:bg-gray-700 transition-colors">
+            <div class="flex items-center space-x-3">
+              <span class="bg-purple-500 text-white px-2 py-1 rounded text-xs">500</span>
+              <span class="text-sm">Server Error</span>
+            </div>
+            <span class="text-purple-400 text-sm">8%</span>
+          </div>
+        </div>
+        
+        <div class="mt-4 pt-4 border-t border-gray-700">
+          <button class="w-full text-center text-labstart-400 hover:text-labstart-300 text-sm transition-colors">
+            📋 View Error Logs
+          </button>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="glass rounded-xl p-6">
+        <h3 class="text-xl font-bold mb-4">🕐 Recent Activity</h3>
+        <div class="space-y-3 max-h-64 overflow-y-auto">
+          <div class="flex items-start space-x-3 p-3 bg-gray-800 rounded">
+            <div class="w-2 h-2 bg-green-400 rounded-full mt-2"></div>
+            <div class="flex-1">
+              <div class="text-sm">New user registered</div>
+              <div class="text-xs text-gray-400">joao@test.com • 2 min ago</div>
+            </div>
+          </div>
+          
+          <div class="flex items-start space-x-3 p-3 bg-gray-800 rounded">
+            <div class="w-2 h-2 bg-blue-400 rounded-full mt-2"></div>
+            <div class="flex-1">
+              <div class="text-sm">API request spike detected</div>
+              <div class="text-xs text-gray-400">+150% in last 5min • 5 min ago</div>
+            </div>
+          </div>
+          
+          <div class="flex items-start space-x-3 p-3 bg-gray-800 rounded">
+            <div class="w-2 h-2 bg-yellow-400 rounded-full mt-2"></div>
+            <div class="flex-1">
+              <div class="text-sm">Rate limit triggered</div>
+              <div class="text-xs text-gray-400">IP: 192.168.1.100 • 8 min ago</div>
+            </div>
+          </div>
+          
+          <div class="flex items-start space-x-3 p-3 bg-gray-800 rounded">
+            <div class="w-2 h-2 bg-red-400 rounded-full mt-2"></div>
+            <div class="flex-1">
+              <div class="text-sm">Authentication failed</div>
+              <div class="text-xs text-gray-400">admin@test.com • 12 min ago</div>
+            </div>
+          </div>
+          
+          <div class="flex items-start space-x-3 p-3 bg-gray-800 rounded">
+            <div class="w-2 h-2 bg-purple-400 rounded-full mt-2"></div>
+            <div class="flex-1">
+              <div class="text-sm">Database backup completed</div>
+              <div class="text-xs text-gray-400">Size: 2.3GB • 15 min ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alerts & Health Status -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- System Alerts -->
+      <div class="glass rounded-xl p-6">
+        <h3 class="text-xl font-bold mb-4">🚨 System Alerts</h3>
+        <div class="space-y-3">
+          <div class="border-l-4 border-yellow-500 bg-yellow-500/10 p-4 rounded">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-yellow-400">⚠️ High Memory Usage</span>
+              <span class="text-xs text-gray-400">2 min ago</span>
+            </div>
+            <p class="text-sm text-gray-300">Memory usage is at 67% of capacity</p>
+            <button class="mt-2 text-yellow-400 text-sm hover:text-yellow-300">Investigate →</button>
+          </div>
+          
+          <div class="border-l-4 border-blue-500 bg-blue-500/10 p-4 rounded">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-blue-400">ℹ️ New Version Available</span>
+              <span class="text-xs text-gray-400">1 hour ago</span>
+            </div>
+            <p class="text-sm text-gray-300">LabStart v3.1.0 is available with bug fixes</p>
+            <button class="mt-2 text-blue-400 text-sm hover:text-blue-300">Update →</button>
+          </div>
+          
+          <div class="border-l-4 border-green-500 bg-green-500/10 p-4 rounded">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-green-400">✅ Backup Completed</span>
+              <span class="text-xs text-gray-400">15 min ago</span>
+            </div>
+            <p class="text-sm text-gray-300">Daily database backup successful</p>
+            <button class="mt-2 text-green-400 text-sm hover:text-green-300">View Details →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Health Status -->
+      <div class="glass rounded-xl p-6">
+        <h3 class="text-xl font-bold mb-4">💚 System Health</h3>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between p-3 bg-gray-800 rounded">
+            <div class="flex items-center space-x-3">
+              <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+              <span class="text-sm">API Server</span>
+            </div>
+            <span class="text-green-400 text-sm">Healthy</span>
+          </div>
+          
+          <div class="flex items-center justify-between p-3 bg-gray-800 rounded">
+            <div class="flex items-center space-x-3">
+              <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+              <span class="text-sm">Database</span>
+            </div>
+            <span class="text-green-400 text-sm">Healthy</span>
+          </div>
+          
+          <div class="flex items-center justify-between p-3 bg-gray-800 rounded">
+            <div class="flex items-center space-x-3">
+              <div class="w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+              <span class="text-sm">Redis Cache</span>
+            </div>
+            <span class="text-yellow-400 text-sm">Warning</span>
+          </div>
+          
+          <div class="flex items-center justify-between p-3 bg-gray-800 rounded">
+            <div class="flex items-center space-x-3">
+              <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+              <span class="text-sm">File Storage</span>
+            </div>
+            <span class="text-green-400 text-sm">Healthy</span>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-gray-700">
+            <div class="text-center">
+              <div class="text-2xl font-bold text-green-400 mb-1">99.8%</div>
+              <div class="text-sm text-gray-300">Uptime (30 days)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Response Time Chart
+      const responseCtx = document.getElementById('responseTimeChart').getContext('2d');
+      new Chart(responseCtx, {
+        type: 'line',
+        data: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          datasets: [{
+            label: 'Response Time (ms)',
+            data: [120, 135, 145, 128, 155, 140, 145],
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              },
+              ticks: {
+                color: '#9ca3af'
+              }
+            },
+            y: {
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)'
+              },
+              ticks: {
+                color: '#9ca3af'
+              }
+            }
+          }
+        }
+      });
+
+      // Endpoint Usage Chart
+      const endpointCtx = document.getElementById('endpointChart').getContext('2d');
+      new Chart(endpointCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['GET /users', 'POST /sessions', 'GET /health', 'Others'],
+          datasets: [{
+            data: [34, 28, 22, 16],
+            backgroundColor: [
+              '#3b82f6',
+              '#10b981',
+              '#8b5cf6',
+              '#f59e0b'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          }
+        }
+      });
+
+      // Animate metric cards
+      const cards = document.querySelectorAll('.metric-card');
+      cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+          card.style.transition = 'all 0.6s ease';
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, index * 100);
+      });
+
+      // Auto-refresh simulation
+      setInterval(() => {
+        // Update random metrics
+        const values = document.querySelectorAll('.metric-card .text-3xl');
+        values.forEach(val => {
+          if (val.textContent.includes('ms')) {
+            const current = parseInt(val.textContent);
+            const newVal = current + Math.floor(Math.random() * 10 - 5);
+            val.textContent = Math.max(100, newVal) + 'ms';
+          }
+        });
+      }, 30000); // Every 30 seconds
+    });
+  </script>
+</body>
+</html>
