@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOLOS - Cadastro de Participantes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'solos-green': '#2D5D3D',
+                        'solos-light-green': '#4A7A5A',
+                        'solos-accent': '#6B8F47',
+                        'solos-bg': '#F8FAF6',
+                        'solos-card': '#FFFFFF'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #2D5D3D 0%, #4A7A5A 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 20px rgba(45, 93, 61, 0.1);
+            transition: all 0.3s ease;
+        }
+        .card-shadow:hover {
+            box-shadow: 0 8px 30px rgba(45, 93, 61, 0.15);
+            transform: translateY(-2px);
+        }
+        .status-aceito {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #166534;
+            border-left: 4px solid #22c55e;
+        }
+        .status-pendente {
+            background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%);
+            color: #ca8a04;
+            border-left: 4px solid #eab308;
+        }
+        .status-recusado {
+            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+            color: #dc2626;
+            border-left: 4px solid #ef4444;
+        }
+        .floating-add {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2D5D3D 0%, #4A7A5A 100%);
+            color: white;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(45, 93, 61, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        .floating-add:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 12px 35px rgba(45, 93, 61, 0.4);
+        }
+        .search-focus {
+            box-shadow: 0 0 0 3px rgba(45, 93, 61, 0.1);
+            border-color: #6B8F47;
+        }
+        .filter-active {
+            background: #2D5D3D;
+            color: white;
+        }
+        .view-mode-active {
+            background: #6B8F47;
+            color: white;
+        }
+        .pulse-dot {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            animation: slideInRight 0.3s ease-out;
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body class="bg-solos-bg font-sans">
+    <!-- Header Profissional -->
+    <header class="bg-white border-b shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Breadcrumb e Logo -->
+                <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 bg-solos-green rounded-xl flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">👥</span>
+                    </div>
+                    <div>
+                        <nav class="text-sm text-gray-500">
+                            <a href="#" class="hover:text-solos-green">Dashboard</a>
+                            <span class="mx-2">></span>
+                            <a href="#" class="hover:text-solos-green">Projeto Vidrado</a>
+                            <span class="mx-2">></span>
+                            <span class="text-solos-green font-medium">Participantes</span>
+                        </nav>
+                        <h1 class="text-xl font-bold text-gray-900">Cadastro de Participantes</h1>
+                    </div>
+                </div>
+                
+                <!-- Actions e User -->
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 text-gray-500 hover:text-solos-green transition-colors relative">
+                        <span class="text-xl">🔔</span>
+                        <div class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold">3</div>
+                    </button>
+                    <button class="px-4 py-2 bg-solos-green text-white rounded-lg hover:bg-solos-light-green transition-colors">
+                        📊 Relatórios
+                    </button>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-solos-accent rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm font-bold">CA</span>
+                        </div>
+                        <span class="text-sm font-medium">Camila</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard KPIs -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-6 py-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Total Estabelecimentos -->
+                <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-green-600 text-sm font-medium">Total Cadastrados</p>
+                            <p class="text-3xl font-bold text-green-800">47</p>
+                            <p class="text-green-600 text-xs">de 75 meta</p>
+                        </div>
+                        <div class="w-16 h-16 bg-green-200 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">🏪</span>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="w-full bg-green-200 rounded-full h-2">
+                            <div class="bg-green-600 h-2 rounded-full" style="width: 63%"></div>
+                        </div>
+                        <p class="text-green-600 text-xs mt-1">63% da meta atingida</p>
+                    </div>
+                </div>
+
+                <!-- Taxa de Aceite -->
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-blue-600 text-sm font-medium">Taxa de Aceite</p>
+                            <p class="text-3xl font-bold text-blue-800">78%</p>
+                            <p class="text-blue-600 text-xs">+5% vs mês anterior</p>
+                        </div>
+                        <div class="w-16 h-16 bg-blue-200 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">✅</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center space-x-2">
+                        <span class="text-green-600 text-sm font-bold">↗️ +5%</span>
+                        <span class="text-blue-600 text-xs">melhoria contínua</span>
+                    </div>
+                </div>
+
+                <!-- Pendentes Críticos -->
+                <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl p-6 border border-yellow-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-yellow-600 text-sm font-medium">Pendentes Follow-up</p>
+                            <p class="text-3xl font-bold text-yellow-800">8</p>
+                            <p class="text-yellow-600 text-xs">mais de 3 dias</p>
+                        </div>
+                        <div class="w-16 h-16 bg-yellow-200 rounded-full flex items-center justify-center">
+                            <span class="text-2xl pulse-dot">⏰</span>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button class="text-yellow-700 text-xs font-medium hover:underline">
+                            Ver lista completa →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Performance Semanal -->
+                <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-purple-600 text-sm font-medium">Esta Semana</p>
+                            <p class="text-3xl font-bold text-purple-800">12</p>
+                            <p class="text-purple-600 text-xs">novos cadastros</p>
+                        </div>
+                        <div class="w-16 h-16 bg-purple-200 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">📈</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center space-x-2">
+                        <span class="text-green-600 text-sm font-bold">🎯</span>
+                        <span class="text-purple-600 text-xs">acima da média</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Barra de Busca e Filtros Avançados -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <!-- Busca Principal -->
+            <div class="flex items-center space-x-4 mb-4">
+                <div class="flex-1 relative">
+                    <input type="text" placeholder="🔍 Buscar por nome, telefone, endereço..." 
+                           class="w-full pl-4 pr-12 py-3 border-2 border-gray-200 rounded-xl focus:border-solos-accent focus:search-focus outline-none transition-all text-lg">
+                    <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-solos-green">
+                        <span class="text-xl">🎯</span>
+                    </button>
+                </div>
+                <button class="px-6 py-3 bg-solos-green text-white rounded-xl hover:bg-solos-light-green transition-colors font-medium">
+                    Busca Avançada
+                </button>
+            </div>
+
+            <!-- Filtros Rápidos -->
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <span class="text-sm font-medium text-gray-700">Filtros:</span>
+                    <button class="px-4 py-2 rounded-lg border border-gray-300 hover:border-solos-green transition-colors text-sm">
+                        🗺️ Todas as Zonas
+                    </button>
+                    <button class="px-4 py-2 rounded-lg border border-gray-300 hover:border-solos-green transition-colors text-sm filter-active">
+                        ✅ Aceitos (37)
+                    </button>
+                    <button class="px-4 py-2 rounded-lg border border-gray-300 hover:border-solos-green transition-colors text-sm">
+                        ⏳ Pendentes (8)
+                    </button>
+                    <button class="px-4 py-2 rounded-lg border border-gray-300 hover:border-solos-green transition-colors text-sm">
+                        ❌ Recusados (2)
+                    </button>
+                    <button class="px-4 py-2 rounded-lg border border-gray-300 hover:border-solos-green transition-colors text-sm">
+                        🏪 Todas Categorias
+                    </button>
+                </div>
+
+                <!-- Modos de Visualização -->
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm font-medium text-gray-700">Visualização:</span>
+                    <button class="p-2 rounded-lg border border-gray-300 hover:border-solos-green transition-colors view-mode-active">
+                        <span class="text-lg">📋</span>
+                    </button>
+                    <button class="p-2 rounded-lg border border-gray-300 hover:border-solos-green transition-colors">
+                        <span class="text-lg">🗂️</span>
+                    </button>
+                    <button class="p-2 rounded-lg border border-gray-300 hover:border-solos-green transition-colors">
+                        <span class="text-lg">🗺️</span>
+                    </button>
+                    <button class="p-2 rounded-lg border border-gray-300 hover:border-solos-green transition-colors">
+                        <span class="text-lg">📊</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container Principal -->
+    <div class="max-w-7xl mx-auto px-6 py-6">
+        <div class="flex gap-6">
+            <!-- Sidebar de Filtros -->
+            <div class="w-80 space-y-6">
+                <!-- Filtros Avançados -->
+                <div class="bg-white rounded-xl p-6 card-shadow">
+                    <h3 class="font-bold text-gray-900 mb-4">Filtros Avançados</h3>
+                    
+                    <div class="space-y-4">
+                        <!-- Data de Cadastro -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Data de Cadastro</label>
+                            <select class="w-full p-3 border border-gray-300 rounded-lg focus:border-solos-green outline-none">
+                                <option>Todos os períodos</option>
+                                <option>Hoje</option>
+                                <option>Esta semana</option>
+                                <option>Este mês</option>
+                                <option>Últimos 30 dias</option>
+                                <option>Período customizado</option>
+                            </select>
+                        </div>
+
+                        <!-- Responsável -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Mobilizador</label>
+                            <select class="w-full p-3 border border-gray-300 rounded-lg focus:border-solos-green outline-none">
+                                <option>Todos os mobilizadores</option>
+                                <option>Guido (31 cadastros)</option>
+                                <option>Laura (12 cadastros)</option>
+                                <option>Carlos (4 cadastros)</option>
+                            </select>
+                        </div>
+
+                        <!-- Tamanho -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tamanho do Estabelecimento</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2 text-solos-green" checked>
+                                    <span class="text-sm">Pequeno (P) - 23 estabelecimentos</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2 text-solos-green" checked>
+                                    <span class="text-sm">Médio (M) - 18 estabelecimentos</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2 text-solos-green" checked>
+                                    <span class="text-sm">Grande (G) - 6 estabelecimentos</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Subárea -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Subárea</label>
+                            <select class="w-full p-3 border border-gray-300 rounded-lg focus:border-solos-green outline-none">
+                                <option>Todas as subáreas</option>
+                                <option>Beira rio (15)</option>
+                                <option>Centro (12)</option>
+                                <option>Beco da Lua (8)</option>
+                                <option>Pousada Terra (7)</option>
+                                <option>Caramuru (5)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button class="w-full mt-6 py-3 bg-solos-green text-white rounded-lg hover:bg-solos-light-green transition-colors font-medium">
+                        Aplicar Filtros
+                    </button>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-xl p-6 card-shadow">
+                    <h3 class="font-bold text-gray-900 mb-4">Ações Rápidas</h3>
+                    
+                    <div class="space-y-3">
+                        <button class="w-full p-3 text-left rounded-lg border border-gray-200 hover:border-solos-green hover:bg-solos-bg transition-colors">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-xl">📁</span>
+                                <div>
+                                    <div class="font-medium text-gray-900">Importar Excel</div>
+                                    <div class="text-xs text-gray-500">Adicionar múltiplos estabelecimentos</div>
+                                </div>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full p-3 text-left rounded-lg border border-gray-200 hover:border-solos-green hover:bg-solos-bg transition-colors">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-xl">📊</span>
+                                <div>
+                                    <div class="font-medium text-gray-900">Exportar Dados</div>
+                                    <div class="text-xs text-gray-500">Excel, CSV ou PDF</div>
+                                </div>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full p-3 text-left rounded-lg border border-gray-200 hover:border-solos-green hover:bg-solos-bg transition-colors">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-xl">🎯</span>
+                                <div>
+                                    <div class="font-medium text-gray-900">Planejar Rota</div>
+                                    <div class="text-xs text-gray-500">Otimizar visitas de campo</div>
+                                </div>
+                            </div>
+                        </button>
+                        
+                        <button class="w-full p-3 text-left rounded-lg border border-gray-200 hover:border-solos-green hover:bg-solos-bg transition-colors">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-xl">📱</span>
+                                <div>
+                                    <div class="font-medium text-gray-900">App Mobile</div>
+                                    <div class="text-xs text-gray-500">Cadastrar em campo</div>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Performance -->
+                <div class="bg-white rounded-xl p-6 card-shadow">
+                    <h3 class="font-bold text-gray-900 mb-4">Performance</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-600">Meta Mensal</span>
+                                <span class="font-bold text-solos-green">63%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-solos-green h-2 rounded-full" style="width: 63%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-600">Taxa de Conversão</span>
+                                <span class="font-bold text-blue-600">78%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 78%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Área Principal - Lista de Estabelecimentos -->
+            <div class="flex-1">
+                <!-- Header da Lista -->
+                <div class="bg-white rounded-xl p-6 card-shadow mb-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900">47 Estabelecimentos</h2>
+                            <p class="text-gray-600">Mostrando todos os aceitos • Última atualização: agora</p>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3">
+                            <select class="p-2 border border-gray-300 rounded-lg focus:border-solos-green outline-none text-sm">
+                                <option>Ordenar por: Data ↓</option>
+                                <option>Nome A-Z</option>
+                                <option>Taxa de aceite</option>
+                                <option>Zona</option>
+                                <option>Última atualização</option>
+                            </select>
+                            
+                            <button class="p-2 border border-gray-300 rounded-lg hover:border-solos-green transition-colors">
+                                <span class="text-lg">⚙️</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lista de Cards -->
+                <div class="space-y-4">
+                    <!-- Estabelecimento 1 - Aceito -->
+                    <div class="bg-white rounded-xl p-6 card-shadow status-aceito">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <h3 class="text-lg font-bold text-gray-900">Restaurante Dom Sabor</h3>
+                                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">ACEITO</span>
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">ZONA 1</span>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Contato</p>
+                                        <p class="font-medium">Claudia</p>
+                                        <p class="text-sm text-gray-600">(73) 98315-7009</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Categoria</p>
+                                        <p class="font-medium">Restaurante</p>
+                                        <p class="text-sm text-gray-600">Tamanho: P</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Localização</p>
+                                        <p class="font-medium">Beira rio</p>
+                                        <p class="text-sm text-gray-600">Av. dos Navegantes</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Mobilizador</p>
+                                        <p class="font-medium">Guido</p>
+                                        <p class="text-sm text-gray-600">28/12/2024</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                    <span>✅ Participando desde Janeiro</span>
+                                    <span>•</span>
+                                    <span>🗓️ Frequência: Quinzenal</span>
+                                    <span>•</span>
+                                    <span>📊 6 coletas realizadas</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-2 ml-6">
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">📍</span>
+                                </button>
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">📱</span>
+                                </button>
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">✏️</span>
+                                </button>
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">⋮</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estabelecimento 2 - Aceito -->
+                    <div class="bg-white rounded-xl p-6 card-shadow status-aceito">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <h3 class="text-lg font-bold text-gray-900">Casa Deck Caraíva</h3>
+                                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">ACEITO</span>
+                                    <span class="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">ZONA 2</span>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Contato</p>
+                                        <p class="font-medium">Pedro</p>
+                                        <p class="text-sm text-gray-600">(73) 9991-7391</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Categoria</p>
+                                        <p class="font-medium">Pousada</p>
+                                        <p class="text-sm text-gray-600">Tamanho: P</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Localização</p>
+                                        <p class="font-medium">Pousada Terra</p>
+                                        <p class="text-sm text-gray-600">R. Miramar</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Mobilizador</p>
+                                        <p class="font-medium">Guido</p>
+                                        <p class="text-sm text-gray-600">22/12/2024</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                    <span>✅ Participando desde Dezembro</span>
+                                    <span>•</span>
+                                    <span>🗓️ Frequência: Quinzenal</span>
+                                    <span>•</span>
+                                    <span>📊 4 coletas realizadas</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-2 ml-6">
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">📍</span>
+                                </button>
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">📱</span>
+                                </button>
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">✏️</span>
+                                </button>
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">⋮</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estabelecimento 3 - Pendente -->
+                    <div class="bg-white rounded-xl p-6 card-shadow status-pendente">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <h3 class="text-lg font-bold text-gray-900">Padaria Pão Nobre</h3>
+                                    <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">PENDENTE</span>
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">ZONA 1</span>
+                                    <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs pulse-dot">⚠️ 5 dias</span>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Contato</p>
+                                        <p class="font-medium">Maria</p>
+                                        <p class="text-sm text-gray-600">(73) 99887-5544</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Categoria</p>
+                                        <p class="font-medium">Mercado/loja</p>
+                                        <p class="text-sm text-gray-600">Tamanho: P</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Localização</p>
+                                        <p class="font-medium">Centro</p>
+                                        <p class="text-sm text-gray-600">R. Principal, 234</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Mobilizador</p>
+                                        <p class="font-medium">Guido</p>
+                                        <p class="text-sm text-gray-600">30/12/2024</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                        <span>⏰ Aguardando retorno há 5 dias</span>
+                                        <span>•</span>
+                                        <span>📞 Última ligação: 02/01</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <button class="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-lg hover:bg-yellow-200 transition-colors text-sm font-medium">
+                                            📞 Ligar Agora
+                                        </button>
+                                        <button class="px-4 py-2 bg-green-100 text-green-800 rounded-lg hover:bg-green-200 transition-colors text-sm font-medium">
+                                            ✅ Marcar Aceito
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-2 ml-6">
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">📍</span>
+                                </button>
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">📱</span>
+                                </button>
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">✏️</span>
+                                </button>
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">⋮</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estabelecimento 4 - Aceito com Destaque -->
+                    <div class="bg-white rounded-xl p-6 card-shadow status-aceito border-2 border-green-300">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <h3 class="text-lg font-bold text-gray-900">Awêry Caraíva</h3>
+                                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">ACEITO</span>
+                                    <span class="px-2 py-1 bg-indigo-100 text-indigo-800 rounded-full text-xs">ZONA 3</span>
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">⭐ TOP PERFORMER</span>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Contato</p>
+                                        <p class="font-medium">Rodrigo | Tete</p>
+                                        <p class="text-sm text-gray-600">(21) 97128-6022</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Categoria</p>
+                                        <p class="font-medium">Barraca</p>
+                                        <p class="text-sm text-gray-600">Tamanho: M</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Localização</p>
+                                        <p class="font-medium">Caramuru</p>
+                                        <p class="text-sm text-gray-600">Porto Seguro</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Performance</p>
+                                        <p class="font-medium text-green-600">145% da meta</p>
+                                        <p class="text-sm text-gray-600">12 coletas</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                    <span>🏆 Melhor performer do mês</span>
+                                    <span>•</span>
+                                    <span>🗓️ Frequência: Semanal</span>
+                                    <span>•</span>
+                                    <span>📊 Acima da média sempre</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-2 ml-6">
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">📍</span>
+                                </button>
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">📱</span>
+                                </button>
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">✏️</span>
+                                </button>
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">⋮</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estabelecimento 5 - Recusado -->
+                    <div class="bg-white rounded-xl p-6 card-shadow status-recusado opacity-75">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <h3 class="text-lg font-bold text-gray-900">Sorveteria Verão</h3>
+                                    <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs font-medium">RECUSADO</span>
+                                    <span class="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs">ZONA 2</span>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Contato</p>
+                                        <p class="font-medium">João</p>
+                                        <p class="text-sm text-gray-600">(73) 98877-3344</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Categoria</p>
+                                        <p class="font-medium">Mercado/loja</p>
+                                        <p class="text-sm text-gray-600">Tamanho: P</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Localização</p>
+                                        <p class="font-medium">Beco da Lua</p>
+                                        <p class="text-sm text-gray-600">Beco da Lua, 56</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide">Motivo</p>
+                                        <p class="font-medium text-red-600">Sem interesse</p>
+                                        <p class="text-sm text-gray-600">02/01/2025</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                        <span>❌ Não tem interesse no projeto</span>
+                                        <span>•</span>
+                                        <span>📅 Tentar novamente em 6 meses</span>
+                                    </div>
+                                    <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium">
+                                        🔄 Remarcar Follow-up
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-2 ml-6">
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">📍</span>
+                                </button>
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">📱</span>
+                                </button>
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">✏️</span>
+                                </button>
+                                <button class="p-2 text-gray-400 hover:text-solos-green transition-colors">
+                                    <span class="text-lg">⋮</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-8 bg-white rounded-xl p-6 card-shadow">
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            Mostrando <span class="font-medium">5</span> de <span class="font-medium">47</span> estabelecimentos
+                        </div>
+                        
+                        <div class="flex items-center space-x-2">
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:border-solos-green transition-colors text-sm">
+                                ← Anterior
+                            </button>
+                            <button class="px-4 py-2 bg-solos-green text-white rounded-lg font-medium text-sm">
+                                1
+                            </button>
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:border-solos-green transition-colors text-sm">
+                                2
+                            </button>
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:border-solos-green transition-colors text-sm">
+                                3
+                            </button>
+                            <span class="px-2 text-gray-400">...</span>
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:border-solos-green transition-colors text-sm">
+                                10
+                            </button>
+                            <button class="px-4 py-2 border border-gray-300 rounded-lg hover:border-solos-green transition-colors text-sm">
+                                Próximo →
+                            </button>
+                        </div>
+                        
+                        <select class="p-2 border border-gray-300 rounded-lg focus:border-solos-green outline-none text-sm">
+                            <option>5 por página</option>
+                            <option>10 por página</option>
+                            <option>25 por página</option>
+                            <option>50 por página</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="floating-add" title="Adicionar Estabelecimento" onclick="openNewEstablishmentModal()">
+        +
+    </button>
+
+    <!-- Modal de Novo Estabelecimento -->
+    <div id="newEstablishmentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-2xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto slide-in">
+            <div class="p-8">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900">Novo Estabelecimento</h2>
+                        <p class="text-gray-600">Cadastrar novo participante do projeto</p>
+                    </div>
+                    <button onclick="closeNewEstablishmentModal()" class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+                        <span class="text-2xl">×</span>
+                    </button>
+                </div>
+
+                <!-- Wizard Steps -->
+                <div class="flex items-center justify-center mb-8">
+                    <div class="flex items-center space-x-8">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 bg-solos-green text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
+                            <span class="font-medium text-solos-green">Informações Básicas</span>
+                        </div>
+                        <div class="w-16 h-1 bg-gray-200 rounded"></div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center text-sm font-bold">2</div>
+                            <span class="text-gray-500">Contato & Localização</span>
+                        </div>
+                        <div class="w-16 h-1 bg-gray-200 rounded"></div>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center text-sm font-bold">3</div>
+                            <span class="text-gray-500">Operacional</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulário -->
+                <form class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nome do Estabelecimento *</label>
+                            <input type="text" class="w-full p-4 border border-gray-300 rounded-lg focus:border-solos-green focus:ring-2 focus:ring-solos-green focus:ring-opacity-20 outline-none transition-all" placeholder="Ex: Restaurante do João">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Categoria *</label>
+                            <select class="w-full p-4 border border-gray-300 rounded-lg focus:border-solos-green focus:ring-2 focus:ring-solos-green focus:ring-opacity-20 outline-none transition-all">
+                                <option>Selecione uma categoria</option>
+                                <option>Restaurante</option>
+                                <option>Pousada</option>
+                                <option>Mercado/loja</option>
+                                <option>Barraca</option>
+                                <option>Bar</option>
+                                <option>Outro</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Zona *</label>
+                            <select class="w-full p-4 border border-gray-300 rounded-lg focus:border-solos-green focus:ring-2 focus:ring-solos-green focus:ring-opacity-20 outline-none transition-all">
+                                <option>Selecione uma zona</option>
+                                <option>ZONA 1</option>
+                                <option>ZONA 2</option>
+                                <option>ZONA 3</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tamanho</label>
+                            <div class="flex space-x-4">
+                                <label class="flex items-center">
+                                    <input type="radio" name="tamanho" value="P" class="mr-2 text-solos-green">
+                                    <span>Pequeno (P)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="tamanho" value="M" class="mr-2 text-solos-green">
+                                    <span>Médio (M)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="tamanho" value="G" class="mr-2 text-solos-green">
+                                    <span>Grande (G)</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nome do Contato</label>
+                            <input type="text" class="w-full p-4 border border-gray-300 rounded-lg focus:border-solos-green focus:ring-2 focus:ring-solos-green focus:ring-opacity-20 outline-none transition-all" placeholder="Ex: João Silva">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Telefone</label>
+                            <input type="tel" class="w-full p-4 border border-gray-300 rounded-lg focus:border-solos-green focus:ring-2 focus:ring-solos-green focus:ring-opacity-20 outline-none transition-all" placeholder="(00) 00000-0000">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Endereço Completo</label>
+                        <textarea class="w-full p-4 border border-gray-300 rounded-lg focus:border-solos-green focus:ring-2 focus:ring-solos-green focus:ring-opacity-20 outline-none transition-all" rows="3" placeholder="Endereço completo do estabelecimento"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Observações</label>
+                        <textarea class="w-full p-4 border border-gray-300 rounded-lg focus:border-solos-green focus:ring-2 focus:ring-solos-green focus:ring-opacity-20 outline-none transition-all" rows="3" placeholder="Observações importantes sobre o estabelecimento"></textarea>
+                    </div>
+                </form>
+
+                <!-- Actions -->
+                <div class="flex items-center justify-between mt-8 pt-6 border-t">
+                    <button onclick="closeNewEstablishmentModal()" class="px-6 py-3 border border-gray-300 rounded-lg hover:border-gray-400 transition-colors font-medium">
+                        Cancelar
+                    </button>
+                    
+                    <div class="flex items-center space-x-3">
+                        <button class="px-6 py-3 border border-solos-green text-solos-green rounded-lg hover:bg-solos-green hover:text-white transition-colors font-medium">
+                            Salvar como Rascunho
+                        </button>
+                        <button class="px-6 py-3 bg-solos-green text-white rounded-lg hover:bg-solos-light-green transition-colors font-medium">
+                            Próximo Passo →
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Modal functions
+        function openNewEstablishmentModal() {
+            document.getElementById('newEstablishmentModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeNewEstablishmentModal() {
+            document.getElementById('newEstablishmentModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Simular notificações
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification bg-${type === 'success' ? 'green' : type === 'warning' ? 'yellow' : 'blue'}-500 text-white px-6 py-4 rounded-lg shadow-lg`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 4000);
+        }
+
+        // Auto-suggestions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simular auto-save
+            const inputs = document.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    showNotification('✅ Alterações salvas automaticamente');
+                });
+            });
+
+            // Simular real-time updates
+            setTimeout(() => showNotification('📊 Dados atualizados em tempo real'), 3000);
+            setTimeout(() => showNotification('🔔 3 estabelecimentos aguardando follow-up', 'warning'), 8000);
+        });
+
+        // Search functionality
+        function handleSearch() {
+            const searchTerm = document.querySelector('input[placeholder*="Buscar"]').value;
+            console.log('Searching for:', searchTerm);
+            // Implementar lógica de busca
+        }
+
+        // Filter functionality
+        function applyFilters() {
+            console.log('Applying filters...');
+            // Implementar lógica de filtros
+        }
+    </script>
+</body>
+</html>
