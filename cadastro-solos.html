@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOLOS - Cadastro de Participantes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'solos-green': '#2D5D3D',
+                        'solos-light-green': '#4A7A5A',
+                        'solos-accent': '#6B8F47',
+                        'solos-bg': '#F8FAF6',
+                        'solos-card': '#FFFFFF'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilo Excel-like perfeito */
+        .excel-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            font-size: 13px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .excel-header {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            padding: 8px 6px;
+            text-align: center;
+            font-size: 11px;
+            line-height: 1.2;
+            min-width: 100px;
+        }
+        .excel-cell {
+            border: 1px solid #e2e8f0;
+            padding: 4px 6px;
+            background: white;
+            transition: all 0.15s ease;
+            min-width: 100px;
+            max-width: 200px;
+        }
+        .excel-cell:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+        }
+        .excel-cell:focus-within {
+            background: #fff7ed;
+            border-color: #f97316;
+            box-shadow: 0 0 0 1px #f97316;
+        }
+        .excel-input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 13px;
+            padding: 2px 4px;
+        }
+        .excel-select {
+            width: 100%;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 13px;
+            padding: 2px 4px;
+            cursor: pointer;
+        }
+        .status-aceito {
+            background: #dcfce7 !important;
+            color: #166534;
+        }
+        .status-pendente {
+            background: #fefce8 !important;
+            color: #ca8a04;
+        }
+        .status-recusado {
+            background: #fef2f2 !important;
+            color: #dc2626;
+        }
+        .row-number {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            font-weight: 600;
+            color: #64748b;
+            width: 40px;
+            padding: 4px;
+            font-size: 11px;
+        }
+        .save-indicator {
+            animation: pulse 2s infinite;
+        }
+        .import-button {
+            background: linear-gradient(135deg, #2D5D3D 0%, #4A7A5A 100%);
+            transition: all 0.3s ease;
+        }
+        .import-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(45, 93, 61, 0.3);
+        }
+        .floating-add {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2D5D3D 0%, #4A7A5A 100%);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(45, 93, 61, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        .floating-add:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(45, 93, 61, 0.4);
+        }
+        .percentage-cell {
+            font-weight: bold;
+            text-align: center;
+        }
+        .percentage-100 { color: #059669; }
+        .percentage-0 { color: #dc2626; }
+        .percentage-partial { color: #d97706; }
+    </style>
+</head>
+<body class="bg-solos-bg font-sans">
+    <!-- Header -->
+    <header class="bg-white border-b-2 border-solos-green shadow-sm">
+        <div class="max-w-full px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <button onclick="history.back()" class="text-solos-green hover:text-solos-light-green transition-colors">
+                        ← Voltar ao Dashboard
+                    </button>
+                    <div class="w-12 h-12 bg-solos-green rounded-xl flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">👥</span>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-solos-green">Cadastro de Participantes</h1>
+                        <p class="text-sm text-gray-600">Projeto Vidrado • Estabelecimentos de Caraíva, BA</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2 text-sm text-gray-600">
+                        <span class="save-indicator w-2 h-2 bg-green-500 rounded-full"></span>
+                        <span>Auto-save ativo</span>
+                    </div>
+                    <button class="import-button text-white px-4 py-2 rounded-lg font-medium">
+                        📁 Importar Excel
+                    </button>
+                    <button class="border-2 border-solos-green text-solos-green px-4 py-2 rounded-lg font-medium hover:bg-solos-green hover:text-white transition-colors">
+                        📊 Exportar Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Stats Dashboard -->
+    <div class="bg-white border-b px-6 py-4">
+        <div class="grid grid-cols-1 md:grid-cols-6 gap-4 text-sm">
+            <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                <span><strong>3 Aceitos</strong> (60%)</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 bg-yellow-500 rounded-full"></span>
+                <span><strong>1 Pendente</strong> (20%)</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                <span><strong>1 Recusado</strong> (20%)</span>
+            </div>
+            <div class="text-gray-500">|</div>
+            <div><strong>Meta:</strong> 75 estabelecimentos</div>
+            <div><strong>Atual:</strong> 5 cadastrados (7%)</div>
+        </div>
+    </div>
+
+    <!-- Filtros Rápidos -->
+    <div class="bg-white border-b px-6 py-3">
+        <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-2">
+                <label class="text-sm font-medium text-gray-700">Filtros:</label>
+                <select class="border border-gray-300 rounded px-3 py-1 text-sm">
+                    <option>Todas as Zonas</option>
+                    <option>ZONA 1</option>
+                    <option>ZONA 2</option>
+                    <option>ZONA 3</option>
+                </select>
+                <select class="border border-gray-300 rounded px-3 py-1 text-sm">
+                    <option>Todos os Status</option>
+                    <option>ACEITO</option>
+                    <option>PENDENTE</option>
+                    <option>RECUSADO</option>
+                </select>
+                <select class="border border-gray-300 rounded px-3 py-1 text-sm">
+                    <option>Todas as Categorias</option>
+                    <option>Mercado/loja</option>
+                    <option>Pousada</option>
+                    <option>Barraca</option>
+                    <option>Restaurante</option>
+                </select>
+            </div>
+            <div class="flex-1"></div>
+            <div class="flex items-center space-x-2">
+                <input type="text" placeholder="Buscar por nome..." class="border border-gray-300 rounded px-3 py-1 text-sm w-64">
+                <button class="px-3 py-1 bg-solos-green text-white rounded text-sm hover:bg-solos-light-green transition-colors">
+                    🔍 Buscar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabela Principal - Exatamente como Excel -->
+    <div class="overflow-x-auto">
+        <table class="excel-table">
+            <!-- Cabeçalho com todos os 25 campos da planilha -->
+            <thead>
+                <tr>
+                    <th class="row-number">#</th>
+                    <th class="excel-header">Zona</th>
+                    <th class="excel-header">Nome do<br>estabelecimento</th>
+                    <th class="excel-header">Data<br>cadastro</th>
+                    <th class="excel-header">Responsável</th>
+                    <th class="excel-header">Categoria</th>
+                    <th class="excel-header">Tamanho</th>
+                    <th class="excel-header">Frequência</th>
+                    <th class="excel-header">Contato</th>
+                    <th class="excel-header">Telefone</th>
+                    <th class="excel-header">STATUS</th>
+                    <th class="excel-header">Subárea</th>
+                    <th class="excel-header">Endereço</th>
+                    <th class="excel-header">OBS.</th>
+                    <th class="excel-header">CADASTRO<br>URU</th>
+                    <th class="excel-header">EDIÇÃO<br>URU</th>
+                    <th class="excel-header">SEMANA</th>
+                    <th class="excel-header">[VIDRADO]<br>Subáreas</th>
+                    <th class="excel-header">ÁREAS</th>
+                    <th class="excel-header">MÊS<br>CADASTRO</th>
+                    <th class="excel-header">MÊS<br>PARTICIPAÇÃO</th>
+                    <th class="excel-header">% Aceito</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Linha 1 - Restaurante Dom Sabor -->
+                <tr>
+                    <td class="row-number">1</td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>ZONA 1</option>
+                            <option>ZONA 2</option>
+                            <option>ZONA 3</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Restaurante Dom Sabor" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="date" class="excel-input" value="2024-12-28" />
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>Guido</option>
+                            <option>Laura</option>
+                            <option>Carlos</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>Mercado/loja</option>
+                            <option>Pousada</option>
+                            <option>Barraca</option>
+                            <option>Restaurante</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>P</option>
+                            <option>M</option>
+                            <option>G</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>Quinzenal</option>
+                            <option>1x semana</option>
+                            <option>Diária</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Claudia" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="(73) 98315-7009" />
+                    </td>
+                    <td class="excel-cell status-aceito">
+                        <select class="excel-select" onchange="updateStatusColor(this)">
+                            <option value="ACEITO">ACEITO</option>
+                            <option value="PENDENTE">PENDENTE</option>
+                            <option value="RECUSADO">RECUSADO</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Beira rio" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Avenida dos Navegantes s/n Caraíva, BA" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Entre Domui e Mamazoo" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="checkbox" class="excel-input" checked />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="checkbox" class="excel-input" checked />
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>SEMANA 1</option>
+                            <option>SEMANA 2</option>
+                            <option>SEMANA 1 e 2</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Beira rio" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="ZONA 1" readonly />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="12" readonly />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="1" />
+                    </td>
+                    <td class="excel-cell percentage-cell percentage-100">100%</td>
+                </tr>
+
+                <!-- Linha 2 - Casa Deck Caraíva -->
+                <tr>
+                    <td class="row-number">2</td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>ZONA 2</option>
+                            <option>ZONA 1</option>
+                            <option>ZONA 3</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Casa Deck Caraíva" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="date" class="excel-input" value="2024-12-22" />
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>Guido</option>
+                            <option>Laura</option>
+                            <option>Carlos</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>Pousada</option>
+                            <option>Mercado/loja</option>
+                            <option>Barraca</option>
+                            <option>Restaurante</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>P</option>
+                            <option>M</option>
+                            <option>G</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>Quinzenal</option>
+                            <option>1x semana</option>
+                            <option>Diária</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Pedro" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="(73) 9991-7391" />
+                    </td>
+                    <td class="excel-cell status-aceito">
+                        <select class="excel-select" onchange="updateStatusColor(this)">
+                            <option value="ACEITO">ACEITO</option>
+                            <option value="PENDENTE">PENDENTE</option>
+                            <option value="RECUSADO">RECUSADO</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Pousada Terra" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="R. Miramar - Caraíva, Porto Seguro - BA" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="checkbox" class="excel-input" checked />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="checkbox" class="excel-input" checked />
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>SEMANA 2</option>
+                            <option>SEMANA 1</option>
+                            <option>SEMANA 1 e 2</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Pousada Terra" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="ZONA 2" readonly />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="12" readonly />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="" />
+                    </td>
+                    <td class="excel-cell percentage-cell percentage-100">100%</td>
+                </tr>
+
+                <!-- Linha 3 - Awêry Caraíva -->
+                <tr>
+                    <td class="row-number">3</td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>ZONA 3</option>
+                            <option>ZONA 1</option>
+                            <option>ZONA 2</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Awêry Caraíva" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="date" class="excel-input" value="2024-12-24" />
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>Guido</option>
+                            <option>Laura</option>
+                            <option>Carlos</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>Barraca</option>
+                            <option>Mercado/loja</option>
+                            <option>Pousada</option>
+                            <option>Restaurante</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>M</option>
+                            <option>P</option>
+                            <option>G</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>1x semana</option>
+                            <option>Quinzenal</option>
+                            <option>Diária</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Rodrigo | Tete" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="(21) 97128-6022 | (19) 99742-2986" />
+                    </td>
+                    <td class="excel-cell status-aceito">
+                        <select class="excel-select" onchange="updateStatusColor(this)">
+                            <option value="ACEITO">ACEITO</option>
+                            <option value="PENDENTE">PENDENTE</option>
+                            <option value="RECUSADO">RECUSADO</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Caramuru" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Caraíva, Porto Seguro - BA, 45810-000" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="checkbox" class="excel-input" checked />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="checkbox" class="excel-input" checked />
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>SEMANA 1 e 2</option>
+                            <option>SEMANA 1</option>
+                            <option>SEMANA 2</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Caramuru" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="ZONA 3" readonly />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="12" readonly />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="#N/A" />
+                    </td>
+                    <td class="excel-cell percentage-cell percentage-100">100%</td>
+                </tr>
+
+                <!-- Linha 4 - Estabelecimento Pendente -->
+                <tr>
+                    <td class="row-number">4</td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>ZONA 1</option>
+                            <option>ZONA 2</option>
+                            <option>ZONA 3</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Padaria Pão Nobre" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="date" class="excel-input" value="2024-12-30" />
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>Guido</option>
+                            <option>Laura</option>
+                            <option>Carlos</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>Mercado/loja</option>
+                            <option>Pousada</option>
+                            <option>Barraca</option>
+                            <option>Restaurante</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>P</option>
+                            <option>M</option>
+                            <option>G</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>Quinzenal</option>
+                            <option>1x semana</option>
+                            <option>Diária</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Maria" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="(73) 99887-5544" />
+                    </td>
+                    <td class="excel-cell status-pendente">
+                        <select class="excel-select" onchange="updateStatusColor(this)">
+                            <option value="PENDENTE">PENDENTE</option>
+                            <option value="ACEITO">ACEITO</option>
+                            <option value="RECUSADO">RECUSADO</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Centro" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="R. Principal, 234 - Caraíva" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Aguardando retorno" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="checkbox" class="excel-input" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="checkbox" class="excel-input" />
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option></option>
+                            <option>SEMANA 1</option>
+                            <option>SEMANA 2</option>
+                            <option>SEMANA 1 e 2</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Centro" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="ZONA 1" readonly />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="12" readonly />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="" />
+                    </td>
+                    <td class="excel-cell percentage-cell percentage-0">0%</td>
+                </tr>
+
+                <!-- Linha 5 - Estabelecimento Recusado -->
+                <tr>
+                    <td class="row-number">5</td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>ZONA 2</option>
+                            <option>ZONA 1</option>
+                            <option>ZONA 3</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" value="Sorveteria Verão" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="date" class="excel-input" value="2025-01-02" />
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>Laura</option>
+                            <option>Guido</option>
+                            <option>Carlos</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option>Mercado/loja</option>
+                            <option>Pousada</option>
+                        </select>
+                    </td>
+                  </tr>
+                <!-- Linha 6 - Nova linha vazia para adicionar -->
+                <tr>
+                    <td class="row-number">6</td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option></option>
+                            <option>ZONA 1</option>
+                            <option>ZONA 2</option>
+                            <option>ZONA 3</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" placeholder="Digite o nome..." />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="date" class="excel-input" />
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option></option>
+                            <option>Guido</option>
+                            <option>Laura</option>
+                            <option>Carlos</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option></option>
+                            <option>Mercado/loja</option>
+                            <option>Pousada</option>
+                            <option>Barraca</option>
+                            <option>Restaurante</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option></option>
+                            <option>P</option>
+                            <option>M</option>
+                            <option>G</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option></option>
+                            <option>Quinzenal</option>
+                            <option>1x semana</option>
+                            <option>Diária</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" placeholder="Contato..." />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" placeholder="(00) 00000-0000" />
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option></option>
+                            <option value="ACEITO">ACEITO</option>
+                            <option value="PENDENTE">PENDENTE</option>
+                            <option value="RECUSADO">RECUSADO</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" placeholder="Subárea..." />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" placeholder="Endereço completo..." />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" placeholder="Observações..." />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="checkbox" class="excel-input" />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="checkbox" class="excel-input" />
+                    </td>
+                    <td class="excel-cell">
+                        <select class="excel-select">
+                            <option></option>
+                            <option>SEMANA 1</option>
+                            <option>SEMANA 2</option>
+                            <option>SEMANA 1 e 2</option>
+                        </select>
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" placeholder="Subárea específica..." />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" readonly />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" readonly />
+                    </td>
+                    <td class="excel-cell">
+                        <input type="text" class="excel-input" />
+                    </td>
+                    <td class="excel-cell percentage-cell">-</td>
+                </tr>
+
+                <!-- Mais algumas linhas vazias -->
+                <tr>
+                    <td class="row-number">7</td>
+                    <td class="excel-cell"><select class="excel-select"><option></option><option>ZONA 1</option><option>ZONA 2</option><option>ZONA 3</option></select></td>
+                    <td class="excel-cell"><input type="text" class="excel-input" placeholder="Digite o nome..." /></td>
+                    <td class="excel-cell"><input type="date" class="excel-input" /></td>
+                    <td class="excel-cell"><select class="excel-select"><option></option><option>Guido</option><option>Laura</option><option>Carlos</option></select></td>
+                    <td class="excel-cell"><select class="excel-select"><option></option><option>Mercado/loja</option><option>Pousada</option><option>Barraca</option><option>Restaurante</option></select></td>
+                    <td class="excel-cell"><select class="excel-select"><option></option><option>P</option><option>M</option><option>G</option></select></td>
+                    <td class="excel-cell"><select class="excel-select"><option></option><option>Quinzenal</option><option>1x semana</option><option>Diária</option></select></td>
+                    <td class="excel-cell"><input type="text" class="excel-input" /></td>
+                    <td class="excel-cell"><input type="text" class="excel-input" /></td>
+                    <td class="excel-cell"><select class="excel-select"><option></option><option value="ACEITO">ACEITO</option><option value="PENDENTE">PENDENTE</option><option value="RECUSADO">RECUSADO</option></select></td>
+                    <td class="excel-cell"><input type="text" class="excel-input" /></td>
+                    <td class="excel-cell"><input type="text" class="excel-input" /></td>
+                    <td class="excel-cell"><input type="text" class="excel-input" /></td>
+                    <td class="excel-cell"><input type="checkbox" class="excel-input" /></td>
+                    <td class="excel-cell"><input type="checkbox" class="excel-input" /></td>
+                    <td class="excel-cell"><select class="excel-select"><option></option><option>SEMANA 1</option><option>SEMANA 2</option><option>SEMANA 1 e 2</option></select></td>
+                    <td class="excel-cell"><input type="text" class="excel-input" /></td>
+                    <td class="excel-cell"><input type="text" class="excel-input" readonly /></td>
+                    <td class="excel-cell"><input type="text" class="excel-input" readonly /></td>
+                    <td class="excel-cell"><input type="text" class="excel-input" /></td>
+                    <td class="excel-cell percentage-cell">-</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Footer fixo com informações como Excel -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg px-6 py-3">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-6 text-sm text-gray-600">
+                <span>📋 Cadastros</span>
+                <span>|</span>
+                <span>5 estabelecimentos • 22 colunas</span>
+                <span>|</span>
+                <span>Última alteração: <span id="lastSave">agora</span></span>
+                <span>|</span>
+                <div class="flex items-center space-x-2">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <span>Sincronizado</span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button class="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded transition-colors">
+                    🗺️ Ir para Rotas
+                </button>
+                <button class="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded transition-colors">
+                    ✅ Ir para Coletas
+                </button>
+                <button class="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded transition-colors">
+                    📊 Ver Dashboard
+                </button>
+                <button class="px-4 py-1 text-sm bg-solos-green text-white hover:bg-solos-light-green rounded transition-colors">
+                    💾 Ctrl+S
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="floating-add" title="Adicionar Estabelecimento" onclick="addNewRow()">
+        +
+    </button>
+
+    <script>
+        // Atualizar cor do status
+        function updateStatusColor(selectElement) {
+            const cell = selectElement.closest('.excel-cell');
+            const value = selectElement.value;
+            
+            // Remove classes existentes
+            cell.classList.remove('status-aceito', 'status-pendente', 'status-recusado');
+            
+            // Adiciona classe baseada no valor
+            if (value === 'ACEITO') {
+                cell.classList.add('status-aceito');
+            } else if (value === 'PENDENTE') {
+                cell.classList.add('status-pendente');
+            } else if (value === 'RECUSADO') {
+                cell.classList.add('status-recusado');
+            }
+            
+            updateStats();
+        }
+
+        // Atualizar estatísticas
+        function updateStats() {
+            const statusCells = document.querySelectorAll('select[onchange*="updateStatusColor"]');
+            let aceitos = 0, pendentes = 0, recusados = 0;
+            
+            statusCells.forEach(select => {
+                if (select.value === 'ACEITO') aceitos++;
+                else if (select.value === 'PENDENTE') pendentes++;
+                else if (select.value === 'RECUSADO') recusados++;
+            });
+            
+            // Atualizar header stats
+            console.log(`Stats: ${aceitos} aceitos, ${pendentes} pendentes, ${recusados} recusados`);
+        }
+
+        // Auto-save simulation
+        let saveTimeout;
+        document.addEventListener('input', function(e) {
+            clearTimeout(saveTimeout);
+            document.getElementById('lastSave').textContent = 'salvando...';
+            
+            saveTimeout = setTimeout(() => {
+                document.getElementById('lastSave').textContent = 'agora';
+                console.log('Auto-saved');
+            }, 1000);
+        });
+
+        // Adicionar nova linha
+        function addNewRow() {
+            const tbody = document.querySelector('tbody');
+            const lastRow = tbody.lastElementChild;
+            const newRow = lastRow.cloneNode(true);
+            
+            // Limpar valores
+            newRow.querySelectorAll('input').forEach(input => {
+                if (input.type === 'checkbox') {
+                    input.checked = false;
+                } else {
+                    input.value = '';
+                }
+            });
+            newRow.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+            
+            // Atualizar número da linha
+            const rowNumber = newRow.querySelector('.row-number');
+            rowNumber.textContent = parseInt(rowNumber.textContent) + 1;
+            
+            tbody.appendChild(newRow);
+        }
+
+        // Filtros
+        document.addEventListener('DOMContentLoaded', function() {
+            // Implementar filtros
+            const filterSelects = document.querySelectorAll('select');
+            // Lógica de filtros aqui
+            
+            // Busca
+            const searchInput = document.querySelector('input[placeholder="Buscar por nome..."]');
+            searchInput.addEventListener('input', function() {
+                // Lógica de busca aqui
+            });
+        });
+
+        // Atalhos de teclado
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                console.log('Manual save triggered');
+                document.getElementById('lastSave').textContent = 'salvo!';
+            }
+        });
+    </script>
+</body>
+</html>
