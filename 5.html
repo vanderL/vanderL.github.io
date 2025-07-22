@@ -1,0 +1,579 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LabStart Settings - meu-projeto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            labstart: {
+              50: '#f0f9ff',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              900: '#0c4a6e'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%);
+    }
+    .glass {
+      backdrop-filter: blur(16px);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .toggle-switch {
+      width: 3rem;
+      height: 1.5rem;
+      background: #374151;
+      border-radius: 0.75rem;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .toggle-switch.active {
+      background: #0ea5e9;
+    }
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      width: 1.25rem;
+      height: 1.25rem;
+      background: white;
+      border-radius: 50%;
+      top: 0.125rem;
+      left: 0.125rem;
+      transition: transform 0.3s;
+    }
+    .toggle-switch.active::after {
+      transform: translateX(1.5rem);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+  <!-- Navigation -->
+  <nav class="gradient-bg border-b border-gray-700">
+    <div class="container mx-auto px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+            <span class="text-labstart-700 font-bold text-xl">L</span>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold">LabStart Settings</h1>
+            <p class="text-blue-200 text-sm">meu-projeto-api</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center space-x-6">
+          <nav class="hidden md:flex space-x-6">
+            <a href="https://vanderl.github.io/1" class="text-white hover:text-blue-200 transition-colors border-b-2 border-white">📊 Overview</a>
+            <a href="https://vanderl.github.io/2" class="text-blue-200 hover:text-white transition-colors">📚 API Docs</a>
+            <a href="https://vanderl.github.io/3" class="text-blue-200 hover:text-white transition-colors">🧪 Tester</a>
+            <a href="https://vanderl.github.io/4" class="text-blue-200 hover:text-white transition-colors">🏗️ Architecture</a>
+            <a href="https://vanderl.github.io/5" class="text-blue-200 hover:text-white transition-colors">📈 Metrics</a>
+          </nav>
+          
+          <div class="flex items-center space-x-2">
+            <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+            <span class="text-sm text-green-200">Online</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mx-auto px-6 py-8">
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h2 class="text-2xl font-bold">⚙️ Project Settings</h2>
+        <p class="text-gray-300">Configure your LabStart documentation and monitoring</p>
+      </div>
+      <div class="flex space-x-3">
+        <button class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded transition-colors">
+          🔄 Reset to Defaults
+        </button>
+        <button class="bg-labstart-600 hover:bg-labstart-700 px-4 py-2 rounded transition-colors">
+          💾 Save Changes
+        </button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <!-- Settings Navigation -->
+      <div class="glass rounded-xl p-6">
+        <h3 class="text-lg font-bold mb-4">📋 Categories</h3>
+        <nav class="space-y-2">
+          <a href="#general" class="block p-3 bg-labstart-600 text-white rounded transition-colors">
+            🔧 General
+          </a>
+          <a href="#api" class="block p-3 hover:bg-gray-700 rounded transition-colors">
+            📡 API Configuration
+          </a>
+          <a href="#monitoring" class="block p-3 hover:bg-gray-700 rounded transition-colors">
+            📊 Monitoring
+          </a>
+          <a href="#security" class="block p-3 hover:bg-gray-700 rounded transition-colors">
+            🛡️ Security
+          </a>
+          <a href="#notifications" class="block p-3 hover:bg-gray-700 rounded transition-colors">
+            🔔 Notifications
+          </a>
+          <a href="#export" class="block p-3 hover:bg-gray-700 rounded transition-colors">
+            📤 Export/Import
+          </a>
+          <a href="#advanced" class="block p-3 hover:bg-gray-700 rounded transition-colors">
+            🔬 Advanced
+          </a>
+        </nav>
+      </div>
+
+      <!-- Settings Content -->
+      <div class="lg:col-span-3 space-y-6">
+        <!-- General Settings -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-bold mb-6">🔧 General Settings</h3>
+          
+          <div class="space-y-6">
+            <!-- Project Info -->
+            <div>
+              <h4 class="text-lg font-bold mb-4">📋 Project Information</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium mb-2">Project Name</label>
+                  <input type="text" value="meu-projeto" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-2">Version</label>
+                  <input type="text" value="1.0.0" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2">
+                </div>
+                <div class="md:col-span-2">
+                  <label class="block text-sm font-medium mb-2">Description</label>
+                  <textarea class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 h-20" placeholder="API description...">Clean Architecture API with Fastify, Prisma and JWT authentication</textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Documentation Settings -->
+            <div class="border-t border-gray-700 pt-6">
+              <h4 class="text-lg font-bold mb-4">📚 Documentation</h4>
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-medium">Auto-regenerate docs</span>
+                    <p class="text-sm text-gray-400">Automatically update documentation when code changes</p>
+                  </div>
+                  <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-medium">Include private endpoints</span>
+                    <p class="text-sm text-gray-400">Show internal/admin endpoints in documentation</p>
+                  </div>
+                  <div class="toggle-switch" onclick="toggleSwitch(this)"></div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-medium">Generate OpenAPI spec</span>
+                    <p class="text-sm text-gray-400">Create OpenAPI/Swagger specification file</p>
+                  </div>
+                  <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- UI Preferences -->
+            <div class="border-t border-gray-700 pt-6">
+              <h4 class="text-lg font-bold mb-4">🎨 Interface</h4>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium mb-2">Theme</label>
+                  <select class="bg-gray-800 border border-gray-600 rounded px-3 py-2">
+                    <option>5 seconds</option>
+                    <option>10 seconds</option>
+                    <option selected>30 seconds</option>
+                    <option>1 minute</option>
+                    <option>5 minutes</option>
+                    <option>Manual only</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-2">Documentation scan interval</label>
+                  <select class="bg-gray-800 border border-gray-600 rounded px-3 py-2">
+                    <option>Real-time</option>
+                    <option selected>30 seconds</option>
+                    <option>1 minute</option>
+                    <option>5 minutes</option>
+                    <option>Manual only</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security Settings -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-bold mb-6">🛡️ Security & Privacy</h3>
+          
+          <div class="space-y-6">
+            <!-- Access Control -->
+            <div>
+              <h4 class="text-lg font-bold mb-4">🔒 Access Control</h4>
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-medium">Require authentication</span>
+                    <p class="text-sm text-gray-400">Protect documentation with login</p>
+                  </div>
+                  <div class="toggle-switch" onclick="toggleSwitch(this)"></div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-medium">IP whitelist</span>
+                    <p class="text-sm text-gray-400">Restrict access to specific IP addresses</p>
+                  </div>
+                  <div class="toggle-switch" onclick="toggleSwitch(this)"></div>
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium mb-2">Allowed IPs (comma separated)</label>
+                  <input type="text" placeholder="192.168.1.0/24, 10.0.0.1" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2" disabled>
+                </div>
+              </div>
+            </div>
+
+            <!-- Data Privacy -->
+            <div class="border-t border-gray-700 pt-6">
+              <h4 class="text-lg font-bold mb-4">🔐 Data Privacy</h4>
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-medium">Hide sensitive data</span>
+                    <p class="text-sm text-gray-400">Mask passwords, tokens, and keys in docs</p>
+                  </div>
+                  <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-medium">Anonymize logs</span>
+                    <p class="text-sm text-gray-400">Remove personal identifiers from metrics</p>
+                  </div>
+                  <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium mb-2">Sensitive fields (to mask)</label>
+                  <input type="text" value="password, token, secret, key" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2">
+                </div>
+              </div>
+            </div>
+
+            <!-- CORS Settings -->
+            <div class="border-t border-gray-700 pt-6">
+              <h4 class="text-lg font-bold mb-4">🌐 CORS</h4>
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-medium">Enable CORS</span>
+                    <p class="text-sm text-gray-400">Allow cross-origin requests to documentation</p>
+                  </div>
+                  <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium mb-2">Allowed origins</label>
+                  <input type="text" value="*" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-bold mb-6">🔔 Notifications & Alerts</h3>
+          
+          <div class="space-y-6">
+            <!-- Alert Types -->
+            <div>
+              <h4 class="text-lg font-bold mb-4">⚠️ Alert Types</h4>
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-medium">High error rate</span>
+                    <p class="text-sm text-gray-400">Alert when error rate exceeds threshold</p>
+                  </div>
+                  <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-medium">Slow response times</span>
+                    <p class="text-sm text-gray-400">Alert when endpoints respond slowly</p>
+                  </div>
+                  <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-medium">System resource usage</span>
+                    <p class="text-sm text-gray-400">Alert on high CPU/memory usage</p>
+                  </div>
+                  <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-medium">Security events</span>
+                    <p class="text-sm text-gray-400">Alert on failed logins, rate limits, etc.</p>
+                  </div>
+                  <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Alert Thresholds -->
+            <div class="border-t border-gray-700 pt-6">
+              <h4 class="text-lg font-bold mb-4">🎯 Thresholds</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium mb-2">Error rate threshold (%)</label>
+                  <input type="number" value="5" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-2">Response time threshold (ms)</label>
+                  <input type="number" value="1000" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-2">CPU usage threshold (%)</label>
+                  <input type="number" value="80" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-2">Memory usage threshold (%)</label>
+                  <input type="number" value="85" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2">
+                </div>
+              </div>
+            </div>
+
+            <!-- Notification Channels -->
+            <div class="border-t border-gray-700 pt-6">
+              <h4 class="text-lg font-bold mb-4">📢 Channels</h4>
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-medium">Email notifications</span>
+                    <p class="text-sm text-gray-400">Send alerts via email</p>
+                  </div>
+                  <div class="toggle-switch" onclick="toggleSwitch(this)"></div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-medium">Slack integration</span>
+                    <p class="text-sm text-gray-400">Post alerts to Slack channel</p>
+                  </div>
+                  <div class="toggle-switch" onclick="toggleSwitch(this)"></div>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-medium">Discord webhook</span>
+                    <p class="text-sm text-gray-400">Send alerts to Discord server</p>
+                  </div>
+                  <div class="toggle-switch" onclick="toggleSwitch(this)"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Export/Import -->
+        <div class="glass rounded-xl p-6">
+          <h3 class="text-xl font-bold mb-6">📤 Export & Import</h3>
+          
+          <div class="space-y-6">
+            <!-- Export Options -->
+            <div>
+              <h4 class="text-lg font-bold mb-4">📋 Export Documentation</h4>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button class="p-4 border border-gray-600 rounded hover:border-labstart-500 hover:bg-labstart-500/10 transition-colors">
+                  <div class="text-center">
+                    <div class="text-2xl mb-2">📄</div>
+                    <div class="font-bold">HTML</div>
+                    <div class="text-sm text-gray-400">Static website</div>
+                  </div>
+                </button>
+                
+                <button class="p-4 border border-gray-600 rounded hover:border-labstart-500 hover:bg-labstart-500/10 transition-colors">
+                  <div class="text-center">
+                    <div class="text-2xl mb-2">📊</div>
+                    <div class="font-bold">PDF</div>
+                    <div class="text-sm text-gray-400">Printable document</div>
+                  </div>
+                </button>
+                
+                <button class="p-4 border border-gray-600 rounded hover:border-labstart-500 hover:bg-labstart-500/10 transition-colors">
+                  <div class="text-center">
+                    <div class="text-2xl mb-2">🔧</div>
+                    <div class="font-bold">OpenAPI</div>
+                    <div class="text-sm text-gray-400">Swagger spec</div>
+                  </div>
+                </button>
+                
+                <button class="p-4 border border-gray-600 rounded hover:border-labstart-500 hover:bg-labstart-500/10 transition-colors">
+                  <div class="text-center">
+                    <div class="text-2xl mb-2">📋</div>
+                    <div class="font-bold">Postman</div>
+                    <div class="text-sm text-gray-400">Collection file</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Import Settings -->
+            <div class="border-t border-gray-700 pt-6">
+              <h4 class="text-lg font-bold mb-4">📥 Import Configuration</h4>
+              <div class="space-y-4">
+                <div class="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center hover:border-labstart-500 transition-colors cursor-pointer">
+                  <div class="text-4xl mb-4">📁</div>
+                  <div class="font-bold mb-2">Drop configuration file here</div>
+                  <div class="text-sm text-gray-400 mb-4">or click to browse</div>
+                  <button class="bg-labstart-600 hover:bg-labstart-700 px-4 py-2 rounded transition-colors">
+                    Choose File
+                  </button>
+                </div>
+                
+                <div class="text-sm text-gray-400">
+                  Supported formats: JSON, YAML, LabStart config (.labstart)
+                </div>
+              </div>
+            </div>
+
+            <!-- Backup Settings -->
+            <div class="border-t border-gray-700 pt-6">
+              <h4 class="text-lg font-bold mb-4">💾 Backup & Restore</h4>
+              <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="font-medium">Auto-backup settings</span>
+                    <p class="text-sm text-gray-400">Automatically backup configuration daily</p>
+                  </div>
+                  <div class="toggle-switch active" onclick="toggleSwitch(this)"></div>
+                </div>
+                
+                <div class="flex space-x-3">
+                  <button class="flex-1 bg-green-600 hover:bg-green-700 px-4 py-2 rounded transition-colors">
+                    💾 Create Backup
+                  </button>
+                  <button class="flex-1 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded transition-colors">
+                    🔄 Restore from Backup
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Save/Reset Actions -->
+        <div class="glass rounded-xl p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-lg font-bold">💾 Save Configuration</h3>
+              <p class="text-sm text-gray-400">Changes will be applied immediately</p>
+            </div>
+            <div class="flex space-x-3">
+              <button class="bg-gray-700 hover:bg-gray-600 px-6 py-2 rounded transition-colors">
+                ↶ Discard Changes
+              </button>
+              <button class="bg-labstart-600 hover:bg-labstart-700 px-6 py-2 rounded transition-colors">
+                ✅ Save All Settings
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleSwitch(element) {
+      element.classList.toggle('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Settings navigation
+      const navLinks = document.querySelectorAll('nav a');
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Remove active class from all links
+          navLinks.forEach(l => {
+            l.classList.remove('bg-labstart-600', 'text-white');
+            l.classList.add('hover:bg-gray-700');
+          });
+          
+          // Add active class to clicked link
+          this.classList.add('bg-labstart-600', 'text-white');
+          this.classList.remove('hover:bg-gray-700');
+          
+          // Simulate content change
+          if (this.textContent.includes('API Configuration')) {
+            alert('🔄 Loading API Configuration settings...');
+          } else if (this.textContent.includes('Monitoring')) {
+            alert('📊 Loading Monitoring settings...');
+          } else if (this.textContent.includes('Security')) {
+            alert('🛡️ Loading Security settings...');
+          }
+        });
+      });
+
+      // Export buttons
+      const exportButtons = document.querySelectorAll('button');
+      exportButtons.forEach(btn => {
+        if (btn.textContent.includes('HTML')) {
+          btn.addEventListener('click', () => alert('📄 Exporting HTML documentation...'));
+        } else if (btn.textContent.includes('PDF')) {
+          btn.addEventListener('click', () => alert('📊 Generating PDF documentation...'));
+        } else if (btn.textContent.includes('OpenAPI')) {
+          btn.addEventListener('click', () => alert('🔧 Exporting OpenAPI specification...'));
+        } else if (btn.textContent.includes('Postman')) {
+          btn.addEventListener('click', () => alert('📋 Generating Postman collection...'));
+        }
+      });
+
+      // Save settings
+      document.querySelector('button:contains("Save All Settings")').addEventListener('click', function() {
+        // Show loading state
+        this.textContent = '⏳ Saving...';
+        this.disabled = true;
+        
+        setTimeout(() => {
+          this.textContent = '✅ Saved!';
+          setTimeout(() => {
+            this.textContent = '✅ Save All Settings';
+            this.disabled = false;
+          }, 1500);
+        }, 1000);
+      });
+    });
+  </script>
+</body>
+</html>
