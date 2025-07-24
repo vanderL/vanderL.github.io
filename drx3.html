@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Inteligente - TikTok Banned Detector</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="flex items-center justify-between px-6 py-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-ban text-white text-sm"></i>
+                </div>
+                <span class="font-semibold text-xl text-gray-900">TikTok Banned Detector</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <i class="fas fa-bell text-gray-500 text-lg cursor-pointer"></i>
+                    <div class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+                        <span class="text-white text-sm font-medium">AD</span>
+                    </div>
+                    <span class="text-gray-700 font-medium">Admin</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-sm min-h-screen">
+            <nav class="p-4 space-y-2">
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                    <i class="fas fa-chart-bar text-purple-600"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                    <i class="fas fa-search"></i>
+                    <span>Nova Sessão</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                    <i class="fas fa-history"></i>
+                    <span>Histórico</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                    <i class="fas fa-ban"></i>
+                    <span>Contas Banidas</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                    <i class="fas fa-rocket"></i>
+                    <span>Contas Potenciais</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 bg-purple-100 text-purple-700 rounded-lg">
+                    <i class="fas fa-brain"></i>
+                    <span>Scan Inteligente</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Relatórios</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6">
+            <!-- Page Header -->
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold text-gray-900 mb-2">Scan Inteligente</h1>
+                <p class="text-gray-600">Configure critérios avançados para encontrar contas banidas com maior potencial</p>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600 mb-1">Contas Elegíveis</p>
+                            <p class="text-2xl font-bold text-gray-900">156</p>
+                            <p class="text-sm text-green-600 mt-1">
+                                <i class="fas fa-filter mr-1"></i>
+                                Com critérios atuais
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-users text-blue-600 text-lg"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600 mb-1">Taxa de Sucesso</p>
+                            <p class="text-2xl font-bold text-gray-900">12.8%</p>
+                            <p class="text-sm text-green-600 mt-1">
+                                <i class="fas fa-arrow-up mr-1"></i>
+                                +3.2% vs scan normal
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-percentage text-green-600 text-lg"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600 mb-1">Custo Estimado</p>
+                            <p class="text-2xl font-bold text-gray-900">R$ 12.40</p>
+                            <p class="text-sm text-blue-600 mt-1">
+                                <i class="fas fa-calculator mr-1"></i>
+                                Para scan completo
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-dollar-sign text-yellow-600 text-lg"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600 mb-1">ROI Previsto</p>
+                            <p class="text-2xl font-bold text-gray-900">320%</p>
+                            <p class="text-sm text-green-600 mt-1">
+                                <i class="fas fa-chart-line mr-1"></i>
+                                Baseado no histórico
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-trophy text-purple-600 text-lg"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration Cards -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Criteria Configuration -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900">Critérios de Seleção</h3>
+                        <button class="text-purple-600 hover:text-purple-700 text-sm font-medium">
+                            <i class="fas fa-sync-alt mr-1"></i>
+                            Resetar
+                        </button>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Followers Range -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Número de Seguidores</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs text-gray-500 mb-1">Mínimo</label>
+                                    <input type="number" value="100000" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500 mb-1">Máximo</label>
+                                    <input type="number" value="5000000" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Growth Rate -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Taxa de Crescimento (30 dias)</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button class="py-2 px-3 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">Qualquer</button>
+                                <button class="py-2 px-3 text-sm bg-purple-600 text-white rounded-lg">≥ 5%</button>
+                                <button class="py-2 px-3 text-sm border border-gray-300 rounded-lg hover:bg-gray-50">≥ 10%</button>
+                            </div>
+                            <div class="mt-2">
+                                <input type="range" min="0" max="20" value="5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider">
+                                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                    <span>0%</span>
+                                    <span>10%</span>
+                                    <span>20%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Account Categories -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Categorias</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" checked class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                                    <span class="ml-2 text-sm text-gray-700">Influencers</span>
+                                    <span class="ml-auto text-xs text-gray-500">89 contas</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" checked class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                                    <span class="ml-2 text-sm text-gray-700">Criadores de Conteúdo</span>
+                                    <span class="ml-auto text-xs text-gray-500">67 contas</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                                    <span class="ml-2 text-sm text-gray-700">Empresas</span>
+                                    <span class="ml-auto text-xs text-gray-500">23 contas</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" checked class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                                    <span class="ml-2 text-sm text-gray-700">Celebridades</span>
+                                    <span class="ml-auto text-xs text-gray-500">12 contas</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Engagement Rate -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Taxa de Engajamento</label>
+                            <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                <option>Qualquer taxa</option>
+                                <option>≥ 2% (Alta)</option>
+                                <option>≥ 5% (Muito Alta)</option>
+                                <option>≥ 10% (Excepcional)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Settings -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-6">Configurações Avançadas</h3>
+
+                    <div class="space-y-6">
+                        <!-- Priority Score -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Score Mínimo de Prioridade</label>
+                            <div class="relative">
+                                <input type="range" min="50" max="100" value="75" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider" id="priorityScore">
+                                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                    <span>50</span>
+                                    <span>75</span>
+                                    <span>100</span>
+                                </div>
+                                <div class="text-center mt-2">
+                                    <span class="text-lg font-bold text-purple-600" id="scoreValue">75</span>
+                                    <span class="text-sm text-gray-500">pontos</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Scan Strategy -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Estratégia de Scan</label>
+                            <div class="space-y-3">
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="strategy" value="balanced" checked class="text-purple-600 focus:ring-purple-500">
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-gray-900">Balanceada</p>
+                                        <p class="text-xs text-gray-500">Combina velocidade e precisão</p>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="strategy" value="fast" class="text-purple-600 focus:ring-purple-500">
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-gray-900">Rápida</p>
+                                        <p class="text-xs text-gray-500">Prioriza velocidade sobre precisão</p>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="radio" name="strategy" value="thorough" class="text-purple-600 focus:ring-purple-500">
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-gray-900">Meticulosa</p>
+                                        <p class="text-xs text-gray-500">Máxima precisão, pode ser mais lenta</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Stop Conditions -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Condições de Parada</label>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Parar ao encontrar</p>
+                                        <p class="text-xs text-gray-500">Número de contas banidas</p>
+                                    </div>
+                                    <input type="number" value="5" min="1" max="50" class="w-16 border border-gray-300 rounded px-2 py-1 text-sm text-center focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Tempo máximo</p>
+                                        <p class="text-xs text-gray-500">Duração em minutos</p>
+                                    </div>
+                                    <input type="number" value="60" min="10" max="300" class="w-16 border border-gray-300 rounded px-2 py-1 text-sm text-center focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">Custo máximo</p>
+                                        <p class="text-xs text-gray-500">Limite de gastos (R$)</p>
+                                    </div>
+                                    <input type="number" value="25" min="5" max="100" step="0.50" class="w-16 border border-gray-300 rounded px-2 py-1 text-sm text-center focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview Section -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Preview de Contas Selecionadas</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                    <!-- Preview Card 1 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center">
+                                <span class="text-white text-xs font-medium">GK</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">@gkay</p>
+                                <p class="text-xs text-gray-500">2.8M seguidores</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">Score: 92</span>
+                            <span class="text-xs text-green-600">+12.5%</span>
+                        </div>
+                    </div>
+
+                    <!-- Preview Card 2 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center">
+                                <span class="text-white text-xs font-medium">VF</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">@viihfigueiredo</p>
+                                <p class="text-xs text-gray-500">1.2M seguidores</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Score: 78</span>
+                            <span class="text-xs text-green-600">+8.3%</span>
+                        </div>
+                    </div>
+
+                    <!-- Preview Card 3 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-400 rounded-full flex items-center justify-center">
+                                <span class="text-white text-xs font-medium">MS</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">@maisa</p>
+                                <p class="text-xs text-gray-500">3.5M seguidores</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">Score: 95</span>
+                            <span class="text-xs text-green-600">+15.2%</span>
+                        </div>
+                    </div>
+
+                    <!-- Preview Card 4 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center">
+                                <span class="text-white text-xs font-medium">JP</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">@jpablooficial</p>
+                                <p class="text-xs text-gray-500">890K seguidores</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">Score: 84</span>
+                            <span class="text-xs text-green-600">+22.8%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button class="text-purple-600 hover:text-purple-700 text-sm font-medium">
+                        <i class="fas fa-eye mr-1"></i>
+                        Ver todas as 156 contas selecionadas
+                    </button>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">Pronto para Iniciar?</h3>
+                        <p class="text-sm text-gray-600 mt-1">O scan será executado com base nos critérios configurados</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                            <i class="fas fa-save mr-2"></i>
+                            Salvar Configuração
+                        </button>
+                        <button class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-eye mr-2"></i>
+                            Preview Completo
+                        </button>
+                        <button class="px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium">
+                            <i class="fas fa-rocket mr-2"></i>
+                            Iniciar Scan Inteligente
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Scan Progress (Hidden by default) -->
+            <div id="scanProgress" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+                <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 p-8">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-brain text-purple-600 text-2xl animate-pulse"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900">Scan Inteligente em Progresso</h3>
+                        <p class="text-gray-600 mt-2">Analisando contas com base nos critérios definidos...</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Progress Bar -->
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-2">
+                                <span>Progresso</span>
+                                <span id="progressPercent">23%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3">
+                                <div class="bg-purple-600 h-3 rounded-full transition-all duration-500" style="width: 23%" id="progressBar"></div>
+                            </div>
+                        </div>
+
+                        <!-- Live Stats -->
+                        <div class="grid grid-cols-3 gap-4 py-4">
+                            <div class="text-center">
+                                <p class="text-2xl font-bold text-gray-900" id="checkedCount">36</p>
+                                <p class="text-sm text-gray-600">Verificadas</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-2xl font-bold text-red-600" id="bannedCount">3</p>
+                                <p class="text-sm text-gray-600">Banidas</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-2xl font-bold text-green-600" id="costCount">R$ 2.84</p>
+                                <p class="text-sm text-gray-600">Custo</p>
+                            </div>
+                        </div>
+
+                        <!-- Current Action -->
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <p class="text-sm font-medium text-gray-900">Verificando agora:</p>
+                            <p class="text-sm text-gray-600" id="currentAccount">@gkay - Gessica Kayane (2.8M seguidores)</p>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex justify-center space-x-3 pt-4">
+                            <button class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                                <i class="fas fa-pause mr-2"></i>
+                                Pausar
+                            </button>
+                            <button class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700" onclick="closeScanProgress()">
+                                <i class="fas fa-stop mr-2"></i>
+                                Parar Scan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Priority Score Slider
+        const prioritySlider = document.getElementById('priorityScore');
+        const scoreValue = document.getElementById('scoreValue');
+        
+        prioritySlider.addEventListener('input', function() {
+            scoreValue.textContent = this.value;
+        });
+
+        // Simulate Scan Progress
+        function startScan() {
+            document.getElementById('scanProgress').classList.remove('hidden');
+            
+            let progress = 0;
+            let checked = 0;
+            let banned = 0;
+            let cost = 0.00;
+            
+            const accounts = [
+                '@gkay - Gessica Kayane (2.8M seguidores)',
+                '@viihfigueiredo - Virginia Figueiredo (1.2M seguidores)',
+                '@maisa - Maisa Silva (3.5M seguidores)',
+                '@luisasonza - Luísa Sonza (4.1M seguidores)',
+                '@jpablooficial - João Paulo (890K seguidores)',
+                '@whindersson - Whindersson Nunes (15.2M seguidores)',
+                '@virginiafonseca - Virginia Fonseca (8.7M seguidores)',
+                '@biancaandrade - Bianca Andrade (6.3M seguidores)'
+            ];
+            
+            const interval = setInterval(() => {
+                progress += Math.random() * 8 + 2; // 2-10% increments
+                checked += Math.floor(Math.random() * 3) + 1; // 1-3 accounts per update
+                cost += Math.random() * 0.15 + 0.05; // R$ 0.05-0.20 per update
+                
+                // Sometimes find a banned account
+                if (Math.random() < 0.15) {
+                    banned++;
+                }
+                
+                // Update UI
+                document.getElementById('progressPercent').textContent = Math.min(progress, 100).toFixed(0) + '%';
+                document.getElementById('progressBar').style.width = Math.min(progress, 100) + '%';
+                document.getElementById('checkedCount').textContent = checked;
+                document.getElementById('bannedCount').textContent = banned;
+                document.getElementById('costCount').textContent = 'R$ ' + cost.toFixed(2);
+                document.getElementById('currentAccount').textContent = accounts[Math.floor(Math.random() * accounts.length)];
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        showScanComplete(checked, banned, cost);
+                    }, 2000);
+                }
+            }, 800);
+        }
+
+        function showScanComplete(checked, banned, cost) {
+            const modal = document.getElementById('scanProgress');
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 p-8">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-check-circle text-green-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900">Scan Concluído com Sucesso!</h3>
+                        <p class="text-gray-600 mt-2">O scan inteligente foi finalizado. Aqui estão os resultados:</p>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-6 mb-6">
+                        <div class="text-center p-4 bg-blue-50 rounded-lg">
+                            <p class="text-2xl font-bold text-blue-600">${checked}</p>
+                            <p class="text-sm text-gray-600">Contas Verificadas</p>
+                        </div>
+                        <div class="text-center p-4 bg-red-50 rounded-lg">
+                            <p class="text-2xl font-bold text-red-600">${banned}</p>
+                            <p class="text-sm text-gray-600">Contas Banidas</p>
+                        </div>
+                        <div class="text-center p-4 bg-green-50 rounded-lg">
+                            <p class="text-2xl font-bold text-green-600">R$ ${cost.toFixed(2)}</p>
+                            <p class="text-sm text-gray-600">Custo Total</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                        <h4 class="font-medium text-gray-900 mb-2">Resumo do Resultado:</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Taxa de sucesso: ${((banned/checked)*100).toFixed(1)}%</li>
+                            <li>• Custo por verificação: R$ ${(cost/checked).toFixed(3)}</li>
+                            <li>• ROI estimado: ${(banned * 150).toFixed(0)}%</li>
+                            <li>• Tempo total: ${Math.floor(Math.random() * 15 + 5)} minutos</li>
+                        </ul>
+                    </div>
+
+                    <div class="flex justify-center space-x-3">
+                        <button onclick="closeScanProgress()" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                            Fechar
+                        </button>
+                        <button class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+                            <i class="fas fa-eye mr-2"></i>
+                            Ver Contas Banidas
+                        </button>
+                        <button class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                            <i class="fas fa-download mr-2"></i>
+                            Exportar Relatório
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function closeScanProgress() {
+            document.getElementById('scanProgress').classList.add('hidden');
+        }
+
+        // Attach event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Start scan button
+            const startButton = document.querySelector('button[class*="bg-purple-600"][class*="px-8"]');
+            if (startButton) {
+                startButton.addEventListener('click', startScan);
+            }
+
+            // Update preview count when criteria change
+            const inputs = document.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.addEventListener('change', updatePreview);
+            });
+        });
+
+        function updatePreview() {
+            // Simulate updating the preview based on criteria
+            const baseCount = 247;
+            const followers = document.querySelector('input[value="100000"]').value;
+            const growth = document.querySelector('input[type="range"]').value;
+            
+            // Simple calculation for demo
+            let filteredCount = baseCount;
+            if (followers > 500000) filteredCount *= 0.6;
+            if (growth > 10) filteredCount *= 0.4;
+            
+            filteredCount = Math.floor(filteredCount);
+            
+            // Update the stats
+            document.querySelector('.text-2xl.font-bold.text-gray-900').textContent = filteredCount;
+            
+            // Update cost estimate
+            const costPerCheck = 0.08;
+            const estimatedCost = (filteredCount * costPerCheck).toFixed(2);
+            document.querySelectorAll('.text-2xl.font-bold.text-gray-900')[2].textContent = `R$ ${estimatedCost}`;
+        }
+
+        // Initialize tooltips and interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effects to preview cards
+            const previewCards = document.querySelectorAll('.border.border-gray-200.rounded-lg.p-4');
+            previewCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.classList.add('border-purple-300', 'shadow-md');
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.classList.remove('border-purple-300', 'shadow-md');
+                });
+            });
+
+            // Smooth scrolling for preview button
+            const previewButton = document.querySelector('button[class*="text-purple-600"]');
+            if (previewButton) {
+                previewButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Could open a modal or scroll to a section
+                    alert('Funcionalidade de preview completo - seria implementada aqui');
+                });
+            }
+        });
+
+        // Save configuration functionality
+        function saveConfiguration() {
+            const config = {
+                followers: {
+                    min: document.querySelector('input[value="100000"]').value,
+                    max: document.querySelector('input[value="5000000"]').value
+                },
+                growth: document.querySelector('input[type="range"]').value,
+                categories: Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.nextElementSibling.textContent.trim()),
+                priorityScore: document.getElementById('priorityScore').value,
+                strategy: document.querySelector('input[name="strategy"]:checked').value
+            };
+            
+            localStorage.setItem('smartScanConfig', JSON.stringify(config));
+            
+            // Show success message
+            const button = event.target;
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check mr-2"></i>Salvo!';
+            button.classList.remove('border-gray-300', 'text-gray-700');
+            button.classList.add('border-green-300', 'text-green-700', 'bg-green-50');
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.classList.add('border-gray-300', 'text-gray-700');
+                button.classList.remove('border-green-300', 'text-green-700', 'bg-green-50');
+            }, 2000);
+        }
+
+        // Load saved configuration
+        function loadConfiguration() {
+            const saved = localStorage.getItem('smartScanConfig');
+            if (saved) {
+                const config = JSON.parse(saved);
+                
+                // Apply saved settings
+                if (config.followers) {
+                    document.querySelector('input[value="100000"]').value = config.followers.min;
+                    document.querySelector('input[value="5000000"]').value = config.followers.max;
+                }
+                if (config.growth) {
+                    document.querySelector('input[type="range"]').value = config.growth;
+                }
+                if (config.priorityScore) {
+                    document.getElementById('priorityScore').value = config.priorityScore;
+                    document.getElementById('scoreValue').textContent = config.priorityScore;
+                }
+            }
+        }
+
+        // Load configuration on page load
+        document.addEventListener('DOMContentLoaded', loadConfiguration);
+    </script>
+</body>
+</html>
