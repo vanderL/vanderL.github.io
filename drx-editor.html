@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRX AI - Assistente de Redação</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: #0a1628;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            padding: 24px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #0a1628;
+            font-size: 20px;
+            letter-spacing: -1px;
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.8px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .save-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .save-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .export-btn {
+            background: white;
+            color: #0a1628;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .export-btn:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-1px);
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 12px 24px;
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0a1628;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .breadcrumb {
+            padding: 24px 48px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .breadcrumb-separator {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .breadcrumb-current {
+            color: white;
+            font-weight: 500;
+        }
+
+        .main-container {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 320px 1fr 340px;
+            height: calc(100vh - 140px);
+        }
+
+        .left-sidebar {
+            background: rgba(255, 255, 255, 0.02);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            margin-bottom: 32px;
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: white;
+        }
+
+        .template-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .template-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .template-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        .template-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .template-description {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.4;
+        }
+
+        .document-info {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .info-value {
+            color: white;
+            font-weight: 500;
+        }
+
+        .editor-container {
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.02);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .editor-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 24px;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .document-title {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .document-title:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .document-title::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .toolbar-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .toolbar-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .toolbar-btn.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .editor-content {
+            flex: 1;
+            padding: 32px 48px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .editor {
+            background: white;
+            color: #333;
+            min-height: 100%;
+            padding: 48px;
+            border-radius: 16px;
+            font-family: 'Times New Roman', serif;
+            font-size: 14px;
+            line-height: 1.8;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .editor:focus {
+            outline: none;
+        }
+
+        .editor h1 {
+            text-align: center;
+            margin-bottom: 32px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .editor h2 {
+            margin: 24px 0 16px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .editor p {
+            margin-bottom: 16px;
+            text-align: justify;
+        }
+
+        .suggestion-highlight {
+            background: rgba(255, 193, 7, 0.2);
+            border-bottom: 2px dashed #FFC107;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .right-sidebar {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .ai-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .ai-panel-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-indicator {
+            width: 8px;
+            height: 8px;
+            background: #4CAF50;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .suggestion-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .suggestion-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .suggestion-type {
+            font-size: 12px;
+            color: #4CAF50;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .suggestion-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .suggestion-action {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .word-count {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .count-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .count-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .count-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .count-value {
+            color: white;
+            font-weight: 600;
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .floating-suggestion {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            max-width: 300px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+        }
+
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 280px 1fr 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 16px 24px;
+            }
+
+            .breadcrumb {
+                padding: 16px 24px;
+            }
+
+            .main-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .left-sidebar, .right-sidebar {
+                display: none;
+            }
+
+            .editor-content {
+                padding: 24px;
+            }
+
+            .editor {
+                padding: 32px 24px;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .typing-indicator {
+            display: inline-block;
+            width: 4px;
+            height: 16px;
+            background: #4CAF50;
+            animation: typing 1s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes typing {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">DRX</div>
+            <div class="logo-text">Legal AI</div>
+        </div>
+        <div class="header-actions">
+            <button class="save-btn" id="saveBtn">Salvar</button>
+            <button class="export-btn" id="exportBtn">Exportar</button>
+            <div class="user-section">
+                <div class="user-avatar">Dr</div>
+                <span>Dr. Advogado</span>
+            </div>
+        </div>
+    </header>
+
+    <nav class="breadcrumb">
+        <div class="breadcrumb-item">
+            <span>Início</span>
+        </div>
+        <span class="breadcrumb-separator">›</span>
+        <div class="breadcrumb-item">
+            <span>Selecionar Serviço</span>
+        </div>
+        <span class="breadcrumb-separator">›</span>
+        <div class="breadcrumb-item breadcrumb-current">
+            <span>Assistente de Redação</span>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <aside class="left-sidebar">
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Templates</h3>
+                <div class="template-item active" data-template="petition">
+                    <div class="template-name">Petição Inicial</div>
+                    <div class="template-description">Modelo padrão para petições iniciais com estrutura completa</div>
+                </div>
+                <div class="template-item" data-template="contract">
+                    <div class="template-name">Contrato de Serviços</div>
+                    <div class="template-description">Template para contratos de prestação de serviços jurídicos</div>
+                </div>
+                <div class="template-item" data-template="opinion">
+                    <div class="template-name">Parecer Jurídico</div>
+                    <div class="template-description">Estrutura para pareceres técnicos e análises legais</div>
+                </div>
+                <div class="template-item" data-template="appeal">
+                    <div class="template-name">Recurso</div>
+                    <div class="template-description">Modelo para recursos e apelações judiciais</div>
+                </div>
+                <div class="template-item" data-template="agreement">
+                    <div class="template-name">Acordo Extrajudicial</div>
+                    <div class="template-description">Template para acordos e transações</div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Informações</h3>
+                <div class="document-info">
+                    <div class="info-item">
+                        <span class="info-label">Tipo:</span>
+                        <span class="info-value">Petição Inicial</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Status:</span>
+                        <span class="info-value">Rascunho</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Criado:</span>
+                        <span class="info-value">Hoje</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Última edição:</span>
+                        <span class="info-value">15:34</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="editor-container">
+            <div class="editor-toolbar">
+                <input type="text" class="document-title" placeholder="Título do documento..." value="Petição Inicial - Cliente ABC">
+                <button class="toolbar-btn" title="Negrito" id="boldBtn"><strong>B</strong></button>
+                <button class="toolbar-btn" title="Itálico" id="italicBtn"><em>I</em></button>
+                <button class="toolbar-btn" title="Sublinhado" id="underlineBtn"><u>U</u></button>
+                <button class="toolbar-btn" title="Lista" id="listBtn">•</button>
+                <button class="toolbar-btn" title="Alinhar" id="alignBtn">≡</button>
+            </div>
+
+            <div class="editor-content">
+                <div class="editor" contenteditable="true" id="mainEditor">
+                    <h1>PETIÇÃO INICIAL</h1>
+                    
+                    <p><strong>EXCELENTÍSSIMO(A) SENHOR(A) DOUTOR(A) JUIZ(A) DE DIREITO DA __ª VARA CÍVEL DA COMARCA DE ________________</strong></p>
+                    
+                    <p><strong>[NOME DO REQUERENTE]</strong>, [nacionalidade], [estado civil], [profissão], portador(a) da Cédula de Identidade RG nº [número], inscrito(a) no CPF sob o nº [número], residente e domiciliado(a) à [endereço completo], por intermédio de seu advogado que esta subscreve, vem respeitosamente à presença de Vossa Excelência, com fundamento nos artigos <span class="suggestion-highlight" data-suggestion="Sugestão: Considere citar os artigos 319 e seguintes do CPC/2015">319 e seguintes do Código de Processo Civil</span>, propor a presente</p>
+
+                    <h2>AÇÃO DE [TIPO DA AÇÃO]</h2>
+
+                    <p>em face de <strong>[NOME DO REQUERIDO]</strong>, [qualificação completa], pelos fatos e fundamentos jurídicos a seguir expostos:</p>
+
+                    <h2>I - DOS FATOS</h2>
+
+                    <p>O requerente vem expor que <span class="suggestion-highlight" data-suggestion="Sugestão: Detalhe melhor os fatos relevantes para o caso">[descrever detalhadamente os fatos que deram origem ao direito pleiteado]</span>.</p>
+
+                    <p>Conforme se verifica dos documentos anexos, <span class="typing-indicator"></span></p>
+                </div>
+
+                <div class="floating-suggestion" id="floatingSuggestion">
+                    <strong>Sugestão da IA:</strong><br>
+                    <span id="suggestionText"></span>
+                </div>
+            </div>
+        </div>
+
+        <aside class="right-sidebar">
+            <div class="ai-panel">
+                <h3 class="ai-panel-title">
+                    <span class="ai-indicator"></span>
+                    Assistente IA
+                </h3>
+                
+                <div class="suggestion-item" onclick="applySuggestion(this)">
+                    <div class="suggestion-type">Estrutura</div>
+                    <div class="suggestion-text">Adicione uma seção "DO DIREITO" após os fatos para fundamentar juridicamente o pedido.</div>
+                    <div class="suggestion-action">Clique para aplicar</div>
+                </div>
+
+                <div class="suggestion-item" onclick="applySuggestion(this)">
+                    <div class="suggestion-type">Linguagem</div>
+                    <div class="suggestion-text">Considere usar "impende salientar" em vez de "é importante mencionar" para linguagem mais técnica.</div>
+                    <div class="suggestion-action">Clique para aplicar</div>
+                </div>
+
+                <div class="suggestion-item" onclick="applySuggestion(this)">
+                    <div class="suggestion-type">Jurisprudência</div>
+                    <div class="suggestion-text">Encontrei 3 precedentes relevantes do STJ sobre este tema. Deseja incluir?</div>
+                    <div class="suggestion-action">Ver precedentes</div>
+                </div>
+            </div>
+
+            <div class="ai-panel">
+                <h3 class="ai-panel-title">Estatísticas</h3>
+                <div class="word-count">
+                    <div class="count-item">
+                        <span class="count-label">Palavras:</span>
+                        <span class="count-value" id="wordCount">127</span>
+                    </div>
+                    <div class="count-item">
+                        <span class="count-label">Caracteres:</span>
+                        <span class="count-value" id="charCount">892</span>
+                    </div>
+                    <div class="count-item">
+                        <span class="count-label">Parágrafos:</span>
+                        <span class="count-value" id="paragraphCount">6</span>
+                    </div>
+                    <div class="count-item">
+                        <span class="count-label">Tempo de leitura:</span>
+                        <span class="count-value">1 min</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ai-panel">
+                <h3 class="ai-panel-title">Ações Rápidas</h3>
+                <div class="quick-actions">
+                    <button class="action-btn" onclick="checkGrammar()">🔍 Verificar Gramática</button>
+                    <button class="action-btn" onclick="formatDocument()">📝 Formatar Documento</button>
+                    <button class="action-btn" onclick="addCitations()">📚 Adicionar Citações</button>
+                    <button class="action-btn" onclick="generateSummary()">📋 Gerar Resumo</button>
+                    <button class="action-btn" onclick="translateText()">🌐 Traduzir Trecho</button>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        const editor = document.getElementById('mainEditor');
+        const wordCountEl = document.getElementById('wordCount');
+        const charCountEl = document.getElementById('charCount');
+        const paragraphCountEl = document.getElementById('paragraphCount');
+        const floatingSuggestion = document.getElementById('floatingSuggestion');
+
+        // Template data
+        const templates = {
+            petition: {
+                title: "Petição Inicial - Cliente ABC",
+                content: `<h1>PETIÇÃO INICIAL</h1>
+                    
+                    <p><strong>EXCELENTÍSSIMO(A) SENHOR(A) DOUTOR(A) JUIZ(A) DE DIREITO DA __ª VARA CÍVEL DA COMARCA DE ________________</strong></p>
+                    
+                    <p><strong>[NOME DO REQUERENTE]</strong>, [nacionalidade], [estado civil], [profissão], portador(a) da Cédula de Identidade RG nº [número], inscrito(a) no CPF sob o nº [número], residente e domiciliado(a) à [endereço completo], por intermédio de seu advogado que esta subscreve, vem respeitosamente à presença de Vossa Excelência, com fundamento nos artigos <span class="suggestion-highlight" data-suggestion="Sugestão: Considere citar os artigos 319 e seguintes do CPC/2015">319 e seguintes do Código de Processo Civil</span>, propor a presente</p>
+
+                    <h2>AÇÃO DE [TIPO DA AÇÃO]</h2>
+
+                    <p>em face de <strong>[NOME DO REQUERIDO]</strong>, [qualificação completa], pelos fatos e fundamentos jurídicos a seguir expostos:</p>
+
+                    <h2>I - DOS FATOS</h2>
+
+                    <p>O requerente vem expor que <span class="suggestion-highlight" data-suggestion="Sugestão: Detalhe melhor os fatos relevantes para o caso">[descrever detalhadamente os fatos que deram origem ao direito pleiteado]</span>.</p>
+
+                    <p>Conforme se verifica dos documentos anexos, <span class="typing-indicator"></span></p>`
+            },
+            contract: {
+                title: "Contrato de Prestação de Serviços Jurídicos",
+                content: `<h1>CONTRATO DE PRESTAÇÃO DE SERVIÇOS JURÍDICOS</h1>
+                    
+                    <p><strong>CONTRATANTE:</strong> [Nome da empresa/pessoa], inscrita no CNPJ/CPF nº [número], com sede em [endereço].</p>
+                    
+                    <p><strong>CONTRATADO:</strong> DRX Advocacia, inscrito no CNPJ nº [número], com sede em [endereço].</p>
+
+                    <h2>CLÁUSULA PRIMEIRA - DO OBJETO</h2>
+
+                    <p>O presente contrato tem por objeto a prestação de serviços jurídicos especializados em <span class="suggestion-highlight" data-suggestion="Especifique a área do direito">[área específica do direito]</span>.</p>
+
+                    <h2>CLÁUSULA SEGUNDA - DOS HONORÁRIOS</h2>
+
+                    <p>Pelos serviços prestados, o CONTRATANTE pagará ao CONTRATADO <span class="typing-indicator"></span></p>`
+            },
+            opinion: {
+                title: "Parecer Jurídico",
+                content: `<h1>PARECER JURÍDICO</h1>
+                    
+                    <p><strong>CONSULENTE:</strong> [Nome do cliente]</p>
+                    <p><strong>ASSUNTO:</strong> [Resumo da questão jurídica]</p>
+                    <p><strong>DATA:</strong> [Data atual]</p>
+
+                    <h2>I - RELATÓRIO</h2>
+
+                    <p>Trata-se de consulta formulada por [nome do consulente] acerca de <span class="suggestion-highlight" data-suggestion="Descreva objetivamente a questão">[questão jurídica específica]</span>.</p>
+
+                    <h2>II - FUNDAMENTAÇÃO</h2>
+
+                    <p>A questão posta submete-se à análise sob os seguintes aspectos jurídicos <span class="typing-indicator"></span></p>`
+            }
+        };
+
+        // Template selection
+        document.querySelectorAll('.template-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.template-item').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                const templateType = this.dataset.template;
+                const template = templates[templateType];
+                
+                if (template) {
+                    document.querySelector('.document-title').value = template.title;
+                    editor.innerHTML = template.content;
+                    updateWordCount();
+                    attachSuggestionHandlers();
+                }
+            });
+        });
+
+        // Toolbar functionality
+        document.getElementById('boldBtn').addEventListener('click', () => {
+            document.execCommand('bold');
+            updateWordCount();
+        });
+
+        document.getElementById('italicBtn').addEventListener('click', () => {
+            document.execCommand('italic');
+            updateWordCount();
+        });
+
+        document.getElementById('underlineBtn').addEventListener('click', () => {
+            document.execCommand('underline');
+            updateWordCount();
+        });
+
+        document.getElementById('listBtn').addEventListener('click', () => {
+            document.execCommand('insertUnorderedList');
+            updateWordCount();
+        });
+
+        document.getElementById('alignBtn').addEventListener('click', () => {
+            document.execCommand('justifyFull');
+            updateWordCount();
+        });
+
+        // Word count functionality
+        function updateWordCount() {
+            const text = editor.innerText || editor.textContent;
+            const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+            const chars = text.length;
+            const paragraphs = editor.querySelectorAll('p, h1, h2, h3').length;
+
+            wordCountEl.textContent = words.length;
+            charCountEl.textContent = chars;
+            paragraphCountEl.textContent = paragraphs;
+        }
+
+        // Real-time typing and suggestions
+        editor.addEventListener('input', function() {
+            updateWordCount();
+            
+            // Simulate AI suggestions based on content
+            setTimeout(() => {
+                addIntelligentSuggestions();
+            }, 1000);
+        });
+
+        function addIntelligentSuggestions() {
+            const content = editor.innerHTML;
+            
+            // Add suggestions for common legal writing improvements
+            if (content.includes('[') && content.includes(']')) {
+                // Highlight placeholder text
+                editor.innerHTML = content.replace(/\[([^\]]+)\]/g, 
+                    '<span class="suggestion-highlight" data-suggestion="Preencha este campo obrigatório">[$1]</span>');
+            }
+            
+            attachSuggestionHandlers();
+        }
+
+        function attachSuggestionHandlers() {
+            document.querySelectorAll('.suggestion-highlight').forEach(element => {
+                element.addEventListener('mouseenter', function(e) {
+                    const suggestion = this.dataset.suggestion;
+                    showFloatingSuggestion(e, suggestion);
+                });
+                
+                element.addEventListener('mouseleave', function() {
+                    hideFloatingSuggestion();
+                });
+                
+                element.addEventListener('click', function() {
+                    const suggestion = this.dataset.suggestion;
+                    showSuggestionOptions(this, suggestion);
+                });
+            });
+        }
+
+        function showFloatingSuggestion(event, text) {
+            const suggestion = document.getElementById('floatingSuggestion');
+            const suggestionText = document.getElementById('suggestionText');
+            
+            suggestionText.textContent = text;
+            suggestion.style.display = 'block';
+            suggestion.style.left = event.pageX + 10 + 'px';
+            suggestion.style.top = event.pageY - 10 + 'px';
+        }
+
+        function hideFloatingSuggestion() {
+            document.getElementById('floatingSuggestion').style.display = 'none';
+        }
+
+        function showSuggestionOptions(element, suggestion) {
+            const options = [
+                'Aceitar sugestão',
+                'Ignorar',
+                'Ver mais opções'
+            ];
+            
+            // Simple implementation - could be expanded with proper modal
+            const choice = confirm(suggestion + '\n\nDeseja aplicar esta sugestão?');
+            if (choice) {
+                // Apply suggestion logic here
+                element.style.background = 'rgba(76, 175, 80, 0.2)';
+                element.style.borderBottom = '2px solid #4CAF50';
+                
+                setTimeout(() => {
+                    element.classList.remove('suggestion-highlight');
+                    element.style.background = '';
+                    element.style.borderBottom = '';
+                }, 2000);
+            }
+        }
+
+        // AI Assistant functions
+        function applySuggestion(element) {
+            const suggestionText = element.querySelector('.suggestion-text').textContent;
+            const type = element.querySelector('.suggestion-type').textContent;
+            
+            // Animate acceptance
+            element.style.background = 'rgba(76, 175, 80, 0.2)';
+            element.style.borderLeft = '4px solid #4CAF50';
+            
+            setTimeout(() => {
+                element.style.opacity = '0.5';
+                element.querySelector('.suggestion-action').textContent = 'Aplicado ✓';
+            }, 500);
+            
+            // Simulate applying the suggestion to the document
+            if (type === 'Estrutura') {
+                // Add new section
+                const newSection = '<h2>II - DO DIREITO</h2><p>A presente demanda encontra amparo nos seguintes dispositivos legais: <span class="typing-indicator"></span></p>';
+                const currentContent = editor.innerHTML;
+                const insertPoint = currentContent.indexOf('<h2>I - DOS FATOS</h2>');
+                if (insertPoint !== -1) {
+                    const endPoint = currentContent.indexOf('</p>', insertPoint + currentContent.substring(insertPoint).indexOf('</p>')) + 4;
+                    editor.innerHTML = currentContent.substring(0, endPoint) + '\n\n' + newSection + currentContent.substring(endPoint);
+                }
+            }
+            
+            updateWordCount();
+        }
+
+        // Quick action functions
+        function checkGrammar() {
+            showNotification('🔍 Verificando gramática...', 'info');
+            setTimeout(() => {
+                showNotification('✅ Verificação concluída. 2 sugestões encontradas.', 'success');
+            }, 2000);
+        }
+
+        function formatDocument() {
+            showNotification('📝 Formatando documento...', 'info');
+            setTimeout(() => {
+                // Apply formatting
+                editor.style.fontFamily = '"Times New Roman", serif';
+                editor.style.fontSize = '14px';
+                editor.style.lineHeight = '1.8';
+                showNotification('✅ Documento formatado segundo padrões jurídicos.', 'success');
+            }, 1500);
+        }
+
+        function addCitations() {
+            showNotification('📚 Buscando citações relevantes...', 'info');
+            setTimeout(() => {
+                const citation = '<p><em>Conforme entendimento do Superior Tribunal de Justiça: "O direito à indenização por dano moral prescinde de prova de prejuízo" (STJ, REsp 1.234.567/SP, Rel. Min. [Nome], j. [data]).</em></p>';
+                editor.innerHTML += citation;
+                updateWordCount();
+                showNotification('✅ Citação jurisprudencial adicionada.', 'success');
+            }, 2000);
+        }
+
+        function generateSummary() {
+            showNotification('📋 Gerando resumo executivo...', 'info');
+            setTimeout(() => {
+                showNotification('✅ Resumo gerado. Verifique no final do documento.', 'success');
+            }, 2500);
+        }
+
+        function translateText() {
+            const selection = window.getSelection();
+            if (selection.toString()) {
+                showNotification('🌐 Traduzindo texto selecionado...', 'info');
+                setTimeout(() => {
+                    showNotification('✅ Tradução concluída.', 'success');
+                }, 1500);
+            } else {
+                showNotification('⚠️ Selecione um texto para traduzir.', 'warning');
+            }
+        }
+
+        // Save and export functions
+        document.getElementById('saveBtn').addEventListener('click', function() {
+            showNotification('💾 Salvando documento...', 'info');
+            this.textContent = 'Salvando...';
+            
+            setTimeout(() => {
+                this.textContent = 'Salvar';
+                showNotification('✅ Documento salvo com sucesso.', 'success');
+            }, 1500);
+        });
+
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            const options = [
+                'Exportar como PDF',
+                'Exportar como Word',
+                'Exportar como HTML'
+            ];
+            
+            showNotification('📄 Preparando exportação...', 'info');
+            setTimeout(() => {
+                showNotification('✅ Documento exportado como PDF.', 'success');
+            }, 2000);
+        });
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? 'rgba(76, 175, 80, 0.9)' : 
+                            type === 'warning' ? 'rgba(255, 193, 7, 0.9)' : 
+                            'rgba(33, 150, 243, 0.9)'};
+                color: white;
+                padding: 16px 24px;
+                border-radius: 12px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+                z-index: 10000;
+                font-size: 14px;
+                font-weight: 500;
+                max-width: 400px;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Animate out and remove
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 4000);
+        }
+
+        // Auto-save functionality
+        let autoSaveTimeout;
+        editor.addEventListener('input', function() {
+            clearTimeout(autoSaveTimeout);
+            autoSaveTimeout = setTimeout(() => {
+                const saveBtn = document.getElementById('saveBtn');
+                saveBtn.style.opacity = '0.6';
+                saveBtn.textContent = 'Salvando...';
+                
+                setTimeout(() => {
+                    saveBtn.style.opacity = '1';
+                    saveBtn.textContent = 'Salvar';
+                }, 1000);
+            }, 3000);
+        });
+
+        // Initialize
+        updateWordCount();
+        attachSuggestionHandlers();
+
+        // Simulate real-time AI assistance
+        setInterval(() => {
+            const indicators = document.querySelectorAll('.typing-indicator');
+            indicators.forEach(indicator => {
+                if (Math.random() > 0.7) {
+                    indicator.style.opacity = indicator.style.opacity === '0' ? '1' : '0';
+                }
+            });
+        }, 800);
+
+        // Simulate contextual suggestions appearing
+        setTimeout(() => {
+            const newSuggestion = document.createElement('div');
+            newSuggestion.className = 'suggestion-item';
+            newSuggestion.innerHTML = `
+                <div class="suggestion-type">Conteúdo</div>
+                <div class="suggestion-text">Baseado no contexto, sugiro mencionar o prazo prescricional aplicável ao caso.</div>
+                <div class="suggestion-action">Clique para aplicar</div>
+            `;
+            newSuggestion.onclick = () => applySuggestion(newSuggestion);
+            
+            const aiPanel = document.querySelector('.ai-panel');
+            aiPanel.appendChild(newSuggestion);
+        }, 10000);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 's':
+                        e.preventDefault();
+                        document.getElementById('saveBtn').click();
+                        break;
+                    case 'b':
+                        if (document.activeElement === editor) {
+                            e.preventDefault();
+                            document.getElementById('boldBtn').click();
+                        }
+                        break;
+                    case 'i':
+                        if (document.activeElement === editor) {
+                            e.preventDefault();
+                            document.getElementById('italicBtn').click();
+                        }
+                        break;
+                }
+            }
+        });
+
+        // Document title auto-save
+        document.querySelector('.document-title').addEventListener('input', function() {
+            clearTimeout(autoSaveTimeout);
+            autoSaveTimeout = setTimeout(() => {
+                showNotification('📝 Título salvo automaticamente', 'info');
+            }, 2000);
+        });
+
+        // Focus management
+        editor.addEventListener('focus', function() {
+            document.querySelector('.editor-container').style.borderRight = '1px solid rgba(255, 255, 255, 0.2)';
+        });
+
+        editor.addEventListener('blur', function() {
+            document.querySelector('.editor-container').style.borderRight = '1px solid rgba(255, 255, 255, 0.08)';
+        });
+
+        // Toolbar button active states
+        document.addEventListener('selectionchange', function() {
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                const parentElement = range.commonAncestorContainer.parentElement;
+                
+                // Update toolbar button states based on current formatting
+                document.getElementById('boldBtn').classList.toggle('active', 
+                    document.queryCommandState('bold'));
+                document.getElementById('italicBtn').classList.toggle('active', 
+                    document.queryCommandState('italic'));
+                document.getElementById('underlineBtn').classList.toggle('active', 
+                    document.queryCommandState('underline'));
+            }
+        });
+
+        // Smart paragraph insertion
+        editor.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                // Auto-format new paragraphs
+                setTimeout(() => {
+                    const selection = window.getSelection();
+                    if (selection.rangeCount > 0) {
+                        const range = selection.getRangeAt(0);
+                        const currentElement = range.startContainer.parentElement;
+                        
+                        if (currentElement.tagName === 'P') {
+                            currentElement.style.textAlign = 'justify';
+                            currentElement.style.marginBottom = '16px';
+                        }
+                    }
+                }, 10);
+            }
+        });
+
+        // Initialize document formatting
+        function initializeDocument() {
+            const paragraphs = editor.querySelectorAll('p');
+            paragraphs.forEach(p => {
+                p.style.textAlign = 'justify';
+                p.style.marginBottom = '16px';
+            });
+        }
+
+        // Spell check simulation
+        function simulateSpellCheck() {
+            const commonErrors = ['advogado', 'processo', 'juridico'];
+            const text = editor.innerHTML;
+            
+            commonErrors.forEach(word => {
+                const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                if (text.match(regex)) {
+                    // Simulate spell check suggestions
+                    setTimeout(() => {
+                        if (Math.random() > 0.8) {
+                            showNotification(`📝 Sugestão: Verifique a grafia de "${word}"`, 'warning');
+                        }
+                    }, Math.random() * 5000);
+                }
+            });
+        }
+
+        // Enhanced word count with reading time
+        function calculateReadingTime(wordCount) {
+            const wordsPerMinute = 200; // Average reading speed
+            const minutes = Math.ceil(wordCount / wordsPerMinute);
+            return minutes === 1 ? '1 min' : `${minutes} min`;
+        }
+
+        function updateWordCount() {
+            const text = editor.innerText || editor.textContent;
+            const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+            const chars = text.length;
+            const paragraphs = editor.querySelectorAll('p, h1, h2, h3').length;
+            const readingTime = calculateReadingTime(words.length);
+
+            wordCountEl.textContent = words.length;
+            charCountEl.textContent = chars;
+            paragraphCountEl.textContent = paragraphs;
+            
+            // Update reading time
+            const readingTimeEl = document.querySelector('.count-value:last-child');
+            if (readingTimeEl) {
+                readingTimeEl.textContent = readingTime;
+            }
+        }
+
+        // Advanced AI suggestions based on document analysis
+        function analyzeDocumentStructure() {
+            const content = editor.innerHTML.toLowerCase();
+            const suggestions = [];
+
+            // Check for missing sections in legal documents
+            if (content.includes('petição') && !content.includes('dos pedidos')) {
+                suggestions.push({
+                    type: 'Estrutura',
+                    text: 'Documento de petição deve incluir seção "DOS PEDIDOS" ao final.',
+                    action: 'Adicionar seção'
+                });
+            }
+
+            if (content.includes('contrato') && !content.includes('foro')) {
+                suggestions.push({
+                    type: 'Cláusula',
+                    text: 'Contratos devem especificar o foro competente para dirimir conflitos.',
+                    action: 'Adicionar cláusula'
+                });
+            }
+
+            return suggestions;
+        }
+
+        // Dynamic suggestion generation
+        setInterval(() => {
+            const structureSuggestions = analyzeDocumentStructure();
+            if (structureSuggestions.length > 0 && Math.random() > 0.7) {
+                const suggestion = structureSuggestions[0];
+                const suggestionElement = document.createElement('div');
+                suggestionElement.className = 'suggestion-item';
+                suggestionElement.innerHTML = `
+                    <div class="suggestion-type">${suggestion.type}</div>
+                    <div class="suggestion-text">${suggestion.text}</div>
+                    <div class="suggestion-action">${suggestion.action}</div>
+                `;
+                suggestionElement.onclick = () => applySuggestion(suggestionElement);
+                
+                const aiPanel = document.querySelector('.ai-panel');
+                const existingSuggestions = aiPanel.querySelectorAll('.suggestion-item');
+                if (existingSuggestions.length < 5) {
+                    aiPanel.appendChild(suggestionElement);
+                }
+            }
+        }, 15000);
+
+        // Export functionality enhancement
+        function exportDocument(format) {
+            const title = document.querySelector('.document-title').value || 'Documento';
+            const content = editor.innerHTML;
+            
+            switch(format) {
+                case 'pdf':
+                    // Simulate PDF generation
+                    showNotification('📄 Gerando PDF...', 'info');
+                    setTimeout(() => {
+                        showNotification(`✅ ${title}.pdf exportado com sucesso!`, 'success');
+                    }, 2500);
+                    break;
+                case 'word':
+                    showNotification('📝 Gerando arquivo Word...', 'info');
+                    setTimeout(() => {
+                        showNotification(`✅ ${title}.docx exportado com sucesso!`, 'success');
+                    }, 2000);
+                    break;
+                case 'html':
+                    showNotification('🌐 Gerando HTML...', 'info');
+                    setTimeout(() => {
+                        showNotification(`✅ ${title}.html exportado com sucesso!`, 'success');
+                    }, 1500);
+                    break;
+            }
+        }
+
+        // Enhanced export button with dropdown
+        document.getElementById('exportBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            const dropdown = document.createElement('div');
+            dropdown.style.cssText = `
+                position: absolute;
+                top: 100%;
+                right: 0;
+                background: rgba(255, 255, 255, 0.95);
+                color: #333;
+                border-radius: 8px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+                z-index: 1000;
+                min-width: 160px;
+                margin-top: 8px;
+            `;
+            
+            const options = [
+                { text: '📄 Exportar PDF', action: () => exportDocument('pdf') },
+                { text: '📝 Exportar Word', action: () => exportDocument('word') },
+                { text: '🌐 Exportar HTML', action: () => exportDocument('html') }
+            ];
+            
+            options.forEach(option => {
+                const item = document.createElement('div');
+                item.style.cssText = `
+                    padding: 12px 16px;
+                    cursor: pointer;
+                    border-bottom: 1px solid rgba(0,0,0,0.1);
+                    transition: background 0.2s ease;
+                `;
+                item.textContent = option.text;
+                item.onclick = () => {
+                    option.action();
+                    document.body.removeChild(dropdown);
+                };
+                item.onmouseenter = () => item.style.background = 'rgba(0,0,0,0.05)';
+                item.onmouseleave = () => item.style.background = 'transparent';
+                dropdown.appendChild(item);
+            });
+            
+            this.style.position = 'relative';
+            this.appendChild(dropdown);
+            
+            // Close dropdown when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', function closeDropdown() {
+                    if (dropdown.parentNode) {
+                        dropdown.parentNode.removeChild(dropdown);
+                    }
+                    document.removeEventListener('click', closeDropdown);
+                });
+            }, 100);
+        });
+
+        // Initialize everything
+        initializeDocument();
+        updateWordCount();
+        attachSuggestionHandlers();
+        
+        // Start spell check simulation
+        setTimeout(simulateSpellCheck, 5000);
+
+        // Welcome message
+        setTimeout(() => {
+            showNotification('✨ Assistente de Redação DRX AI ativo!', 'success');
+        }, 1000);
+    </script>
+</body>
+</html>
