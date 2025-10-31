@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Preço Hello Kitty</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #FFB6D9 0%, #FFF0F5 50%, #FFE5EE 100%);
+            min-height: 100vh;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: auto;
+        }
+
+        body::before {
+            content: "♡";
+            position: fixed;
+            top: 10%;
+            left: 10%;
+            font-size: 80px;
+            color: rgba(255, 105, 180, 0.2);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        body::after {
+            content: "★";
+            position: fixed;
+            bottom: 15%;
+            right: 15%;
+            font-size: 60px;
+            color: rgba(255, 215, 0, 0.3);
+            animation: float 5s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        .container {
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.4);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            border: 5px solid #FF69B4;
+            position: relative;
+            z-index: 10;
+        }
+
+        .bow-decoration {
+            width: 80px;
+            height: 50px;
+            background: #FF1493;
+            border-radius: 50% 50% 0 0;
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
+        }
+
+        .bow-decoration::before {
+            content: "";
+            width: 15px;
+            height: 15px;
+            background: #FFD700;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        h1 {
+            color: #FF1493;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 32px;
+            text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.3);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #FF69B4;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            color: #FF1493;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 3px solid #FFB6D9;
+            border-radius: 15px;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: 'Comic Sans MS', cursive;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #FF69B4;
+            box-shadow: 0 0 0 4px rgba(255, 105, 180, 0.2);
+        }
+
+        .resultado {
+            background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 30px;
+            box-shadow: 0 8px 25px rgba(255, 20, 147, 0.4);
+            position: relative;
+        }
+
+        .resultado::before {
+            content: "✨";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+        }
+
+        .resultado::after {
+            content: "✨";
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 24px;
+        }
+
+        .resultado h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .detalhes {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .linha {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .linha:last-child {
+            margin-bottom: 0;
+        }
+
+        .linha span:first-child {
+            opacity: 0.95;
+        }
+
+        .linha span:last-child {
+            font-weight: bold;
+        }
+
+        .preco-final {
+            text-align: center;
+            font-size: 48px;
+            font-weight: bold;
+            margin-top: 20px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .preco-final small {
+            font-size: 18px;
+            display: block;
+            opacity: 0.95;
+            margin-bottom: 10px;
+        }
+
+        .alert {
+            background: #FFD700;
+            color: #FF1493;
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border: 3px solid #FF69B4;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .vendas-necessarias {
+            background: rgba(255, 255, 255, 0.25);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 15px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .vendas-necessarias strong {
+            font-size: 36px;
+            display: block;
+            margin-top: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .heart-small {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #FFD700;
+            transform: rotate(-45deg);
+            margin: 0 5px;
+            position: relative;
+        }
+
+        .heart-small::before,
+        .heart-small::after {
+            content: "";
+            width: 12px;
+            height: 12px;
+            background: #FFD700;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .heart-small::before {
+            top: -6px;
+            left: 0;
+        }
+
+        .heart-small::after {
+            left: 6px;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="bow-decoration"></div>
+        
+        <h1>Calculadora de Preço da Larissa</h1>
+        <div class="subtitle">♡ Calcule o preço perfeito para seu produto ♡</div>
+        
+        <div class="input-group">
+            <label for="custoProduto">Custo do Produto (R$)</label>
+            <input type="number" id="custoProduto" placeholder="0.00" step="0.01" value="50">
+        </div>
+
+        <div class="input-group">
+            <label for="margemLucro">Margem de Lucro (%)</label>
+            <input type="number" id="margemLucro" placeholder="0" step="0.1" value="40">
+        </div>
+
+        <div class="input-group">
+            <label for="embalagem">Custo de Embalagem (R$)</label>
+            <input type="number" id="embalagem" placeholder="0.00" step="0.01" value="5">
+        </div>
+
+        <div class="input-group">
+            <label for="mimo">Custo do Mimo/Brinde (R$)</label>
+            <input type="number" id="mimo" placeholder="0.00" step="0.01" value="2">
+        </div>
+
+        <div class="input-group">
+            <label for="taxaCartao">Taxa do Cartão (%)</label>
+            <input type="number" id="taxaCartao" placeholder="0" step="0.1" value="3.5">
+        </div>
+
+        <div class="input-group">
+            <label for="custoFixo">Custo Fixo Mensal (R$)</label>
+            <input type="number" id="custoFixo" placeholder="0.00" step="0.01" value="1000">
+        </div>
+
+        <div class="input-group">
+            <label for="vendasMes">Estimativa de Vendas/Mês</label>
+            <input type="number" id="vendasMes" placeholder="0" step="1" value="50">
+        </div>
+
+        <div class="input-group">
+            <label for="cupomDesconto">Cupom de Desconto (%)</label>
+            <input type="number" id="cupomDesconto" placeholder="0" step="0.1" value="10">
+        </div>
+
+        <div class="resultado" id="resultado">
+            <h2>★ Análise de Precificação ★</h2>
+            
+            <div class="detalhes">
+                <div class="linha">
+                    <span>Custo do Produto:</span>
+                    <span id="showCustoProduto">R$ 0,00</span>
+                </div>
+                <div class="linha">
+                    <span>Embalagem:</span>
+                    <span id="showEmbalagem">R$ 0,00</span>
+                </div>
+                <div class="linha">
+                    <span>Mimo/Brinde:</span>
+                    <span id="showMimo">R$ 0,00</span>
+                </div>
+                <div class="linha">
+                    <span>Custo Fixo por Produto:</span>
+                    <span id="showCustoFixoPorProduto">R$ 0,00</span>
+                </div>
+                <div class="linha" style="border-top: 2px solid rgba(255,255,255,0.4); padding-top: 10px; margin-top: 10px;">
+                    <span><strong>Custo Total:</strong></span>
+                    <span id="showCustoTotal"><strong>R$ 0,00</strong></span>
+                </div>
+            </div>
+
+            <div class="detalhes">
+                <div class="linha">
+                    <span>Margem de Lucro:</span>
+                    <span id="showMargemLucro">R$ 0,00</span>
+                </div>
+                <div class="linha">
+                    <span>Preço Antes do Cartão:</span>
+                    <span id="showPrecoAntes">R$ 0,00</span>
+                </div>
+                <div class="linha">
+                    <span>Taxa do Cartão:</span>
+                    <span id="showTaxaCartao">R$ 0,00</span>
+                </div>
+                <div class="linha" style="border-top: 2px solid rgba(255,255,255,0.4); padding-top: 10px; margin-top: 10px;">
+                    <span><strong>Preço de Venda:</strong></span>
+                    <span id="showPrecoVenda"><strong>R$ 0,00</strong></span>
+                </div>
+            </div>
+
+            <div class="detalhes">
+                <div class="linha">
+                    <span>Desconto do Cupom:</span>
+                    <span id="showDesconto">- R$ 0,00</span>
+                </div>
+                <div class="linha">
+                    <span><strong>Lucro com Cupom:</strong></span>
+                    <span id="showLucroCupom"><strong>R$ 0,00</strong></span>
+                </div>
+            </div>
+
+            <div class="preco-final">
+                <small>♡ Preço Final com Cupom ♡</small>
+                <div id="precoFinal">R$ 0,00</div>
+            </div>
+
+            <div class="vendas-necessarias">
+                <div>Vendas necessárias para cobrir custo fixo:</div>
+                <strong id="vendasNecessarias">0</strong>
+                <div style="font-size: 12px; opacity: 0.9; margin-top: 5px;">unidades/mês</div>
+            </div>
+        </div>
+
+        <div class="alert" id="alert" style="display: none;">
+            ⚠️ <strong>Atenção:</strong> Com essa configuração, você pode não estar cobrindo todos os custos! Considere aumentar a margem de lucro. 💕
+        </div>
+    </div>
+
+    <script>
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('input', calcular);
+        });
+
+        function formatarMoeda(valor) {
+            return valor.toLocaleString('pt-BR', { minimumFractionDiges: 2, maximumFractionDigits: 2 });
+        }
+
+        function calcular() {
+            const custoProduto = parseFloat(document.getElementById('custoProduto').value) || 0;
+            const margemLucro = parseFloat(document.getElementById('margemLucro').value) || 0;
+            const embalagem = parseFloat(document.getElementById('embalagem').value) || 0;
+            const mimo = parseFloat(document.getElementById('mimo').value) || 0;
+            const taxaCartao = parseFloat(document.getElementById('taxaCartao').value) || 0;
+            const custoFixo = parseFloat(document.getElementById('custoFixo').value) || 0;
+            const vendasMes = parseFloat(document.getElementById('vendasMes').value) || 1;
+            const cupomDesconto = parseFloat(document.getElementById('cupomDesconto').value) || 0;
+
+            const custoFixoPorProduto = custoFixo / vendasMes;
+            const custoTotal = custoProduto + embalagem + mimo + custoFixoPorProduto;
+            
+            const valorMargemLucro = custoTotal * (margemLucro / 100);
+            const precoAntesTaxa = custoTotal + valorMargemLucro;
+            
+            const valorTaxaCartao = precoAntesTaxa * (taxaCartao / 100);
+            const precoVenda = precoAntesTaxa + valorTaxaCartao;
+            
+            const valorDesconto = precoVenda * (cupomDesconto / 100);
+            const precoFinal = precoVenda - valorDesconto;
+            
+            const lucroCupom = precoFinal - custoTotal;
+            
+            const vendasNecessarias = Math.ceil(custoFixo / lucroCupom);
+
+            document.getElementById('showCustoProduto').textContent = `R$ ${formatarMoeda(custoProduto)}`;
+            document.getElementById('showEmbalagem').textContent = `R$ ${formatarMoeda(embalagem)}`;
+            document.getElementById('showMimo').textContent = `R$ ${formatarMoeda(mimo)}`;
+            document.getElementById('showCustoFixoPorProduto').textContent = `R$ ${formatarMoeda(custoFixoPorProduto)}`;
+            document.getElementById('showCustoTotal').textContent = `R$ ${formatarMoeda(custoTotal)}`;
+            
+            document.getElementById('showMargemLucro').textContent = `R$ ${formatarMoeda(valorMargemLucro)}`;
+            document.getElementById('showPrecoAntes').textContent = `R$ ${formatarMoeda(precoAntesTaxa)}`;
+            document.getElementById('showTaxaCartao').textContent = `R$ ${formatarMoeda(valorTaxaCartao)}`;
+            document.getElementById('showPrecoVenda').textContent = `R$ ${formatarMoeda(precoVenda)}`;
+            
+            document.getElementById('showDesconto').textContent = `- R$ ${formatarMoeda(valorDesconto)}`;
+            document.getElementById('showLucroCupom').textContent = `R$ ${formatarMoeda(lucroCupom)}`;
+            
+            document.getElementById('precoFinal').textContent = `R$ ${formatarMoeda(precoFinal)}`;
+            document.getElementById('vendasNecessarias').textContent = vendasNecessarias;
+
+            const alert = document.getElementById('alert');
+            if (lucroCupom <= 0) {
+                alert.style.display = 'block';
+            } else {
+                alert.style.display = 'none';
+            }
+        }
+
+        calcular();
+    </script>
+</body>
+</html>

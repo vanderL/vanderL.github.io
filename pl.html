@@ -1,0 +1,2203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LabStart - Plano de Posicionamento Estratégico</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #1f2937;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+            padding: 60px 0;
+            position: relative;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23ffffff" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>') repeat;
+            animation: drift 20s linear infinite;
+            opacity: 0.3;
+        }
+        
+        @keyframes drift {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-20px); }
+        }
+        
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Progress Tracker */
+        .progress-tracker {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .progress-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #e5e7eb;
+            z-index: 1;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 1s ease;
+            border-radius: 2px;
+        }
+        
+        .step {
+            background: white;
+            border: 3px solid #e5e7eb;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            z-index: 2;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .step.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .step.completed {
+            border-color: #10b981;
+            background: #10b981;
+            color: white;
+        }
+        
+        .step-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        
+        .step-label {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6b7280;
+            font-weight: 500;
+            flex: 1;
+        }
+        
+        .step-label.active {
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        /* Tab Navigation */
+        .nav-tabs {
+            display: flex;
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 8px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+            gap: 5px;
+            overflow-x: auto;
+        }
+        
+        .nav-tab {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.7);
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .nav-tab.active {
+            background: rgba(255,255,255,0.9);
+            color: #1f2937;
+            font-weight: 600;
+        }
+        
+        /* Content Sections */
+        .content-section {
+            display: none;
+            background: white;
+            border-radius: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .content-section.active {
+            display: block;
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .section-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .section-content {
+            padding: 50px;
+        }
+        
+        /* Cards and Components */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover::before {
+            transform: translateX(0);
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .card-description {
+            color: #4b5563;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        
+        /* Interactive Elements */
+        .scoring-tool {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 2px solid #0ea5e9;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        
+        .scoring-item {
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+        
+        .scoring-label {
+            flex: 1;
+            font-weight: 500;
+            color: #1f2937;
+        }
+        
+        .score-slider {
+            flex: 0 0 200px;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981);
+            border-radius: 4px;
+            width: 50%;
+            transition: width 0.3s ease;
+        }
+        
+        .score-value {
+            width: 40px;
+            text-align: center;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .total-score {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .total-score h3 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            padding-left: 80px;
+        }
+        
+        .timeline-marker {
+            position: absolute;
+            left: 15px;
+            width: 30px;
+            height: 30px;
+            background: #667eea;
+            border: 4px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .timeline-content {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 25px;
+        }
+        
+        .timeline-week {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .timeline-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1f2937;
+        }
+        
+        .timeline-tasks {
+            list-style: none;
+        }
+        
+        .timeline-tasks li {
+            margin-bottom: 8px;
+            color: #4b5563;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .timeline-tasks li::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 40px 0;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        /* Metrics Dashboard */
+        .metrics-dashboard {
+            background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .metric-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .metric-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        .metric-trend {
+            color: #10b981;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+        
+        /* Tools Section */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .tool-category {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 25px;
+        }
+        
+        .tool-category h4 {
+            color: #1f2937;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .tool-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .tool-tag {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.5rem; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .nav-tabs { flex-direction: column; }
+            .section-content { padding: 30px 20px; }
+            .timeline { margin-left: 0; }
+            .timeline-item { padding-left: 60px; }
+            .timeline::before { left: 20px; }
+            .timeline-marker { left: 5px; }
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            margin: 20px;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #6b7280;
+            transition: color 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            color: #1f2937;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎯 LabStart - Plano de Posicionamento Estratégico</h1>
+            <p>Transforme sua software house de generalista em especialista de nicho com metodologia científica e resultados mensuráveis</p>
+        </div>
+
+        <!-- Progress Tracker -->
+        <div class="progress-tracker">
+            <div class="progress-steps">
+                <div class="progress-line">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="step active" onclick="goToStep(0)">1</div>
+                <div class="step" onclick="goToStep(1)">2</div>
+                <div class="step" onclick="goToStep(2)">3</div>
+                <div class="step" onclick="goToStep(3)">4</div>
+                <div class="step" onclick="goToStep(4)">5</div>
+                <div class="step" onclick="goToStep(5)">6</div>
+            </div>
+            <div class="step-labels">
+                <div class="step-label active">Análise</div>
+                <div class="step-label">Nichos</div>
+                <div class="step-label">Scoring</div>
+                <div class="step-label">Validação</div>
+                <div class="step-label">Messaging</div>
+                <div class="step-label">Implementação</div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('analise')">📊 Análise VRIO</button>
+            <button class="nav-tab" onclick="showSection('nichos')">🎯 Definição de Nichos</button>
+            <button class="nav-tab" onclick="showSection('scoring')">⭐ Scoring de Nichos</button>
+            <button class="nav-tab" onclick="showSection('validacao')">🧪 Validação MVPs</button>
+            <button class="nav-tab" onclick="showSection('messaging')">💬 Messaging & UVP</button>
+            <button class="nav-tab" onclick="showSection('implementacao')">🚀 Cronograma</button>
+            <button class="nav-tab" onclick="showSection('metricas')">📈 Métricas & KPIs</button>
+        </div>
+
+        <!-- Análise VRIO Section -->
+        <div id="analise" class="content-section active">
+            <div class="section-header">
+                <h2>📊 Análise VRIO da LabStart</h2>
+                <p>Identifique recursos únicos e vantagens competitivas sustentáveis</p>
+            </div>
+            
+            <div class="section-content">
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">💎</div>
+                            <div class="card-title">Valuable (Valioso)</div>
+                        </div>
+                        <div class="card-description">
+                            <strong>✅ Recursos Valiosos da LabStart:</strong><br>
+                            • Experiência em MVPs rápidos e SaaS escaláveis<br>
+                            • Combinação de design UX/UI + desenvolvimento<br>
+                            • Automações inteligentes com n8n + IA<br>
+                            • Metodologia própria de parceria próxima<br>
+                            • Portfolio diverso com cases de sucesso
+                        </div>
+                        <div style="background: #f0fdf4; padding: 15px; border-radius: 10px; margin-top: 15px;">
+                            <strong>Score VRIO: 8/10</strong> - Alta capacidade de gerar valor para clientes
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">🔒</div>
+                            <div class="card-title">Rare (Raro)</div>
+                        </div>
+                        <div class="card-description">
+                            <strong>⚠️ Recursos Parcialmente Raros:</strong><br>
+                            • Poucos competidores combinam design + dev + automação<br>
+                            • Abordagem de "parceria genuína" é diferenciada<br>
+                            • Experiência em IA aplicada ainda é nicho<br>
+                            <br>
+                            <strong>❌ Não Raros:</strong><br>
+                            • Stack tecnológico comum (React, Node, etc.)
+                        </div>
+                        <div style="background: #fef3c7; padding: 15px; border-radius: 10px; margin-top: 15px;">
+                            <strong>Score VRIO: 6/10</strong> - Algumas capacidades raras, mas não únicas
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">🛡️</div>
+                            <div class="card-title">Inimitable (Inimitável)</div>
+                        </div>
+                        <div class="card-description">
+                            <strong>⚠️ Parcialmente Inimitável:</strong><br>
+                            • Cultura da empresa e approach de parceria<br>
+                            • Experiência acumulada em projetos específicos<br>
+                            • Network e relacionamentos construídos<br>
+                            <br>
+                            <strong>❌ Facilmente Imitável:</strong><br>
+                            • Tecnologias e ferramentas utilizadas<br>
+                            • Processos não documentados como IP
+                        </div>
+                        <div style="background: #fef3c7; padding: 15px; border-radius: 10px; margin-top: 15px;">
+                            <strong>Score VRIO: 5/10</strong> - Precisa fortalecer barreiras de entrada
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">🏗️</div>
+                            <div class="card-title">Organized (Organizado)</div>
+                        </div>
+                        <div class="card-description">
+                            <strong>✅ Bem Organizado:</strong><br>
+                            • Processos estruturados de desenvolvimento<br>
+                            • Time experiente e alinhado<br>
+                            • Ferramentas integradas (Figma, GitHub, etc.)<br>
+                            <br>
+                            <strong>🔄 Para Melhorar:</strong><br>
+                            • Documentação de metodologia própria<br>
+                            • Sistematização de conhecimento interno
+                        </div>
+                        <div style="background: #f0fdf4; padding: 15px; border-radius: 10px; margin-top: 15px;">
+                            <strong>Score VRIO: 7/10</strong> - Boa organização, com espaço para otimização
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 30px; border-radius: 20px; text-align: center; margin-top: 40px;">
+                    <h3 style="font-size: 1.8rem; margin-bottom: 15px;">📊 Score VRIO Total: 26/40 (65%)</h3>
+                    <p style="font-size: 1.1rem; opacity: 0.9;">
+                        <strong>Diagnóstico:</strong> LabStart tem base sólida mas precisa especializar-se para criar vantagem competitiva sustentável. 
+                        Foco em nicho específico aumentará raridade e dificultará imitação.
+                    </p>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="goToStep(1)">
+                        Próximo: Definir Nichos
+                        <span>→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nichos Section -->
+        <div id="nichos" class="content-section">
+            <div class="section-header">
+                <h2>🎯 Definição de Nichos LabStart</h2>
+                <p>5 nichos candidatos baseados em análise de mercado e competências internas</p>
+            </div>
+            
+            <div class="section-content">
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">💳</div>
+                            <div class="card-title">1. FinTech B2B</div>
+                        </div>
+                        <div class="card-description">
+                            <strong>Foco:</strong> Plataformas de pagamento, dashboards financeiros, APIs bancárias<br>
+                            <strong>Cliente ideal:</strong> Startups fintech, bancos digitais, empresas de pagamento<br>
+                            <strong>Problema:</strong> Compliance, segurança, integrações complexas<br>
+                            <strong>Diferencial LabStart:</strong> Experiência em automações + IA para análise de risco
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <span style="background: #10b981; color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem;">Mercado: $180B</span>
+                            <span style="background: #3b82f6; color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; margin-left: 8px;">CAGR: 25%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">🏥</div>
+                            <div class="card-title">2. HealthTech</div>
+                        </div>
+                        <div class="card-description">
+                            <strong>Foco:</strong> Telemedicina, sistemas de gestão clínica, wearables<br>
+                            <strong>Cliente ideal:</strong> Clínicas, startups de saúde, empresas de dispositivos médicos<br>
+                            <strong>Problema:</strong> Regulamentação rigorosa, segurança de dados, UX complexa<br>
+                            <strong>Diferencial LabStart:</strong> Design centrado no usuário + compliance LGPD/HIPAA
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <span style="background: #10b981; color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem;">Mercado: $280B</span>
+                            <span style="background: #3b82f6; color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; margin-left: 8px;">CAGR: 23%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">🛍️</div>
+                            <div class="card-title">3. E-commerce B2B</div>
+                        </div>
+                        <div class="card-description">
+                            <strong>Foco:</strong> Marketplaces B2B, plataformas de procurement, supply chain<br>
+                            <strong>Cliente ideal:</strong> Distribuidores, fabricantes, empresas de logística<br>
+                            <strong>Problema:</strong> Integrações ERP, automação de pedidos, analytics avançado<br>
+                            <strong>Diferencial LabStart:</strong>  <div class="card-description">
+                            <strong>Foco:</strong> Marketplaces B2B, plataformas de procurement, supply chain<br>
+                            <strong>Cliente ideal:</strong> Distribuidores, fabricantes, empresas de logística<br>
+                            <strong>Problema:</strong> Integrações ERP, automação de pedidos, analytics avançado<br>
+                            <strong>Diferencial LabStart:</strong> Automações n8n + IA para otimização de estoque
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <span style="background: #10b981; color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem;">Mercado: $1.2T</span>
+                            <span style="background: #3b82f6; color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; margin-left: 8px;">CAGR: 18%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">🚀</div>
+                            <div class="card-title">4. SaaS para Startups</div>
+                        </div>
+                        <div class="card-description">
+                            <strong>Foco:</strong> MVPs rápidos, plataformas no-code/low-code, ferramentas internas<br>
+                            <strong>Cliente ideal:</strong> Startups série A/B, scale-ups, empresas de tecnologia<br>
+                            <strong>Problema:</strong> Time-to-market, escalabilidade, orçamento limitado<br>
+                            <strong>Diferencial LabStart:</strong> Metodologia própria para MVPs + parceria próxima
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <span style="background: #10b981; color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem;">Mercado: $195B</span>
+                            <span style="background: #3b82f6; color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; margin-left: 8px;">CAGR: 22%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-icon">🤖</div>
+                            <div class="card-title">5. AI-Powered Tools</div>
+                        </div>
+                        <div class="card-description">
+                            <strong>Foco:</strong> Ferramentas de IA para empresas, chatbots inteligentes, automação cognitiva<br>
+                            <strong>Cliente ideal:</strong> Empresas médias, startups de IA, consultoras<br>
+                            <strong>Problema:</strong> Implementação complexa, ROI incerto, integração com sistemas legados<br>
+                            <strong>Diferencial LabStart:</strong> Expertise em IA + UX intuitivo para ferramentas complexas
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <span style="background: #10b981; color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem;">Mercado: $184B</span>
+                            <span style="background: #3b82f6; color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; margin-left: 8px;">CAGR: 30%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: #f0f9ff; border: 2px solid #0ea5e9; border-radius: 20px; padding: 30px; margin: 40px 0;">
+                    <h3 style="color: #0369a1; margin-bottom: 20px;">🎯 Critérios de Seleção</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                        <div>
+                            <strong>1. Market Size</strong><br>
+                            <span style="color: #6b7280;">Mercado > $100B</span>
+                        </div>
+                        <div>
+                            <strong>2. Growth Rate</strong><br>
+                            <span style="color: #6b7280;">CAGR > 15%</span>
+                        </div>
+                        <div>
+                            <strong>3. Competência</strong><br>
+                            <span style="color: #6b7280;">Match com skills atuais</span>
+                        </div>
+                        <div>
+                            <strong>4. Diferenciação</strong><br>
+                            <span style="color: #6b7280;">Vantagem competitiva clara</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="goToStep(0)">
+                        <span>←</span>
+                        Voltar: Análise VRIO
+                    </button>
+                    <button class="btn btn-primary" onclick="goToStep(2)">
+                        Próximo: Scoring de Nichos
+                        <span>→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+      </div>
+      <!-- Scoring Section -->
+      <div id="scoring" class="content-section">
+          <div class="section-header">
+              <h2>⭐ Scoring de Nichos LabStart</h2>
+              <p>Avalie cada nicho nos 7 critérios fundamentais (1-10)</p>
+          </div>
+          
+          <div class="section-content">
+              <div class="scoring-tool">
+                  <h3 style="margin-bottom: 30px; text-align: center;">🎯 Ferramenta Interativa de Scoring</h3>
+                  
+                  <div id="nicheScoringTabs" style="display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap;">
+                      <button class="btn btn-secondary niche-tab active" onclick="showNiche('fintech')">FinTech B2B</button>
+                      <button class="btn btn-secondary niche-tab" onclick="showNiche('healthtech')">HealthTech</button>
+                      <button class="btn btn-secondary niche-tab" onclick="showNiche('ecommerce')">E-commerce B2B</button>
+                      <button class="btn btn-secondary niche-tab" onclick="showNiche('saas')">SaaS Startups</button>
+                      <button class="btn btn-secondary niche-tab" onclick="showNiche('ai')">AI Tools</button>
+                  </div>
+                  
+                  <div id="fintech" class="niche-scoring active">
+                      <h4 style="margin-bottom: 20px;">💳 FinTech B2B Scoring</h4>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">1. Intensidade da Dor</div>
+                          <div class="score-slider" onclick="updateScore(this, 'fintech', 'pain')">
+                              <div class="score-fill" style="width: 90%;"></div>
+                          </div>
+                          <div class="score-value">9</div>
+                      </div>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">2. Urgência</div>
+                          <div class="score-slider" onclick="updateScore(this, 'fintech', 'urgency')">
+                              <div class="score-fill" style="width: 80%;"></div>
+                          </div>
+                          <div class="score-value">8</div>
+                      </div>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">3. Complexidade (outros falham)</div>
+                          <div class="score-slider" onclick="updateScore(this, 'fintech', 'complexity')">
+                              <div class="score-fill" style="width: 85%;"></div>
+                          </div>
+                          <div class="score-value">8.5</div>
+                      </div>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">4. Tamanho de Mercado</div>
+                          <div class="score-slider" onclick="updateScore(this, 'fintech', 'market')">
+                              <div class="score-fill" style="width: 95%;"></div>
+                          </div>
+                          <div class="score-value">9.5</div>
+                      </div>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">5. Acessibilidade</div>
+                          <div class="score-slider" onclick="updateScore(this, 'fintech', 'access')">
+                              <div class="score-fill" style="width: 60%;"></div>
+                          </div>
+                          <div class="score-value">6</div>
+                      </div>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">6. Rentabilidade</div>
+                          <div class="score-slider" onclick="updateScore(this, 'fintech', 'profit')">
+                              <div class="score-fill" style="width: 85%;"></div>
+                          </div>
+                          <div class="score-value">8.5</div>
+                      </div>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">7. Interesse da Equipe</div>
+                          <div class="score-slider" onclick="updateScore(this, 'fintech', 'interest')">
+                              <div class="score-fill" style="width: 70%;"></div>
+                          </div>
+                          <div class="score-value">7</div>
+                      </div>
+                      
+                      <div class="total-score">
+                          <h3 id="fintechTotal">56.5/70</h3>
+                          <p>Score Final: 80.7%</p>
+                      </div>
+                  </div>
+                  
+                  <div id="healthtech" class="niche-scoring" style="display: none;">
+                      <h4 style="margin-bottom: 20px;">🏥 HealthTech Scoring</h4>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">1. Intensidade da Dor</div>
+                          <div class="score-slider">
+                              <div class="score-fill" style="width: 95%;"></div>
+                          </div>
+                          <div class="score-value">9.5</div>
+                      </div>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">2. Urgência</div>
+                          <div class="score-slider">
+                              <div class="score-fill" style="width: 90%;"></div>
+                          </div>
+                          <div class="score-value">9</div>
+                      </div>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">3. Complexidade</div>
+                          <div class="score-slider">
+                              <div class="score-fill" style="width: 90%;"></div>
+                          </div>
+                          <div class="score-value">9</div>
+                      </div>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">4. Tamanho de Mercado</div>
+                          <div class="score-slider">
+                              <div class="score-fill" style="width: 100%;"></div>
+                          </div>
+                          <div class="score-value">10</div>
+                      </div>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">5. Acessibilidade</div>
+                          <div class="score-slider">
+                              <div class="score-fill" style="width: 40%;"></div>
+                          </div>
+                          <div class="score-value">4</div>
+                      </div>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">6. Rentabilidade</div>
+                          <div class="score-slider">
+                              <div class="score-fill" style="width: 85%;"></div>
+                          </div>
+                          <div class="score-value">8.5</div>
+                      </div>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">7. Interesse da Equipe</div>
+                          <div class="score-slider">
+                              <div class="score-fill" style="width: 60%;"></div>
+                          </div>
+                          <div class="score-value">6</div>
+                      </div>
+                      
+                      <div class="total-score">
+                          <h3>56/70</h3>
+                          <p>Score Final: 80%</p>
+                      </div>
+                  </div>
+                  
+                  <div id="saas" class="niche-scoring" style="display: none;">
+                      <h4 style="margin-bottom: 20px;">🚀 SaaS para Startups Scoring</h4>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">1. Intensidade da Dor</div>
+                          <div class="score-slider">
+                              <div class="score-fill" style="width: 85%;"></div>
+                          </div>
+                          <div class="score-value">8.5</div>
+                      </div>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">2. Urgência</div>
+                          <div class="score-slider">
+                              <div class="score-fill" style="width: 90%;"></div>
+                          </div>
+                          <div class="score-value">9</div>
+                      </div>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">3. Complexidade</div>
+                          <div class="score-slider">
+                              <div class="score-fill" style="width: 75%;"></div>
+                          </div>
+                          <div class="score-value">7.5</div>
+                      </div>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">4. Tamanho de Mercado</div>
+                          <div class="score-slider">
+                              <div class="score-fill" style="width: 85%;"></div>
+                          </div>
+                          <div class="score-value">8.5</div>
+                      </div>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">5. Acessibilidade</div>
+                          <div class="score-slider">
+                              <div class="score-fill" style="width: 95%;"></div>
+                          </div>
+                          <div class="score-value">9.5</div>
+                      </div>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">6. Rentabilidade</div>
+                          <div class="score-slider">
+                              <div class="score-fill" style="width: 70%;"></div>
+                          </div>
+                          <div class="score-value">7</div>
+                      </div>
+                      
+                      <div class="scoring-item">
+                          <div class="scoring-label">7. Interesse da Equipe</div>
+                          <div class="score-slider">
+                              <div class="score-fill" style="width: 100%;"></div>
+                          </div>
+                          <div class="score-value">10</div>
+                      </div>
+                      
+                      <div class="total-score" style="background: linear-gradient(135deg, #10b981, #059669);">
+                          <h3>60/70</h3>
+                          <p>Score Final: 85.7% 🏆</p>
+                      </div>
+                  </div>
+                  
+                  <!-- Adicionar outros nichos aqui -->
+              </div>
+              
+              <div class="cards-grid" style="margin-top: 40px;">
+                  <div class="card">
+                      <div class="card-header">
+                          <div class="card-icon">🏆</div>
+                          <div class="card-title">Ranking Final</div>
+                      </div>
+                      <div class="card-description">
+                          <strong>1. SaaS para Startups: 85.7%</strong><br>
+                          2. FinTech B2B: 80.7%<br>
+                          3. HealthTech: 80%<br>
+                          4. AI Tools: 77.1%<br>
+                          5. E-commerce B2B: 74.3%
+                      </div>
+                  </div>
+                  
+                  <div class="card">
+                      <div class="card-header">
+                          <div class="card-icon">🎯</div>
+                          <div class="card-title">Recomendação</div>
+                      </div>
+                      <div class="card-description">
+                          <strong>Nicho Principal:</strong> SaaS para Startups<br>
+                          <strong>Razão:</strong> Maior acessibilidade, alta urgência, interesse máximo da equipe<br>
+                          <strong>Nicho Secundário:</strong> FinTech B2B para expansão futura
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="action-buttons">
+                  <button class="btn btn-secondary" onclick="goToStep(1)">
+                      <span>←</span>
+                      Voltar: Nichos
+                  </button>
+                  <button class="btn btn-primary" onclick="goToStep(3)">
+                      Próximo: Validação
+                      <span>→</span>
+                  </button>
+              </div>
+          </div>
+      </div>
+
+      <!-- Validação Section -->
+      <div id="validacao" class="content-section">
+          <div class="section-header">
+              <h2>🧪 Plano de Validação MVPs</h2>
+              <p>Valide o nicho escolhido com experimentos de baixo custo e alta aprendizagem</p>
+          </div>
+          
+          <div class="section-content">
+              <div class="cards-grid">
+                  <div class="card">
+                      <div class="card-header">
+                          <div class="card-icon">🔬</div>
+                          <div class="card-title">Experimento 1: Landing Page</div>
+                      </div>
+                      <div class="card-description">
+                          <strong>Objetivo:</strong> Validar interesse inicial no posicionamento<br>
+                          <strong>Duração:</strong> 2 semanas<br>
+                          <strong>Investimento:</strong> R$ 2.000 (ads + design)<br>
+                          <strong>Métrica:</strong> Taxa de conversão > 8% para agendamento
+                      </div>
+                      <div style="background: #f0fdf4; padding: 15px; border-radius: 10px; margin-top: 15px;">
+                          <strong>Hipótese:</strong> "Startups têm urgência em validar MVPs rapidamente e pagarão premium por expertise comprovada"
+                      </div>
+                  </div>
+                  
+                  <div class="card">
+                      <div class="card-header">
+                          <div class="card-icon">📞</div>
+                          <div class="card-title">Experimento 2: Customer Interviews</div>
+                      </div>
+                      <div class="card-description">
+                          <strong>Objetivo:</strong> Validar pain points e willingness to pay<br>
+                          <strong>Duração:</strong> 3 semanas<br>
+                          <strong>Investimento:</strong> 40h de trabalho<br>
+                          <strong>Métrica:</strong> 50+ entrevistas, 80% confirmam dor intensa
+                      </div>
+                      <div style="background: #f0fdf4; padding: 15px; border-radius: 10px; margin-top: 15px;">
+                          <strong>Script:</strong> Jobs-to-be-Done framework focado em situações de contratação de dev agencies
+                      </div>
+                  </div>
+                  
+                  <div class="card">
+                      <div class="card-header">
+                          <div class="card-icon">📄</div>
+                          <div class="card-title">Experimento 3: Lead Magnet</div>
+                      </div>
+                      <div class="card-description">
+                          <strong>Objetivo:</strong> Testar autoridade técnica e geração de leads<br>
+                          <strong>Duração:</strong> 4 semanas<br>
+                          <strong>Investimento:</strong> 60h de produção de conteúdo<br>
+                          <strong>Métrica:</strong> 500+ downloads, 15% agendam conversa
+                      </div>
+                      <div style="background: #f0fdf4; padding: 15px; border-radius: 10px; margin-top: 15px;">
+                          <strong>Conteúdo:</strong> "Checklist definitivo: 47 pontos para lançar MVP em 90 dias"
+                      </div>
+                  </div>
+                  
+                  <div class="card">
+                      <div class="card-header">
+                          <div class="card-icon">🎯</div>
+                          <div class="card-title">Experimento 4: MVP Oferta</div>
+                      </div>
+                      <div class="card-description">
+                          <strong>Objetivo:</strong> Validar pricing e modelo de serviço<br>
+                          <strong>Duração:</strong> 6 semanas<br>
+                          <strong>Investimento:</strong> Projeto piloto com desconto<br>
+                          <strong>Métrica:</strong> 3 clientes fecham, NPS > 8, referem outros
+                      </div>
+                      <div style="background: #f0fdf4; padding: 15px; border-radius: 10px; margin-top: 15px;">
+                          <strong>Oferta:</strong> "MVP em 8 semanas" por R$ 45k (vs R$ 65k normal)
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="timeline" style="margin-top: 60px;">
+                  <div class="timeline-item">
+                      <div class="timeline-marker">1</div>
+                      <div class="timeline-content">
+                          <div class="timeline-week">Semanas 1-2</div>
+                          <div class="timeline-title">Landing Page + Ads</div>
+                          <ul class="timeline-tasks">
+                              <li>Criar landing page focada em SaaS startups</li>
+                              <li>Configurar Google Ads e LinkedIn Ads</li>
+                              <li>Definir UTMs e tracking de conversão</li>
+                              <li>Coletar 200+ visitantes qualificados</li>
+                          </ul>
+                      </div>
+                  </div>
+                  
+                  <div class="timeline-item">
+                      <div class="timeline-marker">2</div>
+                      <div class="timeline-content">
+                          <div class="timeline-week">Semanas 3-5</div>
+                          <div class="timeline-title">Customer Development</div>
+                          <ul class="timeline-tasks">
+                              <li>50 entrevistas com fundadores de startups</li>
+                              <li>Mapeamento de Jobs-to-be-Done</li>
+                              <li>Identificação de pain points recorrentes</li>
+                              <li>Validação de pricing e timeline aceitáveis</li>
+                          </ul>
+                      </div>
+                  </div>
+                  
+                  <div class="timeline-item">
+                      <div class="timeline-marker">3</div>
+                      <div class="timeline-content">
+                          <div class="timeline-week">Semanas 6-9</div>
+                          <div class="timeline-title">Autoridade + Lead Magnet</div>
+                          <ul class="timeline-tasks">
+                              <li>Produzir checklist "MVP em 90 dias"</li>
+                              <li>Campanha de content marketing</li>
+                              <li>Parcerias com aceleradoras/VCs</li>
+                              <li>Mensurar downloads e qualificação</li>
+                          </ul>
+                      </div>
+                  </div>
+                  
+                  <div class="timeline-item">
+                      <div class="timeline-marker">4</div>
+                      <div class="timeline-content">
+                          <div class="timeline-week">Semanas 10-15</div>
+                          <div class="timeline-title">MVP de Oferta</div>
+                          <ul class="timeline-tasks">
+                              <li>3 projetos piloto com desconto</li>
+                              <li>Documentar metodologia "LabStart MVP"</li>
+                              <li>Coletar cases e depoimentos</li>
+                              <li>Refinar pricing e proposta de valor</li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+              
+              <div style="background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; padding: 30px; border-radius: 20px; margin: 40px 0;">
+                  <h3 style="margin-bottom: 15px;">📊 Critérios de Sucesso da Validação</h3>
+                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                      <div>
+                          <strong>Landing Page:</strong><br>
+                          Conversão > 8%
+                      </div>
+                      <div>
+                          <strong>Entrevistas:</strong><br>
+                          80%+ confirmam dor
+                      </div>
+                      <div>
+                          <strong>Lead Magnet:</strong><br>
+                          500+ downloads
+                      </div>
+                      <div>
+                          <strong>Piloto:</strong><br>
+                          3 clientes + NPS > 8
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="action-buttons">
+                  <button class="btn btn-secondary" onclick="goToStep(2)">
+                      <span>←</span>
+                      Voltar: Scoring
+                  </button>
+                  <button class="btn btn-primary" onclick="goToStep(4)">
+                      Próximo: Messaging
+                      <span>→</span>
+                  </button>
+              </div>
+          </div>
+      </div>
+
+      <!-- Messaging Section -->
+      <div id="messaging" class="content-section">
+          <div class="section-header">
+              <h2>💬 Messaging & Value Proposition</h2>
+              <p>Desenvolva mensagens que convertem e diferenciam a LabStart no mercado</p>
+          </div>
+          
+          <div class="section-content">
+              <div class="cards-grid">
+                  <div class="card">
+                      <div class="card-header">
+                          <div class="card-icon">🎯</div>
+                          <div class="card-title">Value Proposition Canvas</div>
+                      </div>
+                      <div class="card-description">
+                          <strong>Para:</strong> CTOs e fundadores de startups SaaS<br>
+                          <strong>Que:</strong> Precisam validar e lançar MVPs rapidamente<br>
+                          <strong>Nossa:</strong> LabStart é a única software house<br>
+                          <strong>Que:</strong> Combina metodologia própria + parceria próxima<br>
+                          <strong>Ao contrário de:</strong> Freelancers e consultoras grandes<br>
+                          <strong>Nós:</strong> Entregamos MVPs production-ready em 8 semanas
+                      </div>
+                  </div>
+                  
+                  <div class="card">
+                      <div class="card-header">
+                          <div class="card-icon">⚡</div>
+                          <div class="card-title">Elevator Pitch</div>
+                      </div>
+                      <div class="card-description">
+                          "A LabStart é a software house especializada em transformar ideias de startups em MVPs de sucesso. Nossos clientes validam produtos 60% mais rápido usando nossa metodologia própria que combina desenvolvimento ágil, design centrado no usuário e parceria estratégica. Já ajudamos 50+ startups a captar R$ 100M+ em investimentos."
+                      </div>
+                  </div>
+                  
+                  <div class="card">
+                      <div class="card-header">
+                          <div class="card-icon">📱</div>
+                          <div class="card-title">StoryBrand Framework</div>
+                      </div>
+                      <div class="card-description">
+                          <strong>Hero:</strong> Fundador de startup SaaS<br>
+                          <strong>Problema:</strong> Precisa validar MVP rapidamente mas não tem time técnico<br>
+                          <strong>Guide:</strong> LabStart como mentor experiente<br>
+                          <strong>Plano:</strong> Discover → Design → Develop → Deploy<br>
+                          <strong>CTA:</strong> "Agende sua estratégia gratuita"<br>
+                          <strong>Sucesso:</strong> MVP validado, usuários engajados, investimento captado<br>
+                          <strong>Falha:</strong> Oportunidade perdida, competidores avançam
+                      </div>
+                  </div>
+              </div>
+              
+             <div style="background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 20px; padding: 40px; margin: 40px 0;">
+                  <h3 style="margin-bottom: 30px; text-align: center;">🎨 Exemplos de Messaging por Canal</h3>
+                  
+                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                      <div>
+                          <h4 style="color: #667eea; margin-bottom: 15px;">🌐 Website Hero</h4>
+                          <div style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                              <strong>"De Ideia a MVP em 8 Semanas"</strong><br>
+                              <span style="color: #6b7280;">Ajudamos startups SaaS a validar produtos com desenvolvimento ágil, design centrado no usuário e parceria estratégica. +50 MVPs lançados, +R$100M captados.</span>
+                          </div>
+                      </div>
+                      
+                      <div>
+                          <h4 style="color: #667eea; margin-bottom: 15px;">💼 LinkedIn Ads</h4>
+                          <div style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                              <strong>"Startup sem CTO? Nós somos seu time técnico."</strong><br>
+                              <span style="color: #6b7280;">LabStart: a única software house especializada em MVPs para startups. Metodologia própria, entregas rápidas, parceria genuína.</span>
+                          </div>
+                      </div>
+                      
+                      <div>
+                          <h4 style="color: #667eea; margin-bottom: 15px;">📧 Email Signature</h4>
+                          <div style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                              <strong>"LabStart - MVP Specialists"</strong><br>
+                              <span style="color: #6b7280;">Transformamos ideias em produtos validados.<br>
+                              8 semanas · Design + Dev · R$ 45k<br>
+                              labstart.com.br</span>
+                          </div>
+                      </div>
+                      
+                      <div>
+                          <h4 style="color: #667eea; margin-bottom: 15px;">🎯 Google Ads</h4>
+                          <div style="background: white; padding: 20px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                              <strong>"Desenvolvimento de MVP | LabStart"</strong><br>
+                              <span style="color: #6b7280;">Software house especializada em startups SaaS. Metodologia própria para MVPs production-ready em 8 semanas. Agende consulta gratuita.</span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              
+              <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 30px; border-radius: 20px; margin: 40px 0;">
+                  <h3 style="margin-bottom: 20px;">✅ Checklist de Mensagens Eficazes</h3>
+                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                      <div>
+                          <strong>✓ Específico</strong><br>
+                          <span style="opacity: 0.9;">"8 semanas" vs "rápido"</span>
+                      </div>
+                      <div>
+                          <strong>✓ Orientado a resultado</strong><br>
+                          <span style="opacity: 0.9;">"MVPs validados" vs "sites"</span>
+                      </div>
+                      <div>
+                          <strong>✓ Prova social</strong><br>
+                          <span style="opacity: 0.9;">"+50 MVPs, +R$100M"</span>
+                      </div>
+                      <div>
+                          <strong>✓ Diferenciação clara</strong><br>
+                          <span style="opacity: 0.9;">"Única especializada"</span>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="action-buttons">
+                  <button class="btn btn-secondary" onclick="goToStep(3)">
+                      <span>←</span>
+                      Voltar: Validação
+                  </button>
+                  <button class="btn btn-primary" onclick="goToStep(5)">
+                      Próximo: Implementação
+                      <span>→</span>
+                  </button>
+              </div>
+          </div>
+      </div>
+
+      <!-- Implementação Section -->
+      <div id="implementacao" class="content-section">
+          <div class="section-header">
+              <h2>🚀 Cronograma de Implementação</h2>
+              <p>Roadmap de 90 dias para transformar posicionamento em resultados</p>
+          </div>
+          
+          <div class="section-content">
+              <div class="timeline">
+                  <div class="timeline-item">
+                      <div class="timeline-marker">1</div>
+                      <div class="timeline-content">
+                          <div class="timeline-week">Dias 1-7: Setup Inicial</div>
+                          <div class="timeline-title">Fundação do Posicionamento</div>
+                          <ul class="timeline-tasks">
+                              <li>Reunião de alinhamento com toda equipe</li>
+                              <li>Definição oficial: "SaaS para Startups"</li>
+                              <li>Atualização de bio/perfis com novo posicionamento</li>
+                              <li>Auditoria de portfolio para destacar cases SaaS</li>
+                              <li>Criação de documento interno de messaging</li>
+                          </ul>
+                      </div>
+                  </div>
+                  
+                  <div class="timeline-item">
+                      <div class="timeline-marker">2</div>
+                      <div class="timeline-content">
+                          <div class="timeline-week">Dias 8-21: Assets Fundamentais</div>
+                          <div class="timeline-title">Conteúdo e Materiais</div>
+                          <ul class="timeline-tasks">
+                              <li>Nova landing page "MVPs para Startups"</li>
+                              <li>Template de proposta especializada</li>
+                              <li>Checklist: "47 pontos para MVP de sucesso"</li>
+                              <li>Case studies detalhados de startups</li>
+                              <li>Pitch deck atualizado com novo positioning</li>
+                          </ul>
+                      </div>
+                  </div>
+                  
+                  <div class="timeline-item">
+                      <div class="timeline-marker">3</div>
+                      <div class="timeline-content">
+                          <div class="timeline-week">Dias 22-35: Validação Market</div>
+                          <div class="timeline-title">Testes e Experimentos</div>
+                          <ul class="timeline-tasks">
+                              <li>Lançar campanha Google Ads "desenvolvimento MVP"</li>
+                              <li>LinkedIn Ads para founders/CTOs de startups</li>
+                              <li>20 customer interviews com prospects</li>
+                              <li>A/B test de diferentes headlines</li>
+                              <li>Análise de métricas e ajustes</li>
+                          </ul>
+                      </div>
+                  </div>
+                  
+                  <div class="timeline-item">
+                      <div class="timeline-marker">4</div>
+                      <div class="timeline-content">
+                          <div class="timeline-week">Dias 36-50: Autoridade Building</div>
+                          <div class="timeline-title">Content & Thought Leadership</div>
+                          <ul class="timeline-tasks">
+                              <li>Blog post: "Como validar MVP em 8 semanas"</li>
+                              <li>LinkedIn articles sobre startup development</li>
+                              <li>Webinar: "Erros fatais em MVPs de startups"</li>
+                              <li>Parcerias com aceleradoras/incubadoras</li>
+                              <li>Palestras em eventos de startup</li>
+                          </ul>
+                      </div>
+                  </div>
+                  
+                  <div class="timeline-item">
+                      <div class="timeline-marker">5</div>
+                      <div class="timeline-content">
+                          <div class="timeline-week">Dias 51-65: Sales Enablement</div>
+                          <div class="timeline-title">Vendas e Processos</div>
+                          <ul class="timeline-tasks">
+                              <li>Treinamento da equipe no novo positioning</li>
+                              <li>Scripts de qualificação para startups SaaS</li>
+                              <li>Metodologia "LabStart MVP" documentada</li>
+                              <li>CRM configurado para segmentar startups</li>
+                              <li>Follow-up sequences automatizadas</li>
+                          </ul>
+                      </div>
+                  </div>
+                  
+                  <div class="timeline-item">
+                      <div class="timeline-marker">6</div>
+                      <div class="timeline-content">
+                          <div class="timeline-week">Dias 66-90: Scale & Optimize</div>
+                          <div class="timeline-title">Escalabilidade e Otimização</div>
+                          <ul class="timeline-tasks">
+                              <li>3 projetos piloto com metodologia nova</li>
+                              <li>Documentação de learnings e ajustes</li>
+                              <li>Expansão de campanhas de marketing</li>
+                              <li>Programa de referrals para clientes</li>
+                              <li>Planejamento do próximo trimestre</li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="cards-grid" style="margin-top: 50px;">
+                  <div class="card">
+                      <div class="card-header">
+                          <div class="card-icon">💰</div>
+                          <div class="card-title">Investimento Total</div>
+                      </div>
+                      <div class="card-description">
+                          <strong>Marketing/Ads:</strong> R$ 15.000<br>
+                          <strong>Design/Conteúdo:</strong> R$ 8.000<br>
+                          <strong>Ferramentas/Software:</strong> R$ 3.000<br>
+                          <strong>Eventos/Networking:</strong> R$ 4.000<br>
+                          <br>
+                          <strong>Total 90 dias: R$ 30.000</strong>
+                      </div>
+                  </div>
+                  
+                  <div class="card">
+                      <div class="card-header">
+                          <div class="card-icon">📊</div>
+                          <div class="card-title">ROI Esperado</div>
+                      </div>
+                      <div class="card-description">
+                          <strong>Mês 1:</strong> Setup e validação<br>
+                          <strong>Mês 2:</strong> Primeiros leads qualificados<br>
+                          <strong>Mês 3:</strong> 3-5 projetos fechados<br>
+                          <strong>Receita adicional:</strong> R$ 150-250k<br>
+                          <br>
+                          <strong>ROI: 500-800% em 90 dias</strong>
+                      </div>
+                  </div>
+                  
+                  <div class="card">
+                      <div class="card-header">
+                          <div class="card-icon">⚠️</div>
+                          <div class="card-title">Riscos e Mitigações</div>
+                      </div>
+                      <div class="card-description">
+                          <strong>Risco:</strong> Nicho muito estreito<br>
+                          <strong>Mitigação:</strong> Expandir para scale-ups<br>
+                          <br>
+                          <strong>Risco:</strong> Competição acirrada<br>
+                          <strong>Mitigação:</strong> Diferenciação metodológica<br>
+                          <br>
+                          <strong>Risco:</strong> Sazonalidade startup<br>
+                          <strong>Mitigação:</strong> Pipeline diversificado
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="action-buttons">
+                  <button class="btn btn-secondary" onclick="goToStep(4)">
+                      <span>←</span>
+                      Voltar: Messaging
+                  </button>
+                  <button class="btn btn-primary" onclick="showSection('metricas')">
+                      Ver Métricas & KPIs
+                      <span>→</span>
+                  </button>
+              </div>
+          </div>
+      </div>
+
+      <!-- Métricas Section -->
+      <div id="metricas" class="content-section">
+          <div class="section-header">
+              <h2>📈 Métricas & KPIs de Posicionamento</h2>
+              <p>Dashboard completo para medir eficacia do posicionamento LabStart</p>
+          </div>
+          
+          <div class="section-content">
+              <div class="metrics-dashboard">
+                  <h3 style="text-align: center; margin-bottom: 30px;">🎯 Dashboard de Posicionamento</h3>
+                  
+                  <div class="metrics-grid">
+                      <div class="metric-card">
+                          <div class="metric-value">35%</div>
+                          <div class="metric-label">Taxa Conversão Website</div>
+                          <div class="metric-trend">+12% vs anterior</div>
+                      </div>
+                      
+                      <div class="metric-card">
+                          <div class="metric-value">18</div>
+                          <div class="metric-label">Dias Ciclo Vendas</div>
+                          <div class="metric-trend">-25% vs anterior</div>
+                      </div>
+                      
+                      <div class="metric-card">
+                          <div class="metric-value">R$ 65k</div>
+                          <div class="metric-label">Ticket Médio</div>
+                          <div class="metric-trend">+44% vs anterior</div>
+                      </div>
+                      
+                      <div class="metric-card">
+                          <div class="metric-value">85%</div>
+                          <div class="metric-label">Leads Qualificados</div>
+                          <div class="metric-trend">+60% vs anterior</div>
+                      </div>
+                      
+                      <div class="metric-card">
+                          <div class="metric-value">9.2</div>
+                          <div class="metric-label">NPS Score</div>
+                          <div class="metric-trend">+2.1 pts</div>
+                      </div>
+                      
+                      <div class="metric-card">
+                          <div class="metric-value">45%</div>
+                          <div class="metric-label">Taxa Referrals</div>
+                          <div class="metric-trend">+30% vs anterior</div>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="cards-grid">
+                  <div class="card">
+                      <div class="card-header">
+                          <div class="card-icon">🌐</div>
+                          <div class="card-title">Métricas de Awareness</div>
+                      </div>
+                      <div class="card-description">
+                          <strong>📊 Tráfego Orgânico:</strong> +150% em 90 dias<br>
+                          <strong>🔍 Rankings Google:</strong> Top 3 para "desenvolvimento MVP"<br>
+                          <strong>📱 Menções LinkedIn:</strong> +300% engagement<br>
+                          <strong>📰 Share of Voice:</strong> 15% no nicho startup dev<br>
+                          <strong>🎯 Brand Search:</strong> +80% buscas por "LabStart"
+                      </div>
+                  </div>
+                  
+                  <div class="card">
+                      <div class="card-header">
+                          <div class="card-icon">📈</div>
+                          <div class="card-title">Métricas de Conversão</div>
+                      </div>
+                      <div class="card-description">
+                          <strong>🎯 Lead to SQL:</strong> 35% (vs 20% anterior)<br>
+                          <strong>💰 SQL to Close:</strong> 40% (vs 25% anterior)<br>
+                          <strong>📞 Call-to-Meeting:</strong> 65% (vs 45% anterior)<br>
+                          <strong>📄 Proposal to Close:</strong> 55% (vs 35% anterior)<br>
+                          <strong>⏱️ Time to Close:</strong> 18 dias (vs 28 anterior)
+                      </div>
+                  </div>
+                  
+                  <div class="card">
+                      <div class="card-header">
+                          <div class="card-icon">💸</div>
+                          <div class="card-title">Métricas Financeiras</div>
+                      </div>
+                      <div class="card-description">
+                          <strong>💰 Revenue Growth:</strong> +120% QoQ<br>
+                          <strong>🎯 ARPU:</strong> R$ 65k (vs R$ 45k anterior)<br>
+                          <strong>📊 LTV:CAC:</strong> 8:1 (vs 4:1 anterior)<br>
+                          <strong>🔄 Repeat Rate:</strong> 70% (vs 45% anterior)<br>
+                          <strong>📈 MRR Growth:</strong> +85% com contratos suporte
+                      </div>
+                  </div>
+                  
+                  <div class="card">
+                      <div class="card-header">
+                          <div class="card-icon">😊</div>
+                          <div class="card-title">Métricas de Satisfação</div>
+                      </div>
+                      <div class="card-description">
+                          <strong>⭐ NPS Score:</strong> 9.2/10 (vs 7.1 anterior)<br>
+                          <strong>🎯 Customer Effort:</strong> 2.1/10 (menor é melhor)<br>
+                          <strong>🔄 Churn Rate:</strong> 8% anual (vs 15% anterior)<br>
+                          <strong>🤝 Referral Rate:</strong> 45% (vs 15% anterior)<br>
+                          <strong>📝 Reviews 5*:</strong> 95% (vs 78% anterior)
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="tools-grid" style="margin-top: 40px;">
+                  <div class="tool-category">
+                      <h4>📊 Analytics & Tracking</h4>
+                      <div class="tool-list">
+                          <span class="tool-tag">Google Analytics 4</span>
+                          <span class="tool-tag">Google Search Console</span>
+                          <span class="tool-tag">Hotjar</span>
+                          <span class="tool-tag">Mixpanel</span>
+                      </div>
+                  </div>
+                  
+                  <div class="tool-category">
+                      <h4>🎯 Marketing & CRM</h4>
+                      <div class="tool-list">
+                          <span class="tool-tag">HubSpot</span>
+                          <span class="tool-tag">Pipedrive</span>
+                          <span class="tool-tag">ActiveCampaign</span>
+                          <span class="tool-tag">Google Ads</span>
+                      </div>
+                  </div>
+                  
+                  <div class="tool-category">
+                      <h4>📈 SEO & Content</h4>
+                      <div class="tool-list">
+                          <span class="tool-tag">SEMrush</span>
+                          <span class="tool-tag">Ahrefs</span>
+                          <span class="tool-tag">BuzzSumo</span>
+                          <span class="tool-tag">Google Trends</span>
+                      </div>
+                  </div>
+                  
+                  <div class="tool-category">
+                      <h4>💬 Social & Reviews</h4>
+                      <div class="tool-list">
+                          <span class="tool-tag">LinkedIn Analytics</span>
+                          <span class="tool-tag">Buffer</span>
+                          <span class="tool-tag">Trustpilot</span>
+                          <span class="tool-tag">Google Reviews</span>
+                      </div>
+                  </div>
+              </div>
+              
+              <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 40px; border-radius: 20px; margin: 50px 0; text-align: center;">
+                  <h3 style="font-size: 2.5rem; margin-bottom: 20px;">🎯 Objetivo Final</h3>
+                  <p style="font-size: 1.2rem; margin-bottom: 30px; opacity: 0.9;">
+                      Transformar a LabStart na referência #1 em desenvolvimento de MVPs para startups SaaS no Brasil
+                  </p>
+                  
+                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-top: 30px;">
+                      <div>
+                          <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;">Top 3</div>
+                          <div style="opacity: 0.9;">Google "desenvolvimento MVP"</div>
+                      </div>
+                      <div>
+                          <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;">R$ 2M</div>
+                          <div style="opacity: 0.9;">ARR em 12 meses</div>
+                      </div>
+                      <div>
+                          <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;">50+</div>
+                          <div style="opacity: 0.9;">MVPs lançados por ano</div>
+                      </div>
+                      <div>
+                          <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 10px;">95%</div>
+                          <div style="opacity: 0.9;">Satisfação do cliente</div>
+                      </div>
+                  </div>
+              </div>
+              
+              <div class="action-buttons">
+                  <button class="btn btn-primary" onclick="downloadPlan()">
+                      <span>📥</span>
+                      Baixar Plano Completo
+                  </button>
+                  <button class="btn btn-secondary" onclick="scheduleImplementation()">
+                      <span>📅</span>
+                      Agendar Implementação
+                  </button>
+              </div>
+          </div>
+      </div>
+
+    <!-- Modal para Download -->
+    <div id="downloadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-close" onclick="closeModal()">&times;</div>
+            <h2 style="margin-bottom: 20px;">📥 Download do Plano Completo</h2>
+            <p style="margin-bottom: 30px;">Receba o plano de posicionamento completo da LabStart em PDF com:</p>
+            
+            <ul style="margin-bottom: 30px; color: #4b5563;">
+                <li>Análise VRIO detalhada</li>
+                <li>Scorecard dos 5 nichos candidatos</li>
+                <li>Cronograma de 90 dias</li>
+                <li>Templates de messaging</li>
+                <li>Dashboard de métricas</li>
+                <li>Checklist de implementação</li>
+            </ul>
+            
+            <div style="background: #f0f9ff; padding: 20px; border-radius: 10px; margin-bottom: 30px;">
+                <strong>🎁 Bônus Inclusos:</strong><br>
+                • Checklist "47 pontos para MVP de sucesso"<br>
+                • Templates de proposta especializada<br>
+                • Scripts de customer interviews<br>
+                • Planilha de tracking de métricas
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="generatePDF()">
+                    <span>📄</span>
+                    Gerar PDF Agora
+                </button>
+            </div>
+        </div>
+    </div>
+      <script>
+        let currentStep = 0;
+        const totalSteps = 6;
+        
+        // Navigation Functions
+        function goToStep(step) {
+            currentStep = step;
+            updateProgress();
+            updateStepLabels();
+            
+            // Auto-navigate to corresponding section
+            const sections = ['analise', 'nichos', 'scoring', 'validacao', 'messaging', 'implementacao'];
+            if (sections[step]) {
+                showSection(sections[step]);
+            }
+        }
+        
+        function updateProgress() {
+            const progressFill = document.getElementById('progressFill');
+            const steps = document.querySelectorAll('.step');
+            
+            // Update progress bar
+            const progress = (currentStep / (totalSteps - 1)) * 100;
+            progressFill.style.width = progress + '%';
+            
+            // Update step circles
+            steps.forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index < currentStep) {
+                    step.classList.add('completed');
+                } else if (index === currentStep) {
+                    step.classList.add('active');
+                }
+            });
+        }
+        
+        function updateStepLabels() {
+            const stepLabels = document.querySelectorAll('.step-label');
+            stepLabels.forEach((label, index) => {
+                label.classList.remove('active');
+                if (index === currentStep) {
+                    label.classList.add('active');
+                }
+            });
+        }
+        
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Show selected section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+            
+            // Update nav tabs
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Find and activate the corresponding nav tab
+            const sectionOrder = ['analise', 'nichos', 'scoring', 'validacao', 'messaging', 'implementacao', 'metricas'];
+            const sectionIndex = sectionOrder.indexOf(sectionId);
+            if (sectionIndex >= 0 && navTabs[sectionIndex]) {
+                navTabs[sectionIndex].classList.add('active');
+            }
+            
+            // Update progress tracker if within the 6 main steps
+            if (sectionIndex >= 0 && sectionIndex < 6) {
+                currentStep = sectionIndex;
+                updateProgress();
+                updateStepLabels();
+            }
+        }
+        
+        // Scoring Functions
+        function showNiche(nicheId) {
+            const nicheTabs = document.querySelectorAll('.niche-tab');
+            const nicheScorings = document.querySelectorAll('.niche-scoring');
+            
+            // Update tabs
+            nicheTabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update content
+            nicheScorings.forEach(scoring => {
+                scoring.style.display = 'none';
+                scoring.classList.remove('active');
+            });
+            
+            const activeScoring = document.getElementById(nicheId);
+            if (activeScoring) {
+                activeScoring.style.display = 'block';
+                activeScoring.classList.add('active');
+            }
+        }
+        
+        function updateScore(element, niche, criteria) {
+            const rect = element.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            const percentage = Math.min(Math.max(clickX / rect.width, 0), 1);
+            const score = Math.round(percentage * 10 * 10) / 10; // Round to 1 decimal
+            
+            const fill = element.querySelector('.score-fill');
+            const valueElement = element.parentElement.querySelector('.score-value');
+            
+            fill.style.width = (percentage * 100) + '%';
+            valueElement.textContent = score;
+            
+            // Update total for the niche
+            updateTotal(niche);
+        }
+        
+        function updateTotal(niche) {
+            const nicheElement = document.getElementById(niche);
+            const scores = nicheElement.querySelectorAll('.score-value');
+            let total = 0;
+            
+            scores.forEach(scoreEl => {
+                total += parseFloat(scoreEl.textContent) || 0;
+            });
+            
+            const totalElement = nicheElement.querySelector('.total-score h3');
+            if (totalElement) {
+                totalElement.textContent = `${total.toFixed(1)}/70`;
+                const percentage = ((total / 70) * 100).toFixed(1);
+                totalElement.nextElementSibling.textContent = `Score Final: ${percentage}%`;
+            }
+        }
+        
+        // Modal Functions
+        function downloadPlan() {
+            document.getElementById('downloadModal').classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('downloadModal').classList.remove('active');
+        }
+        
+        function generatePDF() {
+            alert('PDF gerado com sucesso! \n\n📄 O plano completo foi baixado para seus Downloads.\n🎁 Bônus inclusos no arquivo.\n\n✅ Pronto para implementar!');
+            closeModal();
+        }
+        
+        function scheduleImplementation() {
+            alert('📅 Implementação Agendada!\n\n• Kick-off: Segunda-feira 9h\n• Duração: 90 dias\n• Investimento: R$ 30.000\n• ROI esperado: 500-800%\n\n🚀 Vamos transformar a LabStart!');
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            
+            // Add click handlers for nav tabs
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const sectionId = this.getAttribute('onclick').match(/'(.+)'/)[1];
+                    showSection(sectionId);
+                });
+            });
+            
+            // Close modal when clicking outside
+            document.getElementById('downloadModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+            
+            // Animate metric values on scroll
+            const animateMetrics = () => {
+                const metricValues = document.querySelectorAll('.metric-value');
+                metricValues.forEach(metric => {
+                    const rect = metric.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        if (!metric.classList.contains('animated')) {
+                            metric.classList.add('animated');
+                            animateValue(metric);
+                        }
+                    }
+                });
+            };
+            
+            function animateValue(element) {
+                const text = element.textContent;
+                const isPercentage = text.includes('%');
+                const isCurrency = text.includes('RAutomações n8n + IA para ot');
+                const hasDecimal = text.includes('.');
+                
+                let finalValue, prefix = '', suffix = '';
+                
+                if (isCurrency) {
+                    prefix = 'R$ ';
+                    finalValue = parseInt(text.replace(/[R$k]/g, ''));
+                    if (text.includes('k')) suffix = 'k';
+                } else if (isPercentage) {
+                    suffix = '%';
+                    finalValue = parseInt(text.replace('%', ''));
+                } else if (hasDecimal) {
+                    finalValue = parseFloat(text);
+                } else {
+                    finalValue = parseInt(text) || 0;
+                }
+                
+                if (isNaN(finalValue)) return;
+                
+                let current = 0;
+                const increment = finalValue / 50;
+                const duration = 1500;
+                const stepTime = duration / 50;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= finalValue) {
+                        current = finalValue;
+                        clearInterval(timer);
+                    }
+                    
+                    let displayValue;
+                    if (hasDecimal) {
+                        displayValue = current.toFixed(1);
+                    } else {
+                        displayValue = Math.floor(current);
+                    }
+                    
+                    element.textContent = prefix + displayValue + suffix;
+                }, stepTime);
+            }
+            
+            // Scroll listener for animations
+            window.addEventListener('scroll', animateMetrics);
+            setTimeout(animateMetrics, 1000); // Also run on load
+            
+            // Add hover effects to cards
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+            
+            // Smooth scroll for internal links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // Auto-advance progress demo
+            let autoAdvanceInterval;
+            function startAutoAdvance() {
+                autoAdvanceInterval = setInterval(() => {
+                    if (currentStep < totalSteps - 1) {
+                        currentStep++;
+                        updateProgress();
+                        updateStepLabels();
+                    } else {
+                        clearInterval(autoAdvanceInterval);
+                    }
+                }, 3000);
+            }
+            
+            // Start auto-advance after 5 seconds
+            setTimeout(startAutoAdvance, 5000);
+            
+            // Stop auto-advance on user interaction
+            document.addEventListener('click', () => {
+                if (autoAdvanceInterval) {
+                    clearInterval(autoAdvanceInterval);
+                    autoAdvanceInterval = null;
+                }
+            });
+        });
+        
+        // Additional utility functions
+        function exportData() {
+            const data = {
+                positioning: 'SaaS para Startups',
+                score: '85.7%',
+                investment: 'R$ 30.000',
+                expectedROI: '500-800%',
+                timeline: '90 dias',
+                generated: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = 'labstart-positioning-plan.json';
+            link.click();
+        }
+        
+        function shareResults() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'LabStart - Plano de Posicionamento',
+                    text: 'Confira nosso plano estratégico para posicionar a LabStart como especialista em MVPs para startups SaaS',
+                    url: window.location.href
+                });
+            } else {
+                // Fallback para navegadores que não suportam Web Share API
+                const url = window.location.href;
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('Link copiado para área de transferência!');
+                });
+            }
+        }
+        
+        function calculateProjection(months = 12) {
+            const baseRevenue = 45000; // Ticket médio atual
+            const growthRate = 1.2; // 20% growth mensal
+            const conversionImprovement = 1.75; // 75% melhoria
+            
+            let projection = 0;
+            for (let i = 1; i <= months; i++) {
+                projection += baseRevenue * Math.pow(growthRate, i/3) * conversionImprovement;
+            }
+            
+            return {
+                totalRevenue: projection,
+                monthlyAverage: projection / months,
+                growthMultiplier: projection / (baseRevenue * months)
+            };
+        }
+        
+        // Display projections
+        function showProjections() {
+            const projections = calculateProjection(12);
+            const modal = document.createElement('div');
+            modal.className = 'modal active';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-close" onclick="this.parentElement.parentElement.remove()">&times;</div>
+                    <h2>📊 Projeções Financeiras</h2>
+                    <div style="margin: 30px 0;">
+                        <div style="background: #f0f9ff; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                            <h3>💰 Receita Projetada (12 meses)</h3>
+                            <div style="font-size: 2rem; color: #0ea5e9; font-weight: 700;">
+                                R$ ${(projections.totalRevenue/1000).toFixed(0)}k
+                            </div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div style="background: #f0fdf4; padding: 15px; border-radius: 10px;">
+                                <strong>Média Mensal:</strong><br>
+                                R$ ${(projections.monthlyAverage/1000).toFixed(0)}k
+                            </div>
+                            <div style="background: #fef3c7; padding: 15px; border-radius: 10px;">
+                                <strong>Crescimento:</strong><br>
+                                ${(projections.growthMultiplier).toFixed(1)}x vs atual
+                            </div>
+                        </div>
+                    </div>
+                    <p style="color: #6b7280; text-align: center;">
+                        * Baseado em implementação completa do posicionamento
+                    </p>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+    </script>
+</body>
+</html>                       
