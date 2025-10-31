@@ -265,53 +265,79 @@
             left: 6px;
             top: 0;
         }
+
+        .btn-planilha {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #FF1493;
+            border: 3px solid #FF69B4;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+            font-family: 'Comic Sans MS', cursive;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-planilha:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+        }
+
+        .btn-planilha:active {
+            transform: translateY(0px);
+        }
     </style>
 </head>
 <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <div class="container">
         <div class="bow-decoration"></div>
         
-        <h1>Calculadora de Preço da Larissa</h1>
-        <div class="subtitle">♡ Calcule o preço perfeito para seu produto ♡</div>
+        <h1>Calculadora da Larissa</h1>
+        <div class="subtitle">♡ Calcule o preço perfeito para seu produto</div>
         
         <div class="input-group">
             <label for="custoProduto">Custo do Produto (R$)</label>
-            <input type="number" id="custoProduto" placeholder="0.00" step="0.01" value="50">
+            <input type="number" id="custoProduto" placeholder="0.00" step="0.01" value="0">
         </div>
 
         <div class="input-group">
             <label for="margemLucro">Margem de Lucro (%)</label>
-            <input type="number" id="margemLucro" placeholder="0" step="0.1" value="40">
+            <input type="number" id="margemLucro" placeholder="0" step="0.1" value="0">
         </div>
 
         <div class="input-group">
             <label for="embalagem">Custo de Embalagem (R$)</label>
-            <input type="number" id="embalagem" placeholder="0.00" step="0.01" value="5">
+            <input type="number" id="embalagem" placeholder="0.00" step="0.01" value="0>
         </div>
 
         <div class="input-group">
             <label for="mimo">Custo do Mimo/Brinde (R$)</label>
-            <input type="number" id="mimo" placeholder="0.00" step="0.01" value="2">
+            <input type="number" id="mimo" placeholder="0.00" step="0.01" value="0>
         </div>
 
         <div class="input-group">
             <label for="taxaCartao">Taxa do Cartão (%)</label>
-            <input type="number" id="taxaCartao" placeholder="0" step="0.1" value="3.5">
+            <input type="number" id="taxaCartao" placeholder="0" step="0.1" value="0.0">
         </div>
 
         <div class="input-group">
             <label for="custoFixo">Custo Fixo Mensal (R$)</label>
-            <input type="number" id="custoFixo" placeholder="0.00" step="0.01" value="1000">
+            <input type="number" id="custoFixo" placeholder="0.00" step="0.01" value="0">
         </div>
 
         <div class="input-group">
             <label for="vendasMes">Estimativa de Vendas/Mês</label>
-            <input type="number" id="vendasMes" placeholder="0" step="1" value="50">
+            <input type="number" id="vendasMes" placeholder="0" step="1" value="0">
         </div>
 
         <div class="input-group">
             <label for="cupomDesconto">Cupom de Desconto (%)</label>
-            <input type="number" id="cupomDesconto" placeholder="0" step="0.1" value="10">
+            <input type="number" id="cupomDesconto" placeholder="0" step="0.1" value="0">
         </div>
 
         <div class="resultado" id="resultado">
@@ -385,6 +411,10 @@
         <div class="alert" id="alert" style="display: none;">
             ⚠️ <strong>Atenção:</strong> Com essa configuração, você pode não estar cobrindo todos os custos! Considere aumentar a margem de lucro. 💕
         </div>
+
+        <button id="btnPlanilha" class="btn-planilha">
+            📋 Gerar Planilha Excel
+        </button>
     </div>
 
     <script>
@@ -449,6 +479,116 @@
         }
 
         calcular();
+
+        document.getElementById('btnPlanilha').addEventListener('click', gerarPlanilha);
+
+        function gerarPlanilha() {
+            const custoProduto = parseFloat(document.getElementById('custoProduto').value) || 0;
+            const margemLucro = parseFloat(document.getElementById('margemLucro').value) || 0;
+            const embalagem = parseFloat(document.getElementById('embalagem').value) || 0;
+            const mimo = parseFloat(document.getElementById('mimo').value) || 0;
+            const taxaCartao = parseFloat(document.getElementById('taxaCartao').value) || 0;
+            const custoFixo = parseFloat(document.getElementById('custoFixo').value) || 0;
+            const vendasMes = parseFloat(document.getElementById('vendasMes').value) || 1;
+            const cupomDesconto = parseFloat(document.getElementById('cupomDesconto').value) || 0;
+
+            const wb = XLSX.utils.book_new();
+            
+            const dados = [
+                ['CALCULADORA DE PREÇO - LARISSA', ''],
+                ['', ''],
+                ['✨ DADOS DE ENTRADA (VOCÊ PODE EDITAR) ✨', ''],
+                ['Custo do Produto (R$)', custoProduto],
+                ['Margem de Lucro (%)', margemLucro],
+                ['Custo de Embalagem (R$)', embalagem],
+                ['Custo do Mimo/Brinde (R$)', mimo],
+                ['Taxa do Cartão (%)', taxaCartao],
+                ['Custo Fixo Mensal (R$)', custoFixo],
+                ['Estimativa de Vendas/Mês', vendasMes],
+                ['Cupom de Desconto (%)', cupomDesconto],
+                ['', ''],
+                ['💰 ANÁLISE DE CUSTOS (CALCULADO AUTOMATICAMENTE)', ''],
+                ['Custo do Produto', { f: '=B4' }],
+                ['Embalagem', { f: '=B6' }],
+                ['Mimo/Brinde', { f: '=B7' }],
+                ['Custo Fixo por Produto', { f: '=B9/B10' }],
+                ['CUSTO TOTAL', { f: '=SUM(B14:B17)' }],
+                ['', ''],
+                ['📈 FORMAÇÃO DO PREÇO', ''],
+                ['Custo Total', { f: '=B18' }],
+                ['Margem de Lucro (R$)', { f: '=B21*(B5/100)' }],
+                ['Preço Antes do Cartão', { f: '=B21+B22' }],
+                ['Taxa do Cartão (R$)', { f: '=B23*(B8/100)' }],
+                ['PREÇO DE VENDA', { f: '=B23+B24' }],
+                ['', ''],
+                ['🎟️ COM CUPOM DE DESCONTO', ''],
+                ['Preço de Venda', { f: '=B25' }],
+                ['Desconto do Cupom (R$)', { f: '=B28*(B11/100)' }],
+                ['PREÇO FINAL COM CUPOM', { f: '=B28-B29' }],
+                ['Lucro com Cupom (R$)', { f: '=B30-B18' }],
+                ['', ''],
+                ['📊 ANÁLISE DE VIABILIDADE', ''],
+                ['Vendas Necessárias (unidades/mês)', { f: '=ROUNDUP(B9/B31,0)' }],
+                ['Lucro por Produto (R$)', { f: '=B31' }],
+                ['Margem de Lucro Real (%)', { f: '=(B31/B30)*100' }],
+                ['Faturamento Estimado Mensal (R$)', { f: '=B30*B10' }],
+                ['Lucro Estimado Mensal (R$)', { f: '=B31*B10' }],
+                ['', ''],
+                ['⚠️ INSTRUÇÕES:', ''],
+                ['1. Edite APENAS as células em AMARELO (B4 até B11)', ''],
+                ['2. Os cálculos serão atualizados automaticamente!', ''],
+                ['3. Não apague as fórmulas das outras células', ''],
+            ];
+
+            const ws = XLSX.utils.aoa_to_sheet(dados);
+
+            // Largura das colunas
+            ws['!cols'] = [
+                { width: 40 },
+                { width: 25 }
+            ];
+
+            // Estilos para células editáveis (amarelo)
+            const celulasEditaveis = ['B4', 'B5', 'B6', 'B7', 'B8', 'B9', 'B10', 'B11'];
+            celulasEditaveis.forEach(cel => {
+                if (ws[cel]) {
+                    ws[cel].s = {
+                        fill: { fgColor: { rgb: "FFFF00" } },
+                        font: { bold: true, color: { rgb: "FF1493" } },
+                        alignment: { horizontal: "right" }
+                    };
+                }
+            });
+
+            // Estilos para títulos
+            const titulosPrincipais = ['A1', 'A3', 'A13', 'A20', 'A27', 'A33', 'A40'];
+            titulosPrincipais.forEach(cel => {
+                if (ws[cel]) {
+                    ws[cel].s = {
+                        fill: { fgColor: { rgb: "FF69B4" } },
+                        font: { bold: true, color: { rgb: "FFFFFF" }, sz: 12 },
+                        alignment: { horizontal: "center" }
+                    };
+                }
+            });
+
+            // Estilos para totais
+            const totais = ['B18', 'B25', 'B30'];
+            totais.forEach(cel => {
+                if (ws[cel]) {
+                    ws[cel].s = {
+                        fill: { fgColor: { rgb: "FFB6D9" } },
+                        font: { bold: true, sz: 14 },
+                        alignment: { horizontal: "right" }
+                    };
+                }
+            });
+
+            XLSX.utils.book_append_sheet(wb, ws, 'Calculadora Automática');
+
+            const dataAtual = new Date().toLocaleDateString('pt-BR').replace(/\//g, '-');
+            XLSX.writeFile(wb, `Calculadora_Automatica_${dataAtual}.xlsx`);
+        }
     </script>
 </body>
 </html>
